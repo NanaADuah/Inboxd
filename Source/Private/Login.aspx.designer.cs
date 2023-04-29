@@ -11,7 +11,7 @@ namespace Inboxd.Source.Private
 {
 
 
-    public partial class Inbox
+    public partial class Login
     {
 
         /// <summary>
@@ -24,12 +24,21 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// btnNewMail control.
+        /// btnSignIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNewMail;
+        protected global::System.Web.UI.WebControls.Button btnSignIn;
+
+        /// <summary>
+        /// btnSignUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSignUp;
     }
 }

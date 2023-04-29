@@ -2,3 +2,10 @@
     font-family: Arial;   
 }
 
+html{
+    height: 100%;
+}
+
+html, body{
+    overflow: auto;
+}

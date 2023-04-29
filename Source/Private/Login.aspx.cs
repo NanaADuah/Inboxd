@@ -7,16 +7,16 @@ using System.Web.UI.WebControls;
 
 namespace Inboxd.Source.Private
 {
-    public partial class Inbox : System.Web.UI.Page
+    public partial class Login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //TODO: Redirect if not logged in
+
         }
 
-        protected void btnNewMail_Click(object sender, EventArgs e)
+        protected void btnSignIn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("NewMail.aspx");
+            Response.Redirect("Inbox.aspx");
         }
     }
 }

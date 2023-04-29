@@ -1,0 +1,16 @@
+﻿* {
+    font-family: Arial;
+}
+
+#container {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+#logo{
+    width: 80px;
+}
+
+#viewInput{
+    width: 6rem !important;
+    text-align: center;
+}

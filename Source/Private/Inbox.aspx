@@ -6,36 +6,17 @@
 <head runat="server">
     <title>Home | Inboxd</title>
     <link href="Style/Inbox.css" rel="stylesheet" />
+    <link href="Style/Header.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="Inbox.aspx">
-            <img src="../Public/Images/inboxdLogo.png" width="40px" /></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Notifications</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
-                </li>
-            </ul>
-        </div>
-        <span class="h1 ">Inboxd</span>
-    </nav>
-    <form id="form1" runat="server">
-        <div class="p-4">
+    <!-- #include file='Header.html' -->
+    <form id="form1" runat="server" class="h-100">
+        <div class="p-4 h-100">
             <h3>Current Emails:</h3>
             <%if (!true)
                 {
-%>
+            %>
             <div>
                 <table class="table">
                     <thead>
@@ -62,7 +43,11 @@
                 </table>
             </div>
             <%} %>
+           <div class="w-100 d-flex justify-content-end position-sticky bottom-0 h-25">
+           <asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" />
         </div>
+        </div>
+        
     </form>
 </body>
 </html>

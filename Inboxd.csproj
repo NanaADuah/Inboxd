@@ -89,9 +89,16 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Source\Private\Header.html" />
     <Content Include="Source\Private\Inbox.aspx" />
     <Content Include="Source\Private\Index.aspx" />
+    <Content Include="Source\Private\Login.aspx" />
+    <Content Include="Source\Private\NewMail.aspx" />
+    <Content Include="Source\Private\Notifications.aspx" />
+    <Content Include="Source\Private\Style\Header.css" />
     <Content Include="Source\Private\Style\Inbox.css" />
+    <Content Include="Source\Private\Style\Login.css" />
+    <Content Include="Source\Private\Style\NewMail.css" />
     <Content Include="Source\Public\Images\inboxdLogo.png" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -110,6 +117,27 @@
     </Compile>
     <Compile Include="Source\Private\Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\NewMail.aspx.cs">
+      <DependentUpon>NewMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\NewMail.aspx.designer.cs">
+      <DependentUpon>NewMail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\Notifications.aspx.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\Notifications.aspx.designer.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
