@@ -5,12 +5,6 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inboxd", "Inboxd.csproj", "{7BE578FC-73E3-43BC-AC89-07E63BDEDA4C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3C15C5DA-2B51-433F-AE4F-C501CA8B2D0D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "private", "private", "{028D5F19-5EDF-4C0D-ACC8-D82E185AE7E3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{1BFB2E14-D9A5-4B8B-B9CA-373980357E71}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,10 +18,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{028D5F19-5EDF-4C0D-ACC8-D82E185AE7E3} = {3C15C5DA-2B51-433F-AE4F-C501CA8B2D0D}
-		{1BFB2E14-D9A5-4B8B-B9CA-373980357E71} = {3C15C5DA-2B51-433F-AE4F-C501CA8B2D0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4198CD3-725F-44AE-B305-B43E418EC3D2}

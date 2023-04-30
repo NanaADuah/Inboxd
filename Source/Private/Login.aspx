@@ -7,6 +7,7 @@
     <title>Login | Inboxd</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <link rel="stylesheet" href="Style/Login.css" />
+    <link href="Style/Default.css" rel="stylesheet"/>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -18,7 +19,7 @@
                         Login
                     </div>
                 </div>
-                <br />
+                <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label><br />
                 <label>Your details:</label>
                 <div class="w-75 mx-auto">
                     <div class="input-group mb-3">
@@ -39,8 +40,9 @@
                     <br />
 
                     <asp:Button runat="server" ID="btnSignIn" class="btn btn-primary" Text="Sign In" OnClick="btnSignIn_Click"></asp:Button>
-                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-success" Text="Sign Up"></asp:Button>
-                    <span>Forgot your password> <a href="#">Click here!</a></span>
+                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-success" Text="Sign Up"></asp:Button><br />
+                    <br />
+                    <span>Forgot your password? <a href="ForgotPassword.aspx">Click here</a></span>
                 </div>
             </div>
         </div>
