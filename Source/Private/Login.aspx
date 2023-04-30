@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
         <div>
             <div id="container" class="w-50 rounded mx-auto top-50 p-4 m-4 text-center mt-5">
-                <div class="h1 fw-bold">
+                <div class="h1 fw-bold lh-sm">
                     Inboxd <img src="../Public/Images/inboxdLogo.png" id="logo" />
                     <div class="h3">
                         Login
@@ -24,23 +24,23 @@
                 <div class="w-75 mx-auto">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="viewInput">Email</span>
+                            <span class="input-group-text viewInput" >Email</span>
                         </div>
-                        <input type="email" name="email" class="form-control" />
+                        <input runat="server" type="email" class="form-control" id="tbEmail" />
                     </div>
 
                     <br />
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="viewInput">Password</span>
+                            <span class="input-group-text viewInput">Password</span>
                         </div>
-                        <input type="password" class="form-control" id="tbPassword" />
+                        <input runat="server" type="password" class="form-control" id="tbPassword" />
                     </div>
                     <br />
 
                     <asp:Button runat="server" ID="btnSignIn" class="btn btn-primary" Text="Sign In" OnClick="btnSignIn_Click"></asp:Button>
-                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-success" Text="Sign Up"></asp:Button><br />
+                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-success" Text="Sign Up" OnClick="btnSignUp_Click"></asp:Button><br />
                     <br />
                     <span>Forgot your password? <a href="ForgotPassword.aspx">Click here</a></span>
                 </div>

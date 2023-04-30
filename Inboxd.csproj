@@ -101,11 +101,13 @@
     <Content Include="Source\Private\NewMail.aspx" />
     <Content Include="Source\Private\Notifications.aspx" />
     <Content Include="Source\Private\Settings.aspx" />
+    <Content Include="Source\Private\SignUp.aspx" />
     <Content Include="Source\Private\Style\Default.css" />
     <Content Include="Source\Private\Style\Header.css" />
     <Content Include="Source\Private\Style\Inbox.css" />
     <Content Include="Source\Private\Style\Login.css" />
     <Content Include="Source\Private\Style\NewMail.css" />
+    <Content Include="Source\Private\Style\SignUp.css" />
     <Content Include="Source\Public\Images\inboxdLogo.png" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -118,6 +120,7 @@
     <Compile Include="Source\Private\ForgotPassword.aspx.designer.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Source\Private\Hasher.cs" />
     <Compile Include="Source\Private\Inbox.aspx.cs">
       <DependentUpon>Inbox.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -160,6 +163,14 @@
     <Compile Include="Source\Private\Settings.aspx.designer.cs">
       <DependentUpon>Settings.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Source\Private\SignUp.aspx.cs">
+      <DependentUpon>SignUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\SignUp.aspx.designer.cs">
+      <DependentUpon>SignUp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

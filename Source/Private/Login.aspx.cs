@@ -14,6 +14,8 @@ namespace Inboxd.Source.Private
     public partial class Login : System.Web.UI.Page
     {
         SqlConnection connection;
+        string connectionStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -21,8 +23,14 @@ namespace Inboxd.Source.Private
 
         protected void btnSignIn_Click(object sender, EventArgs e)
         {
-            string connectionStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-            try{
+            string email = tbEmail.Value;
+            string password = tbPassword.Value;
+
+            User user = new User(Email: email, Password:password);
+
+            try
+            {
+
                 connection = new SqlConnection(connectionStr);
                 connection.Open();
                 string comStr = "SELECT * FROM [Users]";
@@ -36,8 +44,18 @@ namespace Inboxd.Source.Private
             }
             finally { 
                 connection.Close();
-                Response.Redirect("Inbox.aspx");
             }
+
+            if(user.Login())
+            {
+                Response.Redirect("Inbox.aspx");
+
+            }
+        }
+
+        protected void btnSignUp_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("SignUp.aspx");
         }
     }
 }
