@@ -32,17 +32,16 @@ namespace Inboxd.Source.Private
                 SqlDataReader reader = command.ExecuteReader();
                 if(reader != null)
                     while(reader.Read())
-                        output = reader.GetString(0);
+                        output = reader.GetValue(0).ToString();
                     
             }
             catch(SqlException ex){
                 lblMessages.ForeColor = System.Drawing.Color.Red;
-                //lblMessages.Text = ex.Message;  
+                lblMessages.Text = ex.Message;  
             }
             finally { 
                 connection.Close();
-                //Response.Redirect("Inbox.aspx");
-                lblMessages.Text = output;
+                Response.Redirect("Inbox.aspx");
             }
         }
     }

@@ -100,6 +100,7 @@
     <Content Include="Source\Private\Login.aspx" />
     <Content Include="Source\Private\NewMail.aspx" />
     <Content Include="Source\Private\Notifications.aspx" />
+    <Content Include="Source\Private\Settings.aspx" />
     <Content Include="Source\Private\Style\Default.css" />
     <Content Include="Source\Private\Style\Header.css" />
     <Content Include="Source\Private\Style\Inbox.css" />
@@ -151,6 +152,13 @@
     </Compile>
     <Compile Include="Source\Private\Notifications.aspx.designer.cs">
       <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\Settings.aspx.cs">
+      <DependentUpon>Settings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\Settings.aspx.designer.cs">
+      <DependentUpon>Settings.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
