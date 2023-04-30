@@ -9,6 +9,7 @@ namespace Inboxd.Source.Private
 {
     public partial class Inbox : System.Web.UI.Page
     {
+        public List<Email> emails = new List<Email>();
         public User loggedInUser = new Private.User();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,7 +18,9 @@ namespace Inboxd.Source.Private
 
             else
             {
-
+                loggedInUser. UserID = int.Parse(Session["UserID"].ToString());
+                Email email = new Email();
+                emails = email.GetEmailList();
             }
         }
 
@@ -26,4 +29,6 @@ namespace Inboxd.Source.Private
             Response.Redirect("NewMail.aspx");
         }
     }
+
+    
 }

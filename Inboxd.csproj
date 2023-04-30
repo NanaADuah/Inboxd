@@ -98,6 +98,7 @@
     <Content Include="Source\Private\Inbox.aspx" />
     <Content Include="Source\Private\Index.aspx" />
     <Content Include="Source\Private\Login.aspx" />
+    <Content Include="Source\Private\Logout.aspx" />
     <Content Include="Source\Private\NewMail.aspx" />
     <Content Include="Source\Private\Notifications.aspx" />
     <Content Include="Source\Private\Settings.aspx" />
@@ -113,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Email.cs" />
+    <Compile Include="Source\Private\Additional.cs" />
     <Compile Include="Source\Private\ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -142,6 +145,13 @@
     <Compile Include="Source\Private\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Source\Private\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Source\Private\NewMail.aspx.cs">
       <DependentUpon>NewMail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -170,6 +180,7 @@
     <Compile Include="Source\Private\SignUp.aspx.designer.cs">
       <DependentUpon>SignUp.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Source\Private\Time.cs" />
     <Compile Include="Source\Private\User.cs" />
   </ItemGroup>
   <ItemGroup>

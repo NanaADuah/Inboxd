@@ -19,6 +19,7 @@ namespace Inboxd.Source.Private
         public string Password { get; set; }
         public string Email { get; set; }
         public int UserID { get; set; }
+        public int InboxdID { get; set; }
         public DateTime DOB { get; set; }
         private string connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
         List<string> errors = new List<string>();
@@ -174,6 +175,29 @@ namespace Inboxd.Source.Private
             return 0;
         }
 
+        public string getUserEmail(int UserID)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT Email FROM [UserDetails] WHERE UserID = @UserID", connection);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                string value = command.ExecuteScalar().ToString();
+                if (!string.IsNullOrEmpty(value))
+                    return value;
+            }
+            catch (SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return null;
+        }
+
         public void UserAssign()
         {
             try
@@ -275,6 +299,41 @@ namespace Inboxd.Source.Private
             }
 
             return count;
+        }
+
+        public User GetUserInfo(int UserID)
+        {
+            User temp = new User();
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT * FROM UserDetails WHERE UserID = @UserID LIMIT 1", connection);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if(reader.HasRows)
+                    while(reader.Read())
+                    {
+                        InboxdID = int.Parse(reader.GetValue(0).ToString());
+                        Email = reader.GetValue(1).ToString();
+                        Name = reader.GetValue(2).ToString();
+                        Surname = reader.GetValue(3).ToString();
+                        int tempID = int.Parse(reader.GetValue(4).ToString());
+                        DOB = DateTime.Parse(reader.GetValue(5).ToString());
+                    }
+            }
+            catch(SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return temp;
+
         }
     }
 }

@@ -11,7 +11,31 @@ namespace Inboxd.Source.Private
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(Session["UserID"].ToString()))
+                Response.Redirect("Login.aspx");
+            if (!IsPostBack)
+            {
+                tbToSender.Value = "";
+                tbSubject.Value = "";
+                tbMessage.Text = "";
+            }
+        }
 
+        protected void btnSendMessage_Click(object sender, EventArgs e)
+        {
+            string Receiver = tbToSender.Value;
+            string EmailBody = tbMessage.Text;
+            string Subject = tbSubject.Value;
+
+            Email email = new Email(Receipient: Receiver, Body:EmailBody, Subject: Subject);
+            string output = email.SendEmail();
+            tbToSender.Value = "";
+            tbSubject.Value = "";
+            tbMessage.Text = "";
+            if (output.Equals("Success"))
+                Response.Redirect("Inbox.aspx");
+            else
+                lblMessages.Text = output;
         }
     }
 }

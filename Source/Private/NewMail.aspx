@@ -15,32 +15,32 @@
 <body>
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server">
-        <div class="card w-75 mx-auto mt-5" id="container"  >
+        <div class="card w-75 mx-auto mt-5" id="container">
             <div class="card-header">
                 New Message
             </div>
             <div class="rounded card-body">
+                <asp:Label runat="server" ID="lblMessages" Text="" class="m-1"></asp:Label><br />
+                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid Receipient Email address" ControlToValidate="tbToSender" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" Display="Dynamic"></asp:RegularExpressionValidator>
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text viewInput" id="tbToSender">Receipients</span>
+                            <span class="input-group-text viewInput">Receipients</span>
                         </div>
-                        <input type="email" name="email" class="form-control" />
+                        <input runat="server" type="email" id="tbToSender" class="form-control" />
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text viewInput" id="tbSubject">Subject</span>
+                            <span class="input-group-text viewInput" id="">Subject</span>
                         </div>
-                        <input type="password" class="form-control" id="tbPassword" />
+                        <input runat="server" type="text" class="form-control" id="tbSubject" />
                     </div>
 
                 <div>
                     <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" ></asp:TextBox>
                 </div>
-
-                
             </div>
             <div class="card-footer">
-                <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" />
+                <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" />
                 <a class="btn btn-danger">
                     <i class="fa fa-trash" style="color:white" aria-hidden="true"></i>
                 </a>
