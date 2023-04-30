@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Web;
 using System.Web.SessionState;
 
@@ -20,7 +21,7 @@ namespace Inboxd.Source.Private
         public int UserID { get; set; }
         public DateTime DOB { get; set; }
         private string connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-        List<String> errors;
+        List<string> errors = new List<string>();
         private static readonly RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
 
         public User()
@@ -48,6 +49,38 @@ namespace Inboxd.Source.Private
             this.DOB = DOB;
         }
 
+        public User(int UserID)
+        {
+            this.UserID = UserID;
+
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT Email, Name, Surname, DOB FROM UserDetails WHERE UserID = @UserID");
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if(reader != null)
+                    while(reader.Read())
+                    {
+
+                    }    
+
+            }catch(Exception ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            this.Email = Email;
+            this.Name = Name;
+            this.Surname = Surname;
+            this.DOB = DOB;
+        }
+
         public int calcAge(DateTime birthdate)
         {
             int age = 0;
@@ -61,7 +94,7 @@ namespace Inboxd.Source.Private
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"SELECT COUNT(UserID) FROM UserDetails WHERE Email = @Email");
+                SqlCommand command = new SqlCommand($"SELECT COUNT(UserID) FROM UserDetails WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", email);
                 int validity = ((int)command.ExecuteScalar());
 
@@ -85,20 +118,24 @@ namespace Inboxd.Source.Private
             {
                 if (EmailValidator(Email))
                 {
+                    connection.Open();
 
-                    SqlCommand login = new SqlCommand($"SELECT Password FROM U.UserDetails, V.Users WHERE (U.Email = @Email) AND (U.UserID = V.UserID)", connection);
+                    SqlCommand login = new SqlCommand($"SELECT Password FROM UserDetails, Users WHERE (UserDetails.Email = @Email) AND (UserDetails.UserID = Users.UserID)", connection);
                     login.Parameters.AddWithValue("@Email", Email);
-                    string dbPassword = login.ExecuteScalar().ToString();
+                    SqlDataReader reader = login.ExecuteReader();
 
-                    Hasher passwordHasher = new Hasher();
+                    string dbPassword = "";
 
-                    if(Hasher.ValidatePassword(Password, dbPassword))
+                    if (reader != null)
+                        while (reader.Read())
+                            dbPassword = reader.GetString(0);
+
+                    if (Hasher.ValidatePassword(Password, dbPassword))
                     {
-
+                        UserID = getUserID(Email);
+                        return true;
                     }
-
-
-                    return true;
+                    
                 }
             }
             catch (SqlException ex)
@@ -119,6 +156,7 @@ namespace Inboxd.Source.Private
             connection = new SqlConnection(connectionString);
             try
             {
+                connection.Open();
                 SqlCommand command = new SqlCommand("SELECT UserID FROM [UserDetails] WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", Email);
                 int value = (int)command.ExecuteScalar();
@@ -129,6 +167,10 @@ namespace Inboxd.Source.Private
             {
                 LogError(ex.Message);
             }
+            finally
+            {
+                connection.Close();
+            }
             return 0;
         }
 
@@ -137,7 +179,8 @@ namespace Inboxd.Source.Private
             try
             {
                 HttpContext.Current.Session["UserID"] = UserID;
-
+                Inbox temp = new Inbox();
+                temp.loggedInUser = new User(UserID: this.UserID);
             }
             catch (Exception ex)
             {
@@ -147,7 +190,23 @@ namespace Inboxd.Source.Private
 
         public void LogError(string error)
         {
-            errors.Add(error);
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("INSERT INTO [Errors](ErrorMessage, Date) VALUES (@Message, @Date)", connection);
+                command.Parameters.AddWithValue("@Message", error );
+                command.Parameters.AddWithValue("@Date", DateTime.Now);
+                command.ExecuteNonQuery();
+            }
+            catch(SqlException ex)
+            {
+                errors.Add(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public string CreateUser()
@@ -188,14 +247,34 @@ namespace Inboxd.Source.Private
 
         private string GenerateUniqueID(int length)
         {
-            // We chose an encoding that fits 6 bits into every character,
-            // so we can fit length*6 bits in total.
-            // Each byte is 8 bits, so...
             int sufficientBufferSizeInBytes = (length * 6 + 7) / 8;
 
             var buffer = new byte[sufficientBufferSizeInBytes];
             random.GetBytes(buffer);
             return Convert.ToBase64String(buffer).Substring(0, length);
+        }
+
+        public int getEmailsCount()
+        {
+            int count = 0;
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM [Emails] WHERE ReceiverID = @Receiver ", connection);
+                command.Parameters.AddWithValue("@Receiver", HttpContext.Current.Session["UserID"].ToString());
+                count = int.Parse(command.ExecuteScalar().ToString());
+            }
+            catch(SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return count;
         }
     }
 }

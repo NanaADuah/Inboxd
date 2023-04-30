@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
         <div>
             <div id="container" class="w-50 rounded mx-auto top-50 p-4 m-4 text-center mt-5">
-                <div class="h1 fw-bold lh-sm">
+                <div class="h1 fw-bold lh-sm justify-content-center " style="vertical-align:middle">
                     Inboxd <img src="../Public/Images/inboxdLogo.png" id="logo" />
                     <div class="h3">
                         Login
@@ -22,6 +22,9 @@
                 <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label><br />
                 <label>Your details:</label>
                 <div class="w-75 mx-auto">
+                    <div class="text-center">
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid email" ControlToValidate="tbEmail" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>&nbsp
+                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text viewInput" >Email</span>
@@ -30,7 +33,7 @@
                     </div>
 
                     <br />
-
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Password required to log in" ControlToValidate="tbPassword" ForeColor="Red"></asp:RequiredFieldValidator>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text viewInput">Password</span>

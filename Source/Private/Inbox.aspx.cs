@@ -9,9 +9,16 @@ namespace Inboxd.Source.Private
 {
     public partial class Inbox : System.Web.UI.Page
     {
+        public User loggedInUser = new Private.User();
         protected void Page_Load(object sender, EventArgs e)
         {
-            //TODO: Redirect if not logged in
+            if (Session["UserID"] == null)
+                Response.Redirect("Login.aspx");
+
+            else
+            {
+
+            }
         }
 
         protected void btnNewMail_Click(object sender, EventArgs e)

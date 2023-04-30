@@ -12,19 +12,27 @@
 <body>
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server" class="h-100">
+
+        <%if (!string.IsNullOrEmpty(Session["UserID"].ToString()))
+            { %>
         <div class="p-4 h-100">
-            <h3>Current Emails:</h3>
-            <%if (!true)
+            <h3>Current Emails[<%=loggedInUser.getEmailsCount() %>]: </h3>
+            <%if (true)
                 {
             %>
             <div>
                 <table class="table">
                     <thead>
                         <tr>
-                            <td>Hello World
+                            <td>Hello
                             </td>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <td>World</td>
+                        </tr>
+                    </tbody>
 
                 </table>
             </div>
@@ -47,7 +55,11 @@
            <asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" />
         </div>
         </div>
-        
+        <%} else { %>
+            
+            <div class="card-body">Currently not logged in
+            </div>
+        <%} %>
     </form>
 </body>
 </html>

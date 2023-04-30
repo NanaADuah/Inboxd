@@ -15,10 +15,12 @@ namespace Inboxd.Source.Private
     {
         SqlConnection connection;
         string connectionStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+                lblMessages.Text = "";
         }
 
         protected void btnSignIn_Click(object sender, EventArgs e)
@@ -48,8 +50,13 @@ namespace Inboxd.Source.Private
 
             if(user.Login())
             {
-                Response.Redirect("Inbox.aspx");
+                user.UserAssign();
+                Response.Redirect("Inbox.aspx", false);
 
+            }else
+            {
+                lblMessages.ForeColor = System.Drawing.Color.Red;
+                lblMessages.Text = "Invalid password or email";
             }
         }
 
