@@ -22,7 +22,6 @@ namespace Inboxd.Source.Private
         protected void btnSignIn_Click(object sender, EventArgs e)
         {
             string connectionStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-            string output = "Nothing changed";
             try{
                 connection = new SqlConnection(connectionStr);
                 connection.Open();
@@ -30,10 +29,6 @@ namespace Inboxd.Source.Private
                 SqlCommand command = new SqlCommand(comStr, connection);
                 SqlDataAdapter adapter = new SqlDataAdapter();
                 SqlDataReader reader = command.ExecuteReader();
-                if(reader != null)
-                    while(reader.Read())
-                        output = reader.GetValue(0).ToString();
-                    
             }
             catch(SqlException ex){
                 lblMessages.ForeColor = System.Drawing.Color.Red;
