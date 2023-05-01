@@ -9,3 +9,7 @@ html{
 html, body{
     overflow: auto;
 }
+
+td {
+    vertical-align:middle !important;
+}

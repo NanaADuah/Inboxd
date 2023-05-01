@@ -16,17 +16,47 @@ namespace Inboxd.Source.Private
             if (Session["UserID"] == null)
                 Response.Redirect("Login.aspx");
 
+            loggedInUser. UserID = int.Parse(Session["UserID"].ToString());
+            Email email = new Email();
+            string type = "";
+
+            if (ViewState["filter"] != null && !ViewState["filter"].Equals(-1))
+                type = ViewState["filter"].ToString();
+
+            if (type.Equals("unread"))
+                emails = email.GetEmailList(2);
             else
-            {
-                loggedInUser. UserID = int.Parse(Session["UserID"].ToString());
-                Email email = new Email();
                 emails = email.GetEmailList();
-            }
         }
 
         protected void btnNewMail_Click(object sender, EventArgs e)
         {
             Response.Redirect("NewMail.aspx");
+        }
+
+        protected void Unnamed3_Click(object sender, EventArgs e)
+        {
+            ViewState["filter"] = "unread";
+        }
+
+        protected void Unnamed2_Click(object sender, EventArgs e)
+        {
+            ViewState["filter"] = "sender";
+        }
+
+        protected void Unnamed1_Click(object sender, EventArgs e)
+        {
+            ViewState["filter"] = "starred";
+        }
+
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+            ViewState["filter"] = null;
+        }
+
+        protected void Unnamed_Click1(object sender, EventArgs e)
+        {
+            ViewState["filter"] = "recent";
         }
     }
 

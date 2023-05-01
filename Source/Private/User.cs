@@ -308,7 +308,7 @@ namespace Inboxd.Source.Private
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM UserDetails WHERE UserID = @UserID LIMIT 1", connection);
+                SqlCommand command = new SqlCommand("SELECT TOP 1 * FROM UserDetails WHERE UserID = @UserID LIMIT 1", connection);
                 command.Parameters.AddWithValue("@UserID", UserID);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -334,6 +334,38 @@ namespace Inboxd.Source.Private
 
             return temp;
 
+        }
+
+        public static string GetFullName(int UserID)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
+            SqlConnection conn = new SqlConnection(connStr);
+            string fullName = "Test Name";
+            User user = new User();
+            try
+            {
+                conn.Open();
+                string comm = "SELECT TOP 1 Name, Surname FROM [UserDetails] WHERE UserID = @UserID";
+                SqlCommand command = new SqlCommand(comm, conn);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                    while(reader.Read())
+                        fullName = String.Format("{0:S} {1:S}", reader.GetValue(0).ToString(), reader.GetValue(1).ToString());
+                
+            }
+            catch(Exception ex)
+            {
+                user.LogError(ex.Message);
+            }
+
+            finally 
+            {
+                conn.Close();
+            }
+
+            return fullName;
         }
     }
 }
