@@ -26,6 +26,9 @@ namespace Inboxd.Source.Private
             if (type.Equals("unread"))
                 emails = email.GetEmailList(2);
             else
+            if (type.Equals("starred"))
+                emails = email.GetEmailList(4);
+            else
                 emails = email.GetEmailList();
         }
 

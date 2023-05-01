@@ -36,14 +36,13 @@
                     </div>
 
                 <div>
-                    <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" ></asp:TextBox>
+                    <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" style="height: 30vh"></asp:TextBox>
                 </div>
             </div>
             <div class="card-footer">
                 <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" />
-                <a class="btn btn-danger">
-                    <i class="fa fa-trash" style="color:white" aria-hidden="true"></i>
-                </a>
+                <asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" />
+               
             </div>
         </div>
     </form>

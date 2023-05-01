@@ -75,7 +75,10 @@ namespace Inboxd.Source.Private
         {
             if(SingleEmail != null)
             {
-                string nextUrl = $"NextMain.aspx?reply={SingleEmail.EmailID}";
+                string url = $"NewMail.aspx?reply={SingleEmail.EmailID}";
+                string prevUrl = HttpContext.Current.Request.Url.ToString();
+                ViewState["previousUrl"] = prevUrl;
+                Response.Redirect(url, false);
             }
             
         }

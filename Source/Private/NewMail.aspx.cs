@@ -13,9 +13,14 @@ namespace Inboxd.Source.Private
         {
             Email email = new Email();
             User user = new User();
-            Email.GetEmailInformation(EmailID, int.Parse(EmailID), out email);
-            tbSubject.Value = String.Format("RE: {0}", email.EmailSubject);
-            tbToSender.Value =  user.getUserEmail(email.EmailSender);
+            Email.GetEmailInformation(EmailID, int.Parse(Session["UserID"].ToString()), out email);
+
+            if(email != null)
+            {
+                tbSubject.Value = String.Format("RE: {0}", email.EmailSubject);
+                tbToSender.Value =  user.getUserEmail(email.EmailSender);
+                tbMessage.Text = String.Format("/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject,email.EmailBody);
+            }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,9 +33,10 @@ namespace Inboxd.Source.Private
                 tbMessage.Text = "";
             }
 
-            if (!String.IsNullOrEmpty(Request.QueryString["id"]))
+            if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
             {
-
+                string EmailID = Request.QueryString["reply"];
+                LoadReply(EmailID: EmailID);
             }
         }
 
@@ -49,6 +55,16 @@ namespace Inboxd.Source.Private
                 Response.Redirect("Inbox.aspx");
             else
                 lblMessages.Text = output;
+        }
+
+        protected void btnDeleteEmail_Click(object sender, EventArgs e)
+        {
+            //TODO: Fix this!!!
+            //string temp = ViewState["previousUrl"].ToString();
+            if(ViewState["previousUrl"] != null)
+                Response.Redirect(ViewState["previousUrl"].ToString());
+            else
+                Response.Redirect("Inbox.aspx");
         }
     }
 }

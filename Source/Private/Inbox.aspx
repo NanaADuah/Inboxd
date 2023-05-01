@@ -44,13 +44,14 @@
                         </div>
                         <ul class="list-group">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
-                            <li class="list-group-item bg-primary" ><a class="text-white" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
+                            <li class="list-group-item bg-primary" ><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
                             <li class="list-group-item"><i class="fa fa-inbox"></i> Inbox</li>
-                            <li class="list-group-item" runat="server" ><i class="fa fa-star"></i><a class="text-decoration-none" href="Inbox.aspx?filter=starred"> Starred</a></li>
+                            <li class="list-group-item"><i class="fa fa-star"></i> Starred</li>
                             <li class="list-group-item"><i class="fa fa-exclamation-circle"></i> Spam</li>
                             <li class="list-group-item"><i class="fa fa-file"></i> Draft</li>
                             <li class="list-group-item"><i class="fa fa-paper-plane"></i> Sent</li>
                             <li class="list-group-item"><i class="fa fa-clock-o"></i> Snoozed</li>
+                            <li class="list-group-item"><i class="fa fa-cog"></i> Settings</li>
                         </ul>
                         
                     </div>
