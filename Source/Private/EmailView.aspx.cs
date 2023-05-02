@@ -59,11 +59,9 @@ namespace Inboxd.Source.Private
                 }
                 catch(Exception ex)
                 {
-                    User user = new User();
-                    user.LogError(ex.Message);
+                    Private.User.LogError(ex.Message);
                 }
             }    
-
         }
 
         protected void btnGoBack_Click(object sender, EventArgs e)
@@ -77,13 +75,34 @@ namespace Inboxd.Source.Private
             {
                 string url = $"NewMail.aspx?reply={SingleEmail.EmailID}";
                 string prevUrl = HttpContext.Current.Request.Url.ToString();
-                ViewState["previousUrl"] = prevUrl;
+                Session["previousUrl"] = prevUrl;
                 Response.Redirect(url, false);
             }
             
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSpamSet_Click(object sender, EventArgs e)
+        {
+            string result = "";
+            Session["previousUrl"] = HttpContext.Current.Request.Url.ToString();
+            if (Request.QueryString["id"] != null)
+            {
+                Email.SetAsSpam(Request.QueryString["id"], out result);
+                Response.Redirect($"EmailView.aspx?={Request.QueryString["id"]}");
+            }
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnUnsetSpam_Click(object sender, EventArgs e)
         {
 
         }

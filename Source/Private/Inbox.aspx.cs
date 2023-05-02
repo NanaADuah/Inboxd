@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,23 +12,34 @@ namespace Inboxd.Source.Private
     {
         public List<Email> emails = new List<Email>();
         public User loggedInUser = new Private.User();
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
                 Response.Redirect("Login.aspx");
 
-            loggedInUser. UserID = int.Parse(Session["UserID"].ToString());
+            loggedInUser = Private.User.GetUserInfo(int.Parse(Session["UserID"].ToString()));
+            
             Email email = new Email();
-            string type = "";
+            string type = "default";
 
-            if (ViewState["filter"] != null && !ViewState["filter"].Equals(-1))
-                type = ViewState["filter"].ToString();
+            if (Session["filter"] != null && !Session["filter"].Equals(-1))
+                type = Session["filter"].ToString();
 
+            if (type.Equals("recent") || type.Equals("default"))
+                emails = email.GetEmailList(1);
+            else
             if (type.Equals("unread"))
                 emails = email.GetEmailList(2);
             else
             if (type.Equals("starred"))
                 emails = email.GetEmailList(4);
+            else
+            if (type.Equals("draft"))
+                emails = email.GetDraftList();
+            else
+            if (type.Equals("spam"))
+                emails = email.GetEmailList(6);
             else
                 emails = email.GetEmailList();
         }
@@ -37,29 +49,24 @@ namespace Inboxd.Source.Private
             Response.Redirect("NewMail.aspx");
         }
 
-        protected void Unnamed3_Click(object sender, EventArgs e)
+        private void Refresh() { Response.Redirect("Inbox.aspx"); }
+
+        protected void btnDefault_Click(object sender, EventArgs e)
         {
-            ViewState["filter"] = "unread";
+            Session["filter"] = "default";
+            Refresh();
         }
 
-        protected void Unnamed2_Click(object sender, EventArgs e)
+        protected void btnSender_Click(object sender, EventArgs e)
         {
-            ViewState["filter"] = "sender";
+            Session["filter"] = "sender";
+            Refresh();
         }
 
-        protected void Unnamed1_Click(object sender, EventArgs e)
+        protected void btnUnread_Click(object sender, EventArgs e)
         {
-            ViewState["filter"] = "starred";
-        }
-
-        protected void Unnamed_Click(object sender, EventArgs e)
-        {
-            ViewState["filter"] = null;
-        }
-
-        protected void Unnamed_Click1(object sender, EventArgs e)
-        {
-            ViewState["filter"] = "recent";
+            Session["filter"] = "unread";
+            Refresh();
         }
     }
 

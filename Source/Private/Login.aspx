@@ -15,7 +15,7 @@
         <div>
             <div id="container" class="w-50 rounded mx-auto top-50 p-4 m-4 text-center mt-5">
                 <div class="h1 fw-bold lh-sm justify-content-center " style="vertical-align:middle">
-                    Inboxd <img src="../Public/Images/inboxdLogo.png" id="logo" />
+                    <img src="../Public/Images/Logo.svg" id="logo" class="img-fluid w-50"/>
                     <div class="h3">
                         Login
                     </div>

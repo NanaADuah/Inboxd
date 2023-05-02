@@ -1,5 +1,6 @@
-﻿*{
-    font-family: Arial;
+﻿@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
+* {
+    font-family: 'Libre Franklin', sans-serif;
     user-select: none;
     transition: 0.2s ease-in-out;
 }
@@ -9,12 +10,16 @@ html {
     --text-color-light: #8cabd9;
 }
 
-    html[data-theme='dark'] {
-        --text-color-normal: hsl(210, 10%, 62%);
-        --text-color-light: hsl(210, 15%, 35%);
-        --text-color-richer: hsl(210, 50%, 72%);
-        --text-color-highlight: hsl(25, 70%, 45%);
-    }
+html[data-theme='dark'] {
+    --text-color-normal: hsl(210, 10%, 62%);
+    --text-color-light: hsl(210, 15%, 35%);
+    --text-color-richer: hsl(210, 50%, 72%);
+    --text-color-highlight: hsl(25, 70%, 45%);
+}
+
+a {
+    /*color: inherit !important;*/
+}
 
 @media (prefers-color-scheme: dark)
 {

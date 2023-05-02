@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
@@ -22,7 +23,7 @@ namespace Inboxd.Source.Private
         public int InboxdID { get; set; }
         public DateTime DOB { get; set; }
         private string connectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
-        List<string> errors = new List<string>();
+        public List<string> errors = new List<string>();
         private static readonly RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
 
         public User()
@@ -82,6 +83,47 @@ namespace Inboxd.Source.Private
             this.DOB = DOB;
         }
 
+        public static User GetUserInfo(int UserID)
+        {
+            SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            User user = null;
+
+            try
+            {
+                connect.Open();
+                string commStr = "SELECT TOP 1 * FROM [UserDetails] WHERE [UserID] = @UserID";
+                SqlCommand command = new SqlCommand(commStr, connect);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+                if(reader.HasRows)
+                    while(reader.Read())
+                    {
+                        DateTime tempDate;
+                        DateTime.TryParse(reader[5].ToString(), out tempDate);
+                        user = new User
+                        {
+                            InboxdID =  int.Parse(reader[0].ToString()),
+                            Email = reader[1].ToString(),
+                            Name = reader[2].ToString(),
+                            Surname = reader[3].ToString(),
+                            UserID = int.Parse(reader[4].ToString()),
+                            DOB = tempDate,
+                        };
+                    }
+
+
+
+            }
+            catch(Exception ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connect.Close();
+            }
+            return user;
+        }
         public int calcAge(DateTime birthdate)
         {
             int age = 0;
@@ -212,24 +254,24 @@ namespace Inboxd.Source.Private
             }
         }
 
-        public void LogError(string error)
+        public static void LogError(string error)
         {
-            connection = new SqlConnection(connectionString);
+            SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             try
             {
-                connection.Open();
-                SqlCommand command = new SqlCommand("INSERT INTO [Errors](ErrorMessage, Date) VALUES (@Message, @Date)", connection);
+                connect.Open();
+                SqlCommand command = new SqlCommand("INSERT INTO [Errors](ErrorMessage, Date) VALUES (@Message, @Date)", connect);
                 command.Parameters.AddWithValue("@Message", error );
                 command.Parameters.AddWithValue("@Date", DateTime.Now);
                 command.ExecuteNonQuery();
             }
-            catch(SqlException ex)
+            catch
             {
-                errors.Add(ex.Message);
+                //Changed function to static method so I need to replace whatever use to be here
             }
             finally
             {
-                connection.Close();
+                connect .Close();
             }
         }
 
@@ -278,7 +320,7 @@ namespace Inboxd.Source.Private
             return Convert.ToBase64String(buffer).Substring(0, length);
         }
 
-        public int getEmailsCount()
+        public int GetEmailsCount()
         {
             int count = 0;
             connection = new SqlConnection(connectionString);
@@ -300,28 +342,17 @@ namespace Inboxd.Source.Private
 
             return count;
         }
-
-        public User GetUserInfo(int UserID)
+        
+        public int GetDraftCount()
         {
-            User temp = new User();
+            int count = 0;
             connection = new SqlConnection(connectionString);
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT TOP 1 * FROM UserDetails WHERE UserID = @UserID LIMIT 1", connection);
-                command.Parameters.AddWithValue("@UserID", UserID);
-                SqlDataReader reader = command.ExecuteReader();
-
-                if(reader.HasRows)
-                    while(reader.Read())
-                    {
-                        InboxdID = int.Parse(reader.GetValue(0).ToString());
-                        Email = reader.GetValue(1).ToString();
-                        Name = reader.GetValue(2).ToString();
-                        Surname = reader.GetValue(3).ToString();
-                        int tempID = int.Parse(reader.GetValue(4).ToString());
-                        DOB = DateTime.Parse(reader.GetValue(5).ToString());
-                    }
+                SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM [Draft] WHERE SenderID = @Sender ", connection);
+                command.Parameters.AddWithValue("@Sender", HttpContext.Current.Session["UserID"].ToString());
+                count = int.Parse(command.ExecuteScalar().ToString());
             }
             catch(SqlException ex)
             {
@@ -332,8 +363,7 @@ namespace Inboxd.Source.Private
                 connection.Close();
             }
 
-            return temp;
-
+            return count;
         }
 
         public static string GetFullName(int UserID)
@@ -341,7 +371,6 @@ namespace Inboxd.Source.Private
             string connStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
             SqlConnection conn = new SqlConnection(connStr);
             string fullName = "Test Name";
-            User user = new User();
             try
             {
                 conn.Open();
@@ -357,7 +386,7 @@ namespace Inboxd.Source.Private
             }
             catch(Exception ex)
             {
-                user.LogError(ex.Message);
+                User.LogError(ex.Message);
             }
 
             finally 

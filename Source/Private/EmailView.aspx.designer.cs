@@ -33,6 +33,24 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.Label lblMessages;
 
         /// <summary>
+        /// btnSpamSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSpamSet;
+
+        /// <summary>
+        /// btnUnsetSpam control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUnsetSpam;
+
+        /// <summary>
         /// tbEmailSubject control.
         /// </summary>
         /// <remarks>

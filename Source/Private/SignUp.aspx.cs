@@ -13,5 +13,19 @@ namespace Inboxd.Source.Private
         {
 
         }
+
+        protected void btnSignUp_Click(object sender, EventArgs e)
+        {
+            User user = new User();
+            string email = tbEmail.Value;
+            string surname = tbSurname.Value;
+            string name = tbName.Value;
+            DateTime DOB = DateTime.Parse(tbDOB.Value);
+
+            string password = tbPassword.Value;
+            
+
+
+        }
     }
 }

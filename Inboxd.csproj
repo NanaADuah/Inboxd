@@ -97,6 +97,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Source\Private\EmailView.aspx" />
+    <Content Include="Source\Private\FilterPage.aspx" />
     <Content Include="Source\Private\ForgotPassword.aspx" />
     <Content Include="Source\Private\Header.html" />
     <Content Include="Source\Private\Inbox.aspx" />
@@ -114,6 +115,8 @@
     <Content Include="Source\Private\Style\NewMail.css" />
     <Content Include="Source\Private\Style\SignUp.css" />
     <Content Include="Source\Public\Images\inboxdLogo.png" />
+    <Content Include="Source\Public\Images\Logo.svg" />
+    <Content Include="Source\Public\Images\SingleLogo.svg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +129,13 @@
     </Compile>
     <Compile Include="Source\Private\EmailView.aspx.designer.cs">
       <DependentUpon>EmailView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Private\FilterPage.aspx.cs">
+      <DependentUpon>FilterPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Source\Private\FilterPage.aspx.designer.cs">
+      <DependentUpon>FilterPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Source\Private\ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>

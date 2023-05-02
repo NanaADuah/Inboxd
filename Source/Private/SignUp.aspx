@@ -21,61 +21,64 @@
                     </div>
                 </div>
                 <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label><br />
+
                 <div class=" card w-75 mx-auto">
+
                     <div class="card-header">Your details:</div>
 
                     <div class="card-body">
+                        <asp:ValidationSummary style="text-align:left" ID="ValidationSummary1" runat="server" DisplayMode="List" ForeColor="Red" HeaderText="Note:" />
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text viewInput">Email</span>
+                                <span class="input-group-text viewInput">Email <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid Email " ControlToValidate="tbEmail" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">*</asp:RegularExpressionValidator><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Invalid Email address" ControlToValidate="tbEmail" ForeColor="Red">*</asp:RequiredFieldValidator></span>
                             </div>
                             <input runat="server" type="email" class="form-control" id="tbEmail" />
                         </div>
                         <hr />
+                        
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text viewInput">Name</span>
+                                <span class="input-group-text viewInput">Name <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Name is required" ForeColor="Red" ControlToValidate="tbName"> *</asp:RequiredFieldValidator></span>
                             </div>
                             <input runat="server" type="email" class="form-control" id="tbName" />
                         </div>
 
+                        
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text viewInput">Surname</span>
+                                <span class="input-group-text viewInput">Surname <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Surname is required" ControlToValidate="tbSurname" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                             </div>
                             <input runat="server" type="email" class="form-control" id="tbSurname" />
                         </div>
 
+                        
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text viewInput">Date of birth</span>
+                                <span class="input-group-text viewInput">Date of birth <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Date of birth required" ControlToValidate="tbDOB" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                             </div>
                             <input runat="server" type="date" class="form-control" id="tbDOB" />
                         </div>
                     </div>
                     <div class="card m-1">
-
                         <div class="card-header">Type in a password for your account:</div>
+                        <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="Passwords do not match" ControlToCompare="tbPassword" ControlToValidate="tbPasswordConfirm">*</asp:CompareValidator>
                         <div class="card-body">
-
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Password Required"></asp:RequiredFieldValidator>
                                     <span class="input-group-text" style="width: 10rem">Password</span>
                                 </div>
                                 <input runat="server" type="password" class="form-control" id="tbPassword" />
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" style="width: 10rem">Confirm password</span>
+                                    <span class="input-group-text" style="width: 10rem">Confirm password <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ErrorMessage="Password Required" ControlToValidate="tbPasswordConfirm" ForeColor="Red">*</asp:RequiredFieldValidator></span>
                                 </div>
                                 <input runat="server" type="email" class="form-control" id="tbPasswordConfirm" />
                             </div>
                         </div>
                     </div>
-
-
-
-                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-primary m-2" Text="Sign Up"></asp:Button>
+                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-primary m-2" Text="Sign Up" OnClick="btnSignUp_Click"></asp:Button>
                     <div class="card-footer">Already have an account? <a href="Login.aspx">Click here</a></div>
                 </div>
             </div>

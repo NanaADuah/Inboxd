@@ -34,7 +34,6 @@
                         </div>
                         <input runat="server" type="text" class="form-control" id="tbSubject" />
                     </div>
-
                 <div>
                     <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" style="height: 30vh"></asp:TextBox>
                 </div>
@@ -42,6 +41,7 @@
             <div class="card-footer">
                 <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" />
                 <asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" />
+                <asp:Button runat="server" ID="btnSaveDraft" class="btn btn-info" Text="Save draft" OnClick="btnSaveDraft_Click" />
                
             </div>
         </div>

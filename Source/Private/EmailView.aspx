@@ -21,10 +21,23 @@
             <div class="w-50 m-auto">
                 <asp:Label ID="lblMessages" runat="server" Text=""></asp:Label>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header <%=SingleEmail.EmailSpam?"bg-warning":"" %> ">
                         <div>
-                            <h3>Subject <i class="fa fa-pencil"></i></h3>
-                            <asp:Label runat="server" ID="tbEmailSubject" Text="Email Subject"></asp:Label></div>
+                            <div>
+                                <span class="h3">Subject <i class="fa fa-pencil"></i></span>
+                                <%if (!SingleEmail.EmailSpam)
+                                    {  %> 
+                                <div class="btn btn-warning badge justify-content-between px-2" style=" float:right">
+                                    <i class="fa fa-warning"></i><asp:Button class="btn btn-sm" runat="server" ID="btnSpamSet" Text="Set as spam" OnClick="btnSpamSet_Click"/>
+                                </div>
+                                <%}else { %> 
+                                <div class="btn btn-dark badge text-white justify-content-between px-2" style=" float:right">
+                                    <i class="fa fa-warning"></i><asp:Button class="btn btn-sm text-white" runat="server" ID="btnUnsetSpam" Text="Unset as spam" OnClick="btnSpamSet_Click"/>
+                                </div>
+                                <%} %>
+                            </div> 
+                            <asp:Label runat="server" ID="tbEmailSubject" Text="Email Subject"></asp:Label>
+                        </div>
                         <hr class="p-1 m-1"/>
 
                         <div style="text-align:right">

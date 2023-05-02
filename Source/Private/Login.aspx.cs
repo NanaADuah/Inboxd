@@ -21,6 +21,14 @@ namespace Inboxd.Source.Private
         {
             if (!IsPostBack)
                 lblMessages.Text = "";
+
+            if (Session["UserID"] != null)
+            {
+                User user = new User();
+                user.UserAssign();
+                Response.Redirect("Inbox.aspx", false);
+            }
+
         }
 
         protected void btnSignIn_Click(object sender, EventArgs e)
