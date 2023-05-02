@@ -16,15 +16,16 @@ namespace Inboxd.Source.Private
 
         protected void btnSignUp_Click(object sender, EventArgs e)
         {
-            User user = new User();
-            string email = tbEmail.Value;
-            string surname = tbSurname.Value;
-            string name = tbName.Value;
-            DateTime DOB = DateTime.Parse(tbDOB.Value);
+            User user = new User(
+                Email: tbEmail.Value,
+                Surname: tbSurname.Value,
+                Name: tbName.Value,
+                DOB: DateTime.Parse(tbDOB.Value),
+                Password: tbPassword.Value
+                );
 
-            string password = tbPassword.Value;
-            
-
+            if (user.CreateUser().Equals("success"))
+                Response.Redirect("Login.aspx");
 
         }
     }

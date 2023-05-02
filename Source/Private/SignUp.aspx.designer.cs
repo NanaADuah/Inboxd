@@ -84,7 +84,7 @@ namespace Inboxd.Source.Private
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl tbName;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText tbName;
 
         /// <summary>
         /// RequiredFieldValidator2 control.
@@ -102,7 +102,7 @@ namespace Inboxd.Source.Private
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl tbSurname;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText tbSurname;
 
         /// <summary>
         /// RequiredFieldValidator3 control.
@@ -121,15 +121,6 @@ namespace Inboxd.Source.Private
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl tbDOB;
-
-        /// <summary>
-        /// CompareValidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CompareValidator CompareValidator1;
 
         /// <summary>
         /// RequiredFieldValidator5 control.
@@ -165,7 +156,7 @@ namespace Inboxd.Source.Private
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl tbPasswordConfirm;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword tbPasswordConfirm;
 
         /// <summary>
         /// btnSignUp control.

@@ -83,7 +83,17 @@ namespace Inboxd.Source.Private
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
+            string url = "Inbox.aspx";
+            if (Request.QueryString["id"] != null)
+            {
+                Email.DeactivateEmail(Request.QueryString["id"]);
+                if (Session["previousUrl"] != null)
+                    url = Session["previousUrl"].ToString();
+                
+                Response.Redirect(url, false);
+            }
 
+            
         }
 
         protected void btnSpamSet_Click(object sender, EventArgs e)

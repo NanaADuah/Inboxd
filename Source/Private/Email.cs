@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
@@ -138,6 +139,35 @@ namespace Inboxd.Source
             return "An error occurred";
         }
 
+        public static string DeactivateEmail(string EmailID)
+        {
+            User user = new User();
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            Email temp;
+            GetEmailInformation(EmailID, int.Parse(HttpContext.Current.Session["UserID"].ToString()),out temp);
+            try
+            {
+                connection.Open();
+                string commStr = "UPDATE [Emails] SET Active = @Active WHERE EmailID = @EmailID AND ReceiverID = @Receiver";
+                SqlCommand command = new SqlCommand(commStr, connection);
+                command.Parameters.AddWithValue("@Active", !temp.EmailActive);
+                command.Parameters.AddWithValue("@EmailID", temp.EmailID);
+                command.Parameters.AddWithValue(@"Receiver", user.getUserID(temp.ReceipientEmail));
+
+                return "success";
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return "failure";
+
+        }
         public string GenerateEmailID(int length)
         {
             string alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -317,11 +347,11 @@ namespace Inboxd.Source
             try
             {
                 connection.Open();
-                string comm = "SELECT TOP 1 * FROM Emails WHERE (EmailID = @EmailID AND ReceiverID = @Receiver) AND Active = 1";
+                string comm = "SELECT TOP 1 * FROM [Emails] WHERE (EmailID = @EmailID AND (ReceiverID = @Receiver OR SenderID = @Sender)) AND Active = 1";
                 SqlCommand command = new SqlCommand(comm, connection);
                 command.Parameters.AddWithValue("@EmailID", EmailID);
                 command.Parameters.AddWithValue("@Receiver", ViewerID);
-                //command.Parameters.AddWithValue("@Limit", 20);
+                command.Parameters.AddWithValue("@Sender", ViewerID);
                 SqlDataReader reader = command.ExecuteReader(); ;
 
                 if (reader.HasRows)

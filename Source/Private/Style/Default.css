@@ -2,6 +2,7 @@
 * {
     font-family: 'Libre Franklin', sans-serif;
     user-select: none;
+    user-drag: noe;
     transition: 0.2s ease-in-out;
 }
 

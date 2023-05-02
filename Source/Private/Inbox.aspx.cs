@@ -38,6 +38,9 @@ namespace Inboxd.Source.Private
             if (type.Equals("draft"))
                 emails = email.GetDraftList();
             else
+            if (type.Equals("sent"))
+                emails = email.GetEmailList(5);
+            else
             if (type.Equals("spam"))
                 emails = email.GetEmailList(6);
             else

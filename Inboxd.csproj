@@ -121,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Email.cs" />
+    <Compile Include="Source\Private\Email.cs" />
     <Compile Include="Source\Private\Additional.cs" />
     <Compile Include="Source\Private\EmailView.aspx.cs">
       <DependentUpon>EmailView.aspx</DependentUpon>

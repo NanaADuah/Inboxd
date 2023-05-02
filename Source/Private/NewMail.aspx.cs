@@ -57,7 +57,7 @@ namespace Inboxd.Source.Private
             {
                 string EmailID = Request.QueryString["edit"];
                 LoadEdit(EmailID: EmailID);
-                Email.DeleteDraft(EmailID);
+                //Email.DeleteDraft(EmailID);
             }
         }
 

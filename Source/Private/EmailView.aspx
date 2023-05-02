@@ -48,10 +48,15 @@
                         <div class="card-body">
                             <asp:TextBox class="form-control" runat="server" TextMode="MultiLine" ID="tbEmailInformation" ReadOnly="true" style="height: 35vh"></asp:TextBox>
                         </div>
-                    <div class="card-footer d-flex justify-content-between">
+                    <div class="card-footer d-flex justify-content-between text-center" style="align-items:center">
                         <asp:Button runat="server" ID="btnReturn" OnClick="btnGoBack_Click" Text="GO BACK" class="btn btn-primary w-75 mx-2" />
+                        <%
+                            Inboxd.Source.Private.User user = new Inboxd.Source.Private.User();
+                        if (SingleEmail.ReceipientEmail.Equals(user.getUserEmail(int.Parse(Session["UserID"].ToString())))){ 
+                            %>
                         <asp:Button runat="server" ID="btnReply"  Text="REPLY" class="btn btn-success w-75 mx-2" OnClick="btnReply_Click" />
                         <asp:Button runat="server" ID="btnDelete"  Text="DELETE" class="btn btn-danger mx-2 w-25" OnClick="btnDelete_Click" />
+                        <%} %>
                     </div>
                 </div>
             </div>

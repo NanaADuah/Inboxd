@@ -13,7 +13,7 @@ namespace Inboxd.Source.Private
         {
             if (Session["UserID"] != null)
             {
-                Session["UserID"] = null;
+                Session.Clear();
                 Response.Redirect("Login.aspx");
             }    
         }

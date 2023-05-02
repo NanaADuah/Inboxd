@@ -17,8 +17,8 @@ namespace Inboxd.Source.Private
 
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Password { get; set; }
         public string Email { get; set; }
+        private string Password { get; set; }
         public int UserID { get; set; }
         public int InboxdID { get; set; }
         public DateTime DOB { get; set; }
@@ -49,6 +49,15 @@ namespace Inboxd.Source.Private
             this.Name = Name;
             this.Surname = Surname;
             this.DOB = DOB;
+        }
+        
+        public User(string Name, string Surname, string Email, DateTime DOB, string Password)
+        {
+            this.Email = Email;
+            this.Name = Name;
+            this.Surname = Surname;
+            this.DOB = DOB;
+            this.Password = Password;
         }
 
         public User(int UserID)
@@ -278,7 +287,7 @@ namespace Inboxd.Source.Private
         public string CreateUser()
         {
             connection = new SqlConnection(connectionString);
-            UserID = int.Parse(GenerateUniqueID(10));
+            UserID = int.Parse(GenerateUniqueID(10).ToString());
             
             try
             {
@@ -298,6 +307,7 @@ namespace Inboxd.Source.Private
                 command_UserDetails.Parameters.AddWithValue("@DOB", DOB);
                 command_UserDetails.Parameters.AddWithValue("@UserID", UserID);
                 command_UserDetails.ExecuteNonQuery();
+                return "success";
             }
             catch(SqlException ex)
             {
@@ -308,17 +318,37 @@ namespace Inboxd.Source.Private
                 connection.Close();
             }
 
-            return "Success";
+            return "failed";
         }
 
-        private string GenerateUniqueID(int length)
+        public static int GenerateUniqueID(int length)
+        {
+            // Generate a new GUID
+            Guid guid = Guid.NewGuid();
+
+            // Convert the GUID to a byte array
+            byte[] bytes = guid.ToByteArray();
+
+            // Compute the hash code of the byte array
+            int hashCode = BitConverter.ToInt32(bytes, 0);
+
+            // Truncate the hash code to the specified length
+            int uniqueInt = Math.Abs(hashCode) % (int)Math.Pow(10, length);
+
+            return uniqueInt;
+        }
+
+
+        /*
+         * Obselete
+         * private string GenerateUniqueID(int length)
         {
             int sufficientBufferSizeInBytes = (length * 6 + 7) / 8;
 
             var buffer = new byte[sufficientBufferSizeInBytes];
             random.GetBytes(buffer);
             return Convert.ToBase64String(buffer).Substring(0, length);
-        }
+        }*/
 
         public int GetEmailsCount()
         {

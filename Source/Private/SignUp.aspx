@@ -40,7 +40,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text viewInput">Name <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Name is required" ForeColor="Red" ControlToValidate="tbName"> *</asp:RequiredFieldValidator></span>
                             </div>
-                            <input runat="server" type="email" class="form-control" id="tbName" />
+                            <input runat="server" type="text" class="form-control" id="tbName" />
                         </div>
 
                         
@@ -48,7 +48,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text viewInput">Surname <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Surname is required" ControlToValidate="tbSurname" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                             </div>
-                            <input runat="server" type="email" class="form-control" id="tbSurname" />
+                            <input runat="server" type="text" class="form-control" id="tbSurname" />
                         </div>
 
                         
@@ -61,12 +61,11 @@
                     </div>
                     <div class="card m-1">
                         <div class="card-header">Type in a password for your account:</div>
-                        <asp:CompareValidator ID="CompareValidator1" runat="server" ErrorMessage="Passwords do not match" ControlToCompare="tbPassword" ControlToValidate="tbPasswordConfirm">*</asp:CompareValidator>
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Password Required"></asp:RequiredFieldValidator>
-                                    <span class="input-group-text" style="width: 10rem">Password</span>
+                                    
+                                    <span class="input-group-text" style="width: 10rem">Password <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="Password Required" ControlToValidate="tbPassword">*</asp:RequiredFieldValidator></span>
                                 </div>
                                 <input runat="server" type="password" class="form-control" id="tbPassword" />
                             </div>
@@ -74,7 +73,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" style="width: 10rem">Confirm password <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ErrorMessage="Password Required" ControlToValidate="tbPasswordConfirm" ForeColor="Red">*</asp:RequiredFieldValidator></span>
                                 </div>
-                                <input runat="server" type="email" class="form-control" id="tbPasswordConfirm" />
+                                <input runat="server" type="password" class="form-control" id="tbPasswordConfirm" />
                             </div>
                         </div>
                     </div>
