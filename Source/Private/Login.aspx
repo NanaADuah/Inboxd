@@ -44,7 +44,7 @@
                     <br />
 
                     <asp:Button runat="server" ID="btnSignIn" class="btn btn-primary" Text="Sign In" OnClick="btnSignIn_Click"></asp:Button>
-                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-success" Text="Sign Up" OnClick="btnSignUp_Click"></asp:Button><br />
+                    <a href="SignUp.aspx" class="btn btn-success">Sign Up</a><br />
                     <br />
                     <span>Forgot your password? <a href="ForgotPassword.aspx">Click here</a></span>
                 </div>

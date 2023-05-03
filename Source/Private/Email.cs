@@ -87,6 +87,8 @@ namespace Inboxd.Source
             this.Reference = Reference;
         }
 
+        
+
         public Email(string EmailBody, string ReceipientEmail, string EmailSubject, string EmailReference)
         {
             this.EmailBody = EmailBody;
@@ -98,6 +100,7 @@ namespace Inboxd.Source
         public string SendEmail()
         {
             SqlConnection connection = new SqlConnection(connectionString);
+            
             User user = new User();
             int currentUserID = int.Parse(HttpContext.Current.Session["UserID"].ToString());
             if (HttpContext.Current.Session["UserID"] != null)
@@ -112,14 +115,15 @@ namespace Inboxd.Source
                         cmd.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
                         cmd.Parameters.AddWithValue("@SenderID", currentUserID);
                         cmd.Parameters.AddWithValue("@ReceiverID", senderID);
-                        cmd.Parameters.AddWithValue("@Email", Additional.RemoveSpecialCharacters(EmailBody));
-                        cmd.Parameters.AddWithValue("@Subject", Additional.RemoveSpecialCharacters(EmailSubject));
+                        cmd.Parameters.AddWithValue("@Email", (EmailBody)); //TODO: Fix Literal escaping
+                        cmd.Parameters.AddWithValue("@Subject", (EmailSubject));
                         cmd.Parameters.AddWithValue("@Date", DateTime.Now);
                         cmd.Parameters.AddWithValue("@Active", true);
                         cmd.Parameters.AddWithValue("@Read", false);
                         cmd.Parameters.AddWithValue("@Starred", false);
                         cmd.Parameters.AddWithValue("@Spam", false);
                         cmd.ExecuteNonQuery();
+                        Additional.LogActivity("Sent Email", currentUserID);
                         return "Success";
                     }
                     catch (SqlException ex)
@@ -135,6 +139,44 @@ namespace Inboxd.Source
                     return "Receipient email not found";
             else
                 return "Insufficient permissions to send email";
+
+            return "An error occurred";
+        }
+
+        public string SendWelcomeEmail(int UserID)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+
+            User user = new User();
+            string welcomeString = String.Format("Welcome {0}\n\nI'm thrilled to welcome you to our app platform! We're excited to have you on board and can't wait for you to experience all that our platform has to offer.\r\n\r\nWith our app platform, you can access a wide range of useful tools and services that can help you achieve your goals. Whether you're looking to stay organized, boost your productivity, or connect with others, our platform has got you covered.\r\n\r\nWe're constantly working to improve our platform and add new features that make it even more valuable for our users. And we're always here to answer any questions you may have or help you navigate the platform.\r\n\r\nThank you for choosing our app platform. We're honored to have you as part of our community!\n\nFor any enquires please contact: [I haven't made a system to handle this yet, so don't]\n\nBest regards\nInboxd Team", User.GetFullName(UserID));
+
+            try
+            {
+                int senderID = user.getUserID(ReceipientEmail);
+                connection.Open();
+                string command = "INSERT INTO [Emails] (EmailID, [SenderID], [ReceiverID], [Email], [Read], [Date], [Active], [Subject], [Starred], [Spam] ) VALUES (@EmailID, @SenderID, @ReceiverID, @Email, @Read, @Date, @Active, @Subject, @Starred, @Spam) ";
+                SqlCommand cmd = new SqlCommand(command, connection);
+                cmd.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
+                cmd.Parameters.AddWithValue("@SenderID", 1);
+                cmd.Parameters.AddWithValue("@ReceiverID", UserID);
+                cmd.Parameters.AddWithValue("@Email", welcomeString); //TODO: Fix Literal escaping
+                cmd.Parameters.AddWithValue("@Subject", "Welcome to Inboxd");
+                cmd.Parameters.AddWithValue("@Date", DateTime.Now);
+                cmd.Parameters.AddWithValue("@Active", true);
+                cmd.Parameters.AddWithValue("@Read", false);
+                cmd.Parameters.AddWithValue("@Starred", true);
+                cmd.Parameters.AddWithValue("@Spam", false);
+                cmd.ExecuteNonQuery();
+                return "Success";
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
 
             return "An error occurred";
         }
@@ -192,7 +234,66 @@ namespace Inboxd.Source
             return id;
         }
 
-        public static void DeleteDraft(string EmailID)
+        public List<string> GetSuggestedEmails(string name, string surname)
+        {
+            List<string> emails = new List<string>();
+            string email;
+            string defaultEmail = Additional.FirstCharToUpper(name) + "." + Additional.FirstCharToUpper(surname) + "@inboxd.com";
+            string defaultSwapEmail = Additional.FirstCharToUpper(surname) + "." + Additional.FirstCharToUpper(name) + "@inboxd.com";
+            
+            if (!Email.EmailExists(defaultEmail))
+                emails.Add(defaultEmail);
+            
+            if (!Email.EmailExists(defaultSwapEmail))
+                emails.Add(defaultSwapEmail);
+
+            for (int i = 0; i < 5; i++)
+            {
+                do
+                {
+                    Random random = new Random(int.Parse(DateTime.Now.Millisecond.ToString()));
+                    
+                    int number = random.Next(100,700);
+
+                    email = Additional.FirstCharToUpper(name) + "." + Additional.FirstCharToUpper(surname) + number + "@inboxd.com";
+
+                    // Add the email address to the list.
+                }
+                while (Email.EmailExists(email) && email.Contains(email));
+
+                emails.Add(email);
+                
+            }
+
+            return emails;
+        }
+
+        public static bool EmailExists(string Email)
+        {
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT TOP 1 COUNT(*) FROM [UserDetails] WHERE Email = @Email", connection);
+                command.Parameters.AddWithValue("@Email", Email);
+                int value = int.Parse(command.ExecuteScalar().ToString());
+                    
+                if(value != 0)
+                    return true;
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return false;
+        }
+
+            public static void DeleteDraft(string EmailID)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             Email temp;
@@ -307,7 +408,7 @@ namespace Inboxd.Source
             return list;
         }
 
-
+        
         public void SaveDraft(Email email, out string results)
         {
             results = "";
@@ -393,6 +494,34 @@ namespace Inboxd.Source
                 {
                     connect.Open();
                     string commStr = "UPDATE [Emails] SET [Read] = 1 WHERE EmailID = @EmailID";
+                    SqlCommand command = new SqlCommand(commStr, connect);
+                    command.Parameters.AddWithValue("@EmailID", EmailID);
+                    command.ExecuteNonQuery();
+                    status = "Success";
+    
+                }catch(SqlException ex)
+                {
+                    User.LogError(ex.Message);
+                    status = $"Error, {ex.Message}";
+                }
+                finally { connect.Close(); }
+            }
+        }
+        
+        //MUST BE SEPERATE READ, UNREAD FUNCTIONS, till I fix it later
+        public static void SetAsUnread(String EmailID, out string status)
+        {
+            status = "Default";
+            SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
+            Email temp;
+            GetEmailInformation(EmailID, currentLoggedIn,out temp);
+            if (temp != null)
+            {
+                try
+                {
+                    connect.Open();
+                    string commStr = "UPDATE [Emails] SET [Read] = 0 WHERE EmailID = @EmailID";
                     SqlCommand command = new SqlCommand(commStr, connect);
                     command.Parameters.AddWithValue("@EmailID", EmailID);
                     command.ExecuteNonQuery();

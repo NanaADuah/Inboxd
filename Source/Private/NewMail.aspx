@@ -20,28 +20,32 @@
                 New Message
             </div>
             <div class="rounded card-body">
+                <asp:ValidationSummary ID="ValidationSummary1" style="text-align:left" runat="server" DisplayMode="List" ForeColor="Red" />
                 <asp:Label runat="server" ID="lblMessages" Text="" class="m-1"></asp:Label><br />
-                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid Receipient Email address" ControlToValidate="tbToSender" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" Display="Dynamic"></asp:RegularExpressionValidator>
                 <div class="input-group mb-3">
+                    
                         <div class="input-group-prepend">
-                            <span class="input-group-text viewInput">Receipients</span>
+                            <span class="input-group-text viewInput">Receipients <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid Receipient Email address" ControlToValidate="tbToSender" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" Display="Dynamic" ForeColor="Red"> *</asp:RegularExpressionValidator><asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Email address required" ForeColor="Red" ControlToValidate="tbToSender"> * </asp:RequiredFieldValidator></span>
                         </div>
                         <input runat="server" type="email" id="tbToSender" class="form-control" />
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text viewInput" id="">Subject</span>
+                            <span class="input-group-text viewInput" id="">Subject <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Subject required" ControlToValidate="tbSubject" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                         </div>
                         <input runat="server" type="text" class="form-control" id="tbSubject" />
                     </div>
                 <div>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Email body required" ForeColor="Red" ControlToValidate="tbMessage" >*</asp:RequiredFieldValidator>
                     <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" style="height: 30vh"></asp:TextBox>
                 </div>
             </div>
             <div class="card-footer">
                 <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" />
-                <asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" />
+                <%--<asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" />--%>
+                <a href="Inbox.aspx" class="btn btn-danger">Discard</a>
                 <asp:Button runat="server" ID="btnSaveDraft" class="btn btn-info" Text="Save draft" OnClick="btnSaveDraft_Click" />
+                <asp:Button runat="server" ID="btnAddAttachments" class="btn btn-success" Text="Add attachments" OnClick="btnAddAttachments_Click" />
                
             </div>
         </div>

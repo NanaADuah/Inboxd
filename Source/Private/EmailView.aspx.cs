@@ -11,6 +11,7 @@ namespace Inboxd.Source.Private
     {
         public Email SingleEmail = new Email();
         public bool ValidView = false;
+        public string ReadLabel = "MARK AS READ";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
@@ -51,10 +52,12 @@ namespace Inboxd.Source.Private
                         tbEmailSubject.Text = SingleEmail.EmailSubject;
                         tbEmailDate.Text = SingleEmail.EmailDate.ToString("dd, MMM yyyy");
                         tbEmailTime.Text = SingleEmail.EmailDate.ToString("HH:mm");
-
+                        ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
                         string _value = "";
                         if (!SingleEmail.EmailRead)
                             Email.SetAsRead(SingleEmail.EmailID, out _value);
+
+                        ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
                     }
                 }
                 catch(Exception ex)
@@ -71,12 +74,20 @@ namespace Inboxd.Source.Private
 
         protected void btnReply_Click(object sender, EventArgs e)
         {
-            if(SingleEmail != null)
+            if (SingleEmail != null)
+            {
+                if (SingleEmail.EmailSender == 1)
+                {
+                    lblMessages.Text = "You cannot reply to this email";
+                    lblMessages.ForeColor = System.Drawing.Color.Red;
+                }
+            else
             {
                 string url = $"NewMail.aspx?reply={SingleEmail.EmailID}";
                 string prevUrl = HttpContext.Current.Request.Url.ToString();
                 Session["previousUrl"] = prevUrl;
                 Response.Redirect(url, false);
+            }
             }
             
         }
@@ -92,8 +103,6 @@ namespace Inboxd.Source.Private
                 
                 Response.Redirect(url, false);
             }
-
-            
         }
 
         protected void btnSpamSet_Click(object sender, EventArgs e)
@@ -115,6 +124,15 @@ namespace Inboxd.Source.Private
         protected void btnUnsetSpam_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btnMarkRead_Click(object sender, EventArgs e)
+        {
+            string result;
+            //Email.SetAsUnread(SingleEmail.EmailID, out result);
+            lblMessages.Text = "Yeah no, don't click that button";
+            lblMessages.ForeColor = System.Drawing.Color.Red;
+            //Response.Redirect($"EmailView.aspx?id={SingleEmail.EmailID}");
         }
     }
 

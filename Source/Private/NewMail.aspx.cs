@@ -82,13 +82,13 @@ namespace Inboxd.Source.Private
         {
             //TODO: Fix this!!!
             //string temp = ViewState["previousUrl"].ToString();
-            if (Session["previousUrl"] != null)
-            {
-                Response.Redirect(Session["previousUrl"].ToString());
-                Session["previousUrl"] = null;
-            }
-            else
-                Response.Redirect("Inbox.aspx");
+            //if (Session["previousUrl"] != null)
+            //{
+            //    Response.Redirect(Session["previousUrl"].ToString(), false);
+            //    //Session["previousUrl"] = null;
+            //}
+            //else
+            Response.Redirect("Inbox.aspx", false);
         }
 
         protected void btnSaveDraft_Click(object sender, EventArgs e)
@@ -109,6 +109,12 @@ namespace Inboxd.Source.Private
                 Session["filter"] = "draft";
 
             Response.Redirect("Inbox.aspx", false);
+        }
+
+        protected void btnAddAttachments_Click(object sender, EventArgs e)
+        {
+            lblMessages.Text = "Doesn't work yet, sorry";
+            lblMessages.ForeColor = System.Drawing.Color.Red;
         }
     }
 }

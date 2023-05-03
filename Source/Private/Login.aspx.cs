@@ -29,6 +29,20 @@ namespace Inboxd.Source.Private
                 Response.Redirect("Inbox.aspx", false);
             }
 
+            try
+            {
+                connection = new SqlConnection(connectionStr);
+                connection.Open();
+                connection.Close();
+            }
+            catch(SqlException ex)
+            {
+                //oh well, Azure is either down or database aint working
+                lblMessages.Text = $"Unable to connnect to database ;( | Highly likely that the NWU network is blocking it.";
+                lblMessages.ForeColor = System.Drawing.Color.Red;
+
+            }
+
         }
 
         protected void btnSignIn_Click(object sender, EventArgs e)

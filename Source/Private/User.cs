@@ -68,7 +68,7 @@ namespace Inboxd.Source.Private
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT Email, Name, Surname, DOB FROM UserDetails WHERE UserID = @UserID");
+                SqlCommand command = new SqlCommand("SELECT Email, Name, Surname, DOB FROM UserDetails WHERE UserID = @UserID", connection);
                 command.Parameters.AddWithValue("@UserID", UserID);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -185,6 +185,7 @@ namespace Inboxd.Source.Private
                     if (Hasher.ValidatePassword(Password, dbPassword))
                     {
                         UserID = getUserID(Email);
+                        Additional.LogActivity("Login", UserID);
                         return true;
                     }
                     
@@ -288,6 +289,7 @@ namespace Inboxd.Source.Private
         {
             connection = new SqlConnection(connectionString);
             UserID = int.Parse(GenerateUniqueID(10).ToString());
+            Email email = new Email();
             
             try
             {
@@ -303,10 +305,12 @@ namespace Inboxd.Source.Private
                 SqlCommand command_UserDetails = new SqlCommand(UserDetailCommand, connection);
                 command_UserDetails.Parameters.AddWithValue("@Email", Email);
                 command_UserDetails.Parameters.AddWithValue("@Name", Name);
-                command_UserDetails.Parameters.AddWithValue("@Surname", Name);
+                command_UserDetails.Parameters.AddWithValue("@Surname", Surname);
                 command_UserDetails.Parameters.AddWithValue("@DOB", DOB);
                 command_UserDetails.Parameters.AddWithValue("@UserID", UserID);
                 command_UserDetails.ExecuteNonQuery();
+                email.SendWelcomeEmail(UserID);
+                Additional.LogActivity("Create Account",UserID);
                 return "success";
             }
             catch(SqlException ex)
@@ -337,7 +341,6 @@ namespace Inboxd.Source.Private
 
             return uniqueInt;
         }
-
 
         /*
          * Obselete
@@ -400,7 +403,7 @@ namespace Inboxd.Source.Private
         {
             string connStr = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
             SqlConnection conn = new SqlConnection(connStr);
-            string fullName = "Test Name";
+            string fullName = "";
             try
             {
                 conn.Open();
@@ -424,7 +427,7 @@ namespace Inboxd.Source.Private
                 conn.Close();
             }
 
-            return fullName;
+            return UserID == 1 ?"Inboxd Corporate": fullName;
         }
     }
 }

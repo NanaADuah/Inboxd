@@ -49,15 +49,14 @@
                         <ul class="list-group">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
                             <li class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "bg-light":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="text-muted" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
+                            <li class="list-group-item  <%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "bg-light":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
                             <li class="list-group-item  <%=currentView.ToLower().Equals("starred")  ? " bg-light":"" %>"><a style="color: inherit !important" href="FilterPage.aspx?filter=starred" class="text-decoration-none text-black"><i class="fa fa-star"></i> Starred</a></li>
                             <li class="list-group-item  <%=currentView.ToLower().Equals("spam")     ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=spam" class="text-decoration-none" style="color: inherit!important"><i class="fa fa-exclamation-circle"></i> Spam</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("draft")    ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=draft" class="text-decoration-none" style="color: inherit !important"><i class="fa fa-file"></i> Draft</a><span class="text-muted" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
+                            <li class="list-group-item  <%=currentView.ToLower().Equals("draft")    ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=draft" class="text-decoration-none" style="color: inherit !important"><i class="fa fa-file"></i> Draft</a><span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
                             <li class="list-group-item  <%=currentView.ToLower().Equals("sent")     ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=sent" style="color: inherit !important" class="text-decoration-none"><i class="fa fa-paper-plane"></i> Sent</a></li>
                             <li class="list-group-item  <%=currentView.ToLower().Equals("snoozed")  ? " bg-light":"" %>"><i class="fa fa-clock-o" ></i> Snoozed</li>
                             <li class="list-group-item  <%=currentView.ToLower().Equals("settings") ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=settings" style="color: inherit !important" class="text-decoration-none"><i class="fa fa-cog"></i> Settings</a></li>
                         </ul>
-                        
                     </div>
                     <div class="flex-fill">
                         <%if (currentView.Equals("settings"))
@@ -91,7 +90,6 @@
                                         <%} %>
                                     </tbody>
                                 </table>
-                                
                             <%
                             }
                             else

@@ -28,19 +28,19 @@
 
                     <div class="card-body">
                         <asp:ValidationSummary style="text-align:left" ID="ValidationSummary1" runat="server" DisplayMode="List" ForeColor="Red" HeaderText="Note:" />
-                        <div class="input-group mb-3">
+                        <%--<div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text viewInput">Email <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage="Invalid Email " ControlToValidate="tbEmail" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">*</asp:RegularExpressionValidator><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Invalid Email address" ControlToValidate="tbEmail" ForeColor="Red">*</asp:RequiredFieldValidator></span>
                             </div>
                             <input runat="server" type="email" class="form-control" id="tbEmail" />
-                        </div>
+                        </div>--%>
                         <hr />
                         
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text viewInput">Name <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Name is required" ForeColor="Red" ControlToValidate="tbName"> *</asp:RequiredFieldValidator></span>
                             </div>
-                            <input runat="server" type="text" class="form-control" id="tbName" />
+                            <input runat="server" type="text" class="form-control" id="tbName" pattern="^[A-Za-z -]+$" />
                         </div>
 
                         
@@ -48,7 +48,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text viewInput">Surname <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Surname is required" ControlToValidate="tbSurname" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                             </div>
-                            <input runat="server" type="text" class="form-control" id="tbSurname" />
+                            <input runat="server" type="text" class="form-control" id="tbSurname" pattern="^[A-Za-z -]+$" title="Surname" />
                         </div>
 
                         
@@ -77,7 +77,18 @@
                             </div>
                         </div>
                     </div>
-                    <asp:Button runat="server" ID="btnSignUp" class="btn btn-primary m-2" Text="Sign Up" OnClick="btnSignUp_Click"></asp:Button>
+                    <asp:Button class="btn btn-primary m-2" Text="Accept" runat="server" OnClick="btnAccept_Click" ID="btnAccept"/>
+                    
+                        <div runat="server" id="emailSelection" class="card text-center"> 
+                            <span>Select an available email from below:</span>
+
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Please select a email address to use" ControlToValidate="lbAvailEmails">*</asp:RequiredFieldValidator>
+                            <asp:ListBox runat="server" ID="lbAvailEmails" class="list-group w-50 mx-auto text-center" style="outline: none">
+
+                            </asp:ListBox>
+
+                        </div>
+                        <asp:Button runat="server" ID="btnSignUp" class="btn btn-primary m-2" Text="Sign Up" OnClick="btnSignUp_Click"></asp:Button>
                     <div class="card-footer">Already have an account? <a href="Login.aspx">Click here</a></div>
                 </div>
             </div>
