@@ -114,7 +114,7 @@
     <Content Include="Source\Private\ForgotPassword.aspx" />
     <Content Include="Source\Private\Header.html" />
     <Content Include="Source\Private\Inbox.aspx" />
-    <Content Include="Source\Private\Index.aspx" />
+    <Content Include="Index.aspx" />
     <Content Include="Source\Private\Login.aspx" />
     <Content Include="Source\Private\Logout.aspx" />
     <Content Include="Source\Private\NewMail.aspx" />
@@ -165,11 +165,11 @@
     <Compile Include="Source\Private\Inbox.aspx.designer.cs">
       <DependentUpon>Inbox.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Source\Private\Index.aspx.cs">
+    <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Source\Private\Index.aspx.designer.cs">
+    <Compile Include="Index.aspx.designer.cs">
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Source\Private\Login.aspx.cs">

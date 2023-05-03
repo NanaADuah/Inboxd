@@ -3,6 +3,10 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:connectionString"
+    },
+    "secrets1": {
+      "ignored": "true",
+      "type": "secrets"
     }
   }
 }
