@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Inboxd.Source.Private.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Inboxd.Source.Private.Login"  %>
 
 <!DOCTYPE html>
 
@@ -28,7 +28,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text viewInput" >Email</span>
+                            <span class="input-group-text viewInput">Email</span>
                         </div>
                         <input runat="server" type="email" class="form-control" id="tbEmail" />
                     </div>

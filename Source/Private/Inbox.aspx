@@ -4,20 +4,44 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server"> 
+    <style>
+        .lock:hover .icon-unlock,
+        .lock .icon-lock {
+            display: none;
+        }
+        .lock:hover .icon-lock {
+            display: inline;
+        }
 
+        *{
+            transition: 0.1s ease-in-out !important;
+        }
+        
+    </style>
     <title>Home | Inboxd</title>
     <link href="Style/Inbox.css" rel="stylesheet" />
     <link href="Style/Header.css" rel="stylesheet" />
     <link href="Style/Default.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../Content/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
 </head>
    
 <body>
+    
+
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server" class="h-100">
-
+        <asp:ScriptManager  ID="ScriptManager1" EnablePageMethods="true" EnablePartialRendering="true" runat="server" />
+        <script type="text/javascript">
+            function emailView(id) {
+                window.location = "EmailView.aspx?id=" + id;
+            }
+        </script>
+        <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label>
         <%if (!string.IsNullOrEmpty(Session["UserID"].ToString()))
             { %>
         <div class="p-4 h-100">
@@ -48,14 +72,14 @@
                         </div>
                         <ul class="list-group">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
-                            <li class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "bg-light":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("starred")  ? " bg-light":"" %>"><a style="color: inherit !important" href="FilterPage.aspx?filter=starred" class="text-decoration-none text-black"><i class="fa fa-star"></i> Starred</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("spam")     ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=spam" class="text-decoration-none" style="color: inherit!important"><i class="fa fa-exclamation-circle"></i> Spam</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("draft")    ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=draft" class="text-decoration-none" style="color: inherit !important"><i class="fa fa-file"></i> Draft</a><span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("sent")     ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=sent" style="color: inherit !important" class="text-decoration-none"><i class="fa fa-paper-plane"></i> Sent</a></li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("snoozed")  ? " bg-light":"" %>"><i class="fa fa-clock-o" ></i> Snoozed</li>
-                            <li class="list-group-item  <%=currentView.ToLower().Equals("settings") ? " bg-light":"" %>"><a href="FilterPage.aspx?filter=settings" style="color: inherit !important" class="text-decoration-none"><i class="fa fa-cog"></i> Settings</a></li>
+                            <li onclick="window.location = 'NewMail.aspx'" class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item  <%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "bg-light":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item  <%=currentView.ToLower().Equals("starred")  ? " bg-light":"" %>"><i class="fa fa-star"></i> Starred</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item  <%=currentView.ToLower().Equals("spam")     ? " bg-light":"" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item  <%=currentView.ToLower().Equals("draft")    ? " bg-light":"" %>"><i class="fa fa-file"></i> Draft<span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item  <%=currentView.ToLower().Equals("sent")     ? " bg-light":"" %>"><i class="fa fa-paper-plane"></i> Sent</li>
+                            <li                                                       class="list-group-item  <%=currentView.ToLower().Equals("snoozed")  ? " bg-light":"" %>"><i class="fa fa-clock-o" ></i> Snoozed</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item  <%=currentView.ToLower().Equals("settings") ? " bg-light":"" %>"><i class="fa fa-cog"></i> Settings</li>
                         </ul>
                     </div>
                     <div class="flex-fill">
@@ -64,7 +88,26 @@
                             <div>
                                 <span class="display-4">Settings Page</span>
                                 <hr />
-                                 Yeah... still under construction
+                                <div class="text-center">
+                                 Yeah... still under construction<br />
+                                <span>In the meantime, jump over to the GitHub Repo and assist if you can :)</span><br /><br />
+                                <div class="card w-50 mx-auto">
+                                    <div class="card-header p-2">GitHub</div>
+                                    <div class="card-body text-center">
+                                        <img src="../Public/Images/SingleLogo.svg"  style="height:50px"/><br />
+                                        <br />
+                                        <h4 class="fw-bold">
+                                            https://github.com/NanaADuah/Inboxd
+                                            
+                                        </h4>
+                                    </div>
+                                    <div class="card-footer">
+                                        <h2>
+                                            <a href="https://github.com/NanaADuah/Inboxd" target="_blank" class="badge link-primary badge-secondary">View</a>
+                                        </h2>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         <%}
                             else
@@ -99,7 +142,7 @@
                             <thead class="thead-light" style="position: sticky; top: 0">
                                 <tr>
                                     <th scope="col"></th>
-                                    <th scope="col" class=""></th>
+                                    <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
@@ -110,21 +153,35 @@
                                     {
                                         string tempTime = Inboxd.Source.Private.Time.TimeAgo(item.EmailDate);
                                 %>
-                                <tr <%if (item.EmailRead)
-                                    {  %>class="text-muted"
-                                    style="background: #f6f6f6" <%} %>>
-                                    <td><a class="text-dark" href="EmailView.aspx?star=<%=item.EmailID%>"><i class="<%=item.EmailStarred?"fa fa-star":"fa fa-star-o"%>"></i></a></td>
-                                    <td class="">
+                                <tr onclick="emailView('<%=item.EmailID%>')" <%if (item.EmailRead)
+                                    {  %>
+                                        class="text-muted" style="background: #f6f6f6"
+                                    <%} %>>
+
+                                    
+                                    
+                                    <td><a class="text-dark" href="EmailView.aspx?star=<%=item.EmailID%>"><i class="<%=item.EmailStarred ? "fa fa-star" : "fa-regular fa-star "%>"></i></a></td>
+                                    <td>
                                         <div>
                                             <span class="font-weight-bold"><%=Inboxd.Source.Private.User.GetFullName(item.EmailSender) %></span>
                                         </div>
                                     </td>
                                     <td><span class="font-weight-bold"><%=item.EmailSubject %></span> - <span class="text-muted"><%=Inboxd.Source.Private.Additional.Truncate(item.EmailBody, 50)%></span> </td>
-                                    <td class="float-end justify-content-end" style="text-align: right"><%=tempTime%></td>
+                                    <td class="float-end justify-content-end " style="text-align: right;" ><%=tempTime%></td>
+                                    <%if (!currentView.Equals("sent"))
+                                        {  %>
+                                    
                                     <td class="align-content-center" style="width: 70px; text-align: center">
+                                        <a href="#" class="lock text-decoration-none" style="color: inherit !important;">
+                                            <i class="icon-unlock fa-regular fa-clock" ></i>
+                                            <i class="icon-lock fa-solid fa-clock"></i>
+                                        </a>
+                                    </td>
+                                        <%} %>
+                                    <%--<td class="align-content-center" style="width: 70px; text-align: center">
                                         <a class="btn badge btn-primary" href="EmailView.aspx?id=<%=item.EmailID%>"><i class="fa fa-eye"></i></a>
                                         <a class="btn badge btn-success" href="EmailView.aspx?read=<%=item.EmailID%>"><i class="fa fa-check"></i></a>
-                                    </td>
+                                    </td>--%>
                                 </tr>
                        <%} %>
                             </tbody>
@@ -162,6 +219,9 @@
             Currently not logged in
         </div>
         <%} %>
+        
     </form>
+
 </body>
 </html>
+

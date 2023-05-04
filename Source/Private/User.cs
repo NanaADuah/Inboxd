@@ -353,14 +353,14 @@ namespace Inboxd.Source.Private
             return Convert.ToBase64String(buffer).Substring(0, length);
         }*/
 
-        public int GetEmailsCount()
+        public int GetEmailsCount(bool incSpam = false)
         {
             int count = 0;
             connection = new SqlConnection(connectionString);
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM [Emails] WHERE ReceiverID = @Receiver ", connection);
+                SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM [Emails] WHERE ReceiverID = @Receiver AND [Spam] = 0", connection);
                 command.Parameters.AddWithValue("@Receiver", HttpContext.Current.Session["UserID"].ToString());
                 count = int.Parse(command.ExecuteScalar().ToString());
             }

@@ -307,6 +307,7 @@ namespace Inboxd.Source
                 command.Parameters.AddWithValue("@EmailID", EmailID);
                 command.Parameters.AddWithValue("@SenderID", currentLoggedIn);
                 command.ExecuteNonQuery();
+                Additional.LogActivity("Deleted Draft", currentLoggedIn);
             }
             catch
             {
@@ -323,11 +324,11 @@ namespace Inboxd.Source
         {
             List<Email> list = new List<Email>();
             IDictionary<int, string> filters = new Dictionary<int, string>() {
-                { 1, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY Date DESC" },
+                { 1, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY [Date] DESC" },
                 { 2, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 AND [Read] = 0 ORDER BY [Date] DESC" },
                 { 3, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY [Date] ASC" },
                 { 4, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 AND [Starred] = 1" },
-                { 5, "WHERE   SenderID = @Receiver AND [Active] = 1" }, //even though it doesn't make sense, it works so leave it
+                { 5, "WHERE   SenderID = @Receiver AND [Active] = 1 ORDER BY [Date] DESC" }, //even though it doesn't make sense, it works so leave it
                 { 6, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 1" },
         };
 
@@ -428,6 +429,7 @@ namespace Inboxd.Source
                 command.Parameters.AddWithValue("@Reference", email.Reference);
 
                 command.ExecuteNonQuery();
+                Additional.LogActivity("Saved draftr", email.EmailSender);
                 results = "success";
             }
             catch(SqlException ex)

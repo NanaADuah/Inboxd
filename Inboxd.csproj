@@ -110,6 +110,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Source\Private\EmailView.aspx" />
+    <Content Include="Source\Private\ExecutePageMethod.js" />
     <Content Include="Source\Private\FilterPage.aspx" />
     <Content Include="Source\Private\ForgotPassword.aspx" />
     <Content Include="Source\Private\Header.html" />
@@ -128,8 +129,8 @@
     <Content Include="Source\Private\Style\NewMail.css" />
     <Content Include="Source\Private\Style\SignUp.css" />
     <Content Include="Source\Public\Images\inboxdLogo.png" />
-    <Content Include="Source\Public\Images\Logo.svg" />
     <Content Include="Source\Public\Images\SingleLogo.svg" />
+    <Content Include="Source\Public\Images\Logo.svg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

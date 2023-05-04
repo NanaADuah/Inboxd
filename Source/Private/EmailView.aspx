@@ -16,7 +16,10 @@
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server">
         <div class="p-2 mx-auto mt-5">
-            <%if (ValidView)
+            <%
+                Inboxd.Source.Private.User user = new Inboxd.Source.Private.User();
+                if (ValidView)
+
                 { %>
             <div class="w-50 m-auto">
                 <asp:Label ID="lblMessages" runat="server" Text=""></asp:Label>
@@ -39,6 +42,14 @@
                             <asp:Label runat="server" ID="tbEmailSubject" Text="Email Subject"></asp:Label>
                         </div>
                         <hr class="p-1 m-1"/>
+                        <div class="px-3">
+                            <%
+                                if(SingleEmail != null){  %>
+                            <span class="h6">To: <%=(SingleEmail.ReceipientEmail) %></span><br />
+                            <span class="h6">From: <%= (user.getUserEmail(SingleEmail.EmailSender)) %></span>
+                            <%} %>
+                        </div>
+                        <hr class="p-1 m-1"/>
 
                         <div style="text-align:right">
                             <asp:Label class="h7" runat="server" ID="tbEmailDate" Text="Email Date"></asp:Label><br />
@@ -51,8 +62,9 @@
                     <div class="card-footer d-flex justify-content-between text-center" style="align-items:center">
                         <asp:Button runat="server" ID="btnReturn" OnClick="btnGoBack_Click" Text="GO BACK" class="btn btn-primary w-25 mx-2 bg-info btn-outline-info text-white" />
                         <%
-                            Inboxd.Source.Private.User user = new Inboxd.Source.Private.User();
-                            if (SingleEmail.ReceipientEmail.Equals(user.getUserEmail(int.Parse(Session["UserID"].ToString())))){
+                            
+                            if (SingleEmail.ReceipientEmail.Equals(user.getUserEmail(int.Parse(Session["UserID"].ToString()))))
+                            {
                         %>
 
 
@@ -62,7 +74,8 @@
                             <asp:Button runat="server" ID="btnMarkRead1" class="btn btn-danger mx-2 w-25 bg-info btn-outline-info text-white" OnClick="btnMarkRead_Click" Text="MARK AS UNREAD"/>
                            <%}
                                else
-                               {                            %>
+                               {
+                            %>
                         <%--<asp:Button runat="server" ID="btnMarkRead2" class="btn btn-danger mx-2 w-25 bg-info btn-outline-info text-white" OnClick="btnMarkRead_Click" Text="MARK AS READ"/>--%>
                         <%
                             }%>

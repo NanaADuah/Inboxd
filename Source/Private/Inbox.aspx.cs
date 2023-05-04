@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -12,7 +15,8 @@ namespace Inboxd.Source.Private
     {
         public List<Email> emails = new List<Email>();
         public User loggedInUser = new Private.User();
-        
+
+        public string _jsPostBackCall;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
@@ -70,6 +74,19 @@ namespace Inboxd.Source.Private
         {
             Session["filter"] = "unread";
             Refresh();
+        }
+
+        [WebMethod]
+        public void StoreUrl()
+        {
+            try
+            {
+                Session["previousUrl"] = HttpContext.Current.Request.Url.ToString();
+            }
+            catch
+            {
+                //oh well
+            }
         }
     }
 
