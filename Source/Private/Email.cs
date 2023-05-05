@@ -293,31 +293,32 @@ namespace Inboxd.Source
             return false;
         }
 
-            public static void DeleteDraft(string EmailID)
+        public static void DeleteDraft(string EmailID)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             Email temp;
             int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
-            GetEmailInformation(EmailID, currentLoggedIn, out temp);
-            try
-            {
-                connection.Open();
-                string commStr = "DELETE FROM [Drafts] WHERE EmailID = @EmailID AND SenderID = @SenderID";
-                SqlCommand command = new SqlCommand(commStr, connection);
-                command.Parameters.AddWithValue("@EmailID", EmailID);
-                command.Parameters.AddWithValue("@SenderID", currentLoggedIn);
-                command.ExecuteNonQuery();
-                Additional.LogActivity("Deleted Draft", currentLoggedIn);
-            }
-            catch
-            {
+            GetDraftEmailInformation(EmailID, currentLoggedIn, out temp);
+            if(temp != null)
+                try
+                {
+                    connection.Open();
+                    string commStr = "DELETE FROM [Draft] WHERE EmailID = @EmailID AND SenderID = @SenderID";
+                    SqlCommand command = new SqlCommand(commStr, connection);
+                    command.Parameters.AddWithValue("@EmailID", EmailID);
+                    command.Parameters.AddWithValue("@SenderID", currentLoggedIn);
+                    command.ExecuteNonQuery();
+                    Additional.LogActivity("Deleted Draft", currentLoggedIn);
+                }
+                catch
+                {
 
 
-            }
-            finally
-            {
-                connection.Close();
-            }
+                }
+                finally
+                {
+                    connection.Close();
+                }
         }
 
         public List<Email> GetEmailList(int index = 1)
@@ -412,36 +413,75 @@ namespace Inboxd.Source
         
         public void SaveDraft(Email email, out string results)
         {
-            results = "";
+            results = "failure";
             User user = new User();
             SqlConnection connection = new SqlConnection(connectionString);
-            try
-            {
-                connection.Open();
-                string commstr = "INSERT INTO [Draft](EmailID, SenderID, ReceiverID, Email, Date, Subject, Ref) VALUES (@EmailID, @SenderID, @ReceiverID, @Email, @Date, @Subject, @Reference)";
-                SqlCommand command = new SqlCommand(commstr, connection );
-                command.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
-                command.Parameters.AddWithValue("@SenderID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
-                command.Parameters.AddWithValue("@ReceiverID", user.getUserID(email.ReceipientEmail));
-                command.Parameters.AddWithValue("@Email", Additional.RemoveSpecialCharacters(email.EmailBody));
-                command.Parameters.AddWithValue("@Date", DateTime.Now);
-                command.Parameters.AddWithValue("@Subject", Additional.RemoveSpecialCharacters(email.EmailSubject));
-                command.Parameters.AddWithValue("@Reference", email.Reference);
+            if (user.getUserID(email.ReceipientEmail) != 0)
+                try
+                {
+                    connection.Open();
+                    string commstr = "INSERT INTO [Draft](EmailID, SenderID, ReceiverID, Email, Date, Subject, Ref) VALUES (@EmailID, @SenderID, @ReceiverID, @Email, @Date, @Subject, @Reference)";
+                    SqlCommand command = new SqlCommand(commstr, connection);
+                    command.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
+                    command.Parameters.AddWithValue("@SenderID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                    command.Parameters.AddWithValue("@ReceiverID", user.getUserID(email.ReceipientEmail));
+                    command.Parameters.AddWithValue("@Email", Additional.RemoveSpecialCharacters(email.EmailBody));
+                    command.Parameters.AddWithValue("@Date", DateTime.Now);
+                    command.Parameters.AddWithValue("@Subject", Additional.RemoveSpecialCharacters(email.EmailSubject));
+                    command.Parameters.AddWithValue("@Reference", email.Reference);
 
-                command.ExecuteNonQuery();
-                Additional.LogActivity("Saved draftr", email.EmailSender);
-                results = "success";
-            }
-            catch(SqlException ex)
-            {
-                User.LogError(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
+                    command.ExecuteNonQuery();
+                    Additional.LogActivity("Saved draft", email.EmailSender);
+                    results = "success";
+                }
+                catch (SqlException ex)
+                {
+                    User.LogError(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            else
+                results = "failure";
         }
 
+        public void UpdateDraft(Email email, out string results)
+        {
+            results = "failure";
+            User user = new User();
+            SqlConnection connection = new SqlConnection(connectionString);
+            if (user.getUserID(email.ReceipientEmail) != 0)
+                try
+                {
+                    connection.Open();
+                    string commstr = "UPDATE [Draft] SET [Email] = @Email, [Date] = @Date, [Subject] = @Subject, [Ref] = @Reference WHERE EmailID = @EmailID";
+                    SqlCommand command = new SqlCommand(commstr, connection);
+                    command.Parameters.AddWithValue("@EmailID", email.EmailID);
+                    //command.Parameters.AddWithValue("@SenderID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));    CANNOT CHANGE
+                    ///command.Parameters.AddWithValue("@ReceiverID", user.getUserID(email.ReceipientEmail));           FK CONFLICTIONS
+                    command.Parameters.AddWithValue("@Email", Additional.RemoveSpecialCharacters(email.EmailBody));
+                    command.Parameters.AddWithValue("@Date", DateTime.Now);
+                    command.Parameters.AddWithValue("@Subject", Additional.RemoveSpecialCharacters(email.EmailSubject));
+                    command.Parameters.AddWithValue("@Reference", email.Reference);
+
+                    command.ExecuteNonQuery();
+                    Additional.LogActivity("Saved draft", email.EmailSender);
+                    results = "success";
+                }
+                catch (SqlException ex)
+                {
+                    User.LogError(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            else
+                results = "failure";
+        }
+
+        //might give access to edit already sent emails, TODO: fix!!
         public static void GetEmailInformation(string EmailID, int ViewerID, out Email email)
         {
             User user = new User();
@@ -450,12 +490,12 @@ namespace Inboxd.Source
             try
             {
                 connection.Open();
-                string comm = "SELECT TOP 1 * FROM [Emails] WHERE (EmailID = @EmailID AND (ReceiverID = @Receiver OR SenderID = @Sender)) AND Active = 1";
+                string comm = "SELECT TOP 1 * FROM [Emails] WHERE (EmailID = @EmailID AND (ReceiverID = @Receiver OR SenderID = @Sender)) AND [Active] = 1";
                 SqlCommand command = new SqlCommand(comm, connection);
                 command.Parameters.AddWithValue("@EmailID", EmailID);
                 command.Parameters.AddWithValue("@Receiver", ViewerID);
                 command.Parameters.AddWithValue("@Sender", ViewerID);
-                SqlDataReader reader = command.ExecuteReader(); ;
+                SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.HasRows)
                     while (reader.Read())
@@ -470,6 +510,44 @@ namespace Inboxd.Source
                                            Subject: reader[7].ToString(),
                                            Starred: Boolean.Parse(reader[10].ToString()),
                                            Spam: Boolean.Parse(reader[11].ToString())
+                                        );
+                    }
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        
+        public static void GetDraftEmailInformation(string EmailID, int ViewerID, out Email email)
+        {
+            User user = new User();
+            email = null;
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            try
+            {
+                connection.Open();
+                string comm = "SELECT TOP 1 * FROM [Draft] WHERE (EmailID = @EmailID AND (ReceiverID = @Receiver OR SenderID = @Sender))";
+                SqlCommand command = new SqlCommand(comm, connection);
+                command.Parameters.AddWithValue("@EmailID", EmailID);
+                command.Parameters.AddWithValue("@Receiver", ViewerID);
+                command.Parameters.AddWithValue("@Sender", ViewerID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                    while (reader.Read())
+                    {
+                        email = new Email(EmailID: reader[0].ToString(),
+                                           SenderID: int.Parse(reader[1].ToString()),
+                                           ReceipientID: int.Parse(reader[2].ToString()),
+                                           Body: reader[3].ToString(),
+                                           Date: DateTime.Parse(reader[4].ToString()),
+                                           Subject: reader[5].ToString(),
+                                           Reference: reader[6].ToString()
                                         );
                     }
             }
@@ -513,7 +591,7 @@ namespace Inboxd.Source
         //MUST BE SEPERATE READ, UNREAD FUNCTIONS, till I fix it later
         public static void SetAsUnread(String EmailID, out string status)
         {
-            status = "Default";
+            status = "default";
             SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
             Email temp;
@@ -527,7 +605,7 @@ namespace Inboxd.Source
                     SqlCommand command = new SqlCommand(commStr, connect);
                     command.Parameters.AddWithValue("@EmailID", EmailID);
                     command.ExecuteNonQuery();
-                    status = "Success";
+                    status = "success";
     
                 }catch(SqlException ex)
                 {
@@ -540,7 +618,7 @@ namespace Inboxd.Source
         
         public static void SetAsSpam(String EmailID, out string status)
         {
-            status = "Default";
+            status = "default";
             SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
             Email temp;
@@ -555,7 +633,7 @@ namespace Inboxd.Source
                     command.Parameters.AddWithValue("@EmailID", EmailID);
                     command.Parameters.AddWithValue("@Value", !temp.EmailSpam);
                     command.ExecuteNonQuery();
-                    status = "Success";
+                    status = "success";
     
                 }catch(SqlException ex)
                 {

@@ -7,7 +7,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id7="form1" runat="server">
         <div>
             Welcome to Inboxd. Please wait while you're redirected...</div>
     </form>

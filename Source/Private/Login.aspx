@@ -48,8 +48,27 @@
                     <br />
                     <span>Forgot your password? <a href="ForgotPassword.aspx">Click here</a></span>
                 </div>
+                <%
+                    string tempUrl = HttpContext.Current.Request.Url.Host;
+
+                    //if (tempUrl.Equals("inboxed.azurewebsites"))
+                    {
+                        %>
+                    <div class="w-50 m-2 mx-auto text-center card">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <span class="display-5">We've got a new domain!</span><br />
+                            <span class="display-6">Head on over</span>
+                        </div>
+                        <div class="card-footer">
+                            <a class="badge link-primary badge-success" style="font-size: 1.5rem" href="https://inboxed.online">View</a>
+                        </div>
+                    </div>
+                    <%} %>
             </div>
-        </div>
+        
+        
+         </div>
     </form>
 </body>
 </html>

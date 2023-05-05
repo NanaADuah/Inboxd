@@ -42,6 +42,26 @@ namespace Inboxd.Source.Private
 
             return text + "...";
         }
+        
+        public static string TruncateSubject(this string text)
+        {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+
+            if (text.Length < 45) return text;
+
+            text = text.Substring(0, 45);
+            text = text.Substring(0, text.LastIndexOf(' '));
+
+            return text + "...";
+        }
+        public static string RemoveReFromSubject(string subject)
+        {
+            if (subject.Contains("RE: "))
+            {
+                subject = subject.Replace("RE: ", "");
+            }
+            return subject;
+        }
 
         public static string ToLiteral(string input)
         {

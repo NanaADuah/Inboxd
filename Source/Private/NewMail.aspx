@@ -33,11 +33,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text viewInput" id="">Subject <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Subject required" ControlToValidate="tbSubject" ForeColor="Red"> *</asp:RequiredFieldValidator></span>
                         </div>
-                        <input runat="server" type="text" class="form-control" id="tbSubject" />
+                        <input runat="server" type="text" class="form-control" id="tbSubject" maxlength="25" />
                     </div>
                 <div>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Email body required" ForeColor="Red" ControlToValidate="tbMessage" >*</asp:RequiredFieldValidator>
-                    <asp:TextBox runat="server" ID="tbMessage" TextMode="MultiLine" class="form-control" style="height: 30vh"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Email body required" ForeColor="Red" ControlToValidate="tbEmailArea" >*</asp:RequiredFieldValidator>
+                    <textarea runat="server" id="tbEmailArea" class="form-control" type="text" style="height: 30vh"></textarea>
                 </div>
             </div>
             <div class="card-footer">

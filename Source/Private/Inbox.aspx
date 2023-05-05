@@ -46,12 +46,19 @@
             { %>
         <div class="p-4 h-100">
             <div>
-                <div class="d-flex justify-content-space-between position-sticky">
-                    <div class="flex-grow-1">
-                        <h3>Welcome <%=loggedInUser != null ?loggedInUser.Name:"user"%>: </h3>
+                <div class="d-flex justify-content-space-between position-sticky  mb-1">
+                    <div class="flex-grow-1 flex-fill d-inline-flex" style="vertical-align:middle">
+                        <h3 class="m-0">Welcome <%=loggedInUser != null ?loggedInUser.Name:"user"%>: </h3>
+                        
                     </div>
                     <div class="">
-                        <div class="">
+                        <div class="d-inline-flex" style="gap:10px">
+                            <div class="input-group rounded " style="margin-right: 5px">
+                              <input type="search" class="form-control rounded" placeholder="Search"/>
+                              <span class="input-group-text border-0" id="search-addon">
+                                <i class="fa-solid fa-search"></i>
+                              </span>
+                            </div>
                             <asp:Button runat="server" class="btn btn-primary btn-sm" id="btnDefault" href="Inbox.aspx?filter=recent" Text="Default" OnClick="btnDefault_Click"></asp:Button>
                             <asp:Button runat="server" class="btn btn-primary btn-sm" id="btnSender" href="Inbox.aspx?filter=sender" Text="Sender" OnClick="btnSender_Click"></asp:Button>
                             <asp:Button runat="server" class="btn btn-primary btn-sm" id="btnUnread" href="Inbox.aspx?filter=unread" Text="Unread" OnClick="btnUnread_Click"></asp:Button>
@@ -73,13 +80,13 @@
                         <ul class="list-group">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
                             <li onclick="window.location = 'NewMail.aspx'" class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa fa-pencil"></i> Compose</a></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item  <%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "bg-light":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item  <%=currentView.ToLower().Equals("starred")  ? " bg-light":"" %>"><i class="fa fa-star"></i> Starred</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item  <%=currentView.ToLower().Equals("spam")     ? " bg-light":"" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item  <%=currentView.ToLower().Equals("draft")    ? " bg-light":"" %>"><i class="fa fa-file"></i> Draft<span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item  <%=currentView.ToLower().Equals("sent")     ? " bg-light":"" %>"><i class="fa fa-paper-plane"></i> Sent</li>
-                            <li                                                       class="list-group-item  <%=currentView.ToLower().Equals("snoozed")  ? " bg-light":"" %>"><i class="fa fa-clock-o" ></i> Snoozed</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item  <%=currentView.ToLower().Equals("settings") ? " bg-light":"" %>"><i class="fa fa-cog"></i> Settings</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item"  style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "background-color: #d0d0d0":"" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetEmailsCount()%></span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item"  style="<%=currentView.ToLower().Equals("starred")  ? "background-color: #d0d0d0":"" %>"><i class="fa fa-star"></i> Starred</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item"  style="<%=currentView.ToLower().Equals("spam")     ? "background-color: #d0d0d0":"" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item"  style="<%=currentView.ToLower().Equals("draft")    ? "background-color: #d0d0d0":"" %>"><i class="fa fa-file"></i> Draft<span class="badge badge-primary badge-pill" style="text-align:right; float:right"><%=loggedInUser.GetDraftCount()%></span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item"  style="<%=currentView.ToLower().Equals("sent")     ? "background-color: #d0d0d0":"" %>"><i class="fa fa-paper-plane"></i> Sent</li>
+                            <li                                                       class="list-group-item"  style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0":"" %>"><i class="fa fa-clock-o" ></i> Snoozed</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item"  style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0":"" %>"><i class="fa fa-cog"></i> Settings</li>
                         </ul>
                     </div>
                     <div class="flex-fill">
@@ -128,7 +135,7 @@
                                             <tr>
                                                 <td><%=count%></td>
                                                 <td><b><%=item.EmailSubject%></b> - <%=Inboxd.Source.Private.Additional.Truncate(item.EmailBody, 50)%></td>
-                                                <td class="float-end" style="text-align:right; margin-right: 10px"><a class="btn btn-danger badge" href="NewMail.aspx?id=<%=item.EmailID%>"><i class="fa fa-edit"></i></a></td>
+                                                <td class="float-end" style="text-align:right; margin-right: 10px"><a class="btn btn-danger badge" href="NewMail.aspx?edit=<%=item.EmailID%>"><i class="fa fa-edit"></i></a></td>
                                             </tr>
                                         <%} %>
                                     </tbody>

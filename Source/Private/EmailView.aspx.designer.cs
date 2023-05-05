@@ -33,22 +33,13 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.Label lblMessages;
 
         /// <summary>
-        /// btnSpamSet control.
+        /// btnReturn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSpamSet;
-
-        /// <summary>
-        /// btnUnsetSpam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUnsetSpam;
+        protected global::System.Web.UI.WebControls.Button btnReturn;
 
         /// <summary>
         /// tbEmailSubject control.
@@ -87,15 +78,6 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.TextBox tbEmailInformation;
 
         /// <summary>
-        /// btnReturn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnReturn;
-
-        /// <summary>
         /// btnReply control.
         /// </summary>
         /// <remarks>
@@ -121,6 +103,24 @@ namespace Inboxd.Source.Private
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDelete;
+
+        /// <summary>
+        /// btnSpamSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSpamSet;
+
+        /// <summary>
+        /// btnUnsetSpam control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUnsetSpam;
 
         /// <summary>
         /// btnGoBack control.

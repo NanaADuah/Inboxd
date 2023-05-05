@@ -17,9 +17,9 @@ namespace Inboxd.Source.Private
 
             if(email != null)
             {
-                tbSubject.Value = String.Format("RE: {0}", email.EmailSubject);
+                tbSubject.Value = String.Format("RE: {0}", Additional.RemoveReFromSubject(email.EmailSubject));
                 tbToSender.Value =  user.getUserEmail(email.EmailSender);
-                tbMessage.Text = String.Format("/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject,email.EmailBody);
+                tbEmailArea.Value = String.Format("/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject,email.EmailBody);
             }
         }
         
@@ -27,13 +27,14 @@ namespace Inboxd.Source.Private
         {
             Email email = new Email();
             User user = new User();
-            Email.GetEmailInformation(EmailID, int.Parse(Session["UserID"].ToString()), out email);
+            Email.GetDraftEmailInformation(EmailID, int.Parse(Session["UserID"].ToString()), out email);
 
             if(email != null)
             {
-                tbSubject.Value = String.Format("RE: {0}", email.EmailSubject);
-                tbToSender.Value =  user.getUserEmail(email.EmailSender);
-                tbMessage.Text = email.EmailBody;
+                tbSubject.Value  = String.Format(email.EmailSubject);
+                tbToSender.Value = user.getUserEmail(email.EmailSender);
+                tbEmailArea.Value = email.EmailBody;
+                tbToSender.Disabled = true;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
@@ -44,36 +45,42 @@ namespace Inboxd.Source.Private
             {
                 tbToSender.Value = "";
                 tbSubject.Value = "";
-                tbMessage.Text = "";
-            }
-
-            if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
-            {
-                string EmailID = Request.QueryString["reply"];
-                LoadReply(EmailID: EmailID);
-            }
-            else
-            if (!String.IsNullOrEmpty(Request.QueryString["edit"]))
-            {
-                string EmailID = Request.QueryString["edit"];
-                LoadEdit(EmailID: EmailID);
-                //Email.DeleteDraft(EmailID);
+                tbEmailArea.Value = "";
+                
+                if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
+                {
+                    string EmailID = Request.QueryString["reply"];
+                    LoadReply(EmailID: EmailID);
+                }
+                else
+                if (!String.IsNullOrEmpty(Request.QueryString["edit"]))
+                {
+                    string EmailID = Request.QueryString["edit"];
+                    LoadEdit(EmailID: EmailID);
+                
+                }
             }
         }
 
         protected void btnSendMessage_Click(object sender, EventArgs e)
         {
             string Receiver = tbToSender.Value;
-            string EmailBody = tbMessage.Text;
+            string EmailBody = tbEmailArea.Value;
             string Subject = tbSubject.Value;
 
             Email email = new Email(Receipient: Receiver, Body:EmailBody, Subject: Subject);
             string output = email.SendEmail();
             tbToSender.Value = "";
             tbSubject.Value = "";
-            tbMessage.Text = "";
+            tbEmailArea.Value = "";
             if (output.Equals("Success"))
+            {
+                if (Request.QueryString["edit"] != null)
+                    Email.DeleteDraft(Request.QueryString["edit"].ToString());
+
+                Session["filter"] = "sent";
                 Response.Redirect("Inbox.aspx");
+            }
             else
                 lblMessages.Text = output;
         }
@@ -88,13 +95,16 @@ namespace Inboxd.Source.Private
             //    //Session["previousUrl"] = null;
             //}
             //else
+            if (Request.QueryString["edit"] != null)
+                Email.DeleteDraft(Request.QueryString["edit"]);
+
             Response.Redirect("Inbox.aspx", false);
         }
 
         protected void btnSaveDraft_Click(object sender, EventArgs e)
         {
             Email email = new Email(
-                EmailBody: tbMessage.Text,
+                EmailBody: tbEmailArea.Value,
                 ReceipientEmail: tbToSender.Value,
                 EmailSubject: tbSubject.Value,
                 EmailReference: string.IsNullOrEmpty(Request.QueryString["reply"]) ? "" : Request.QueryString["reply"]
@@ -104,6 +114,10 @@ namespace Inboxd.Source.Private
             string results;
 
             email.SaveDraft(email, out results);
+            if (Request.QueryString["edit"] != null && results.Equals("success") )
+            {
+                Email.DeleteDraft(Request.QueryString["edit"]);
+            }
 
             if(results.Equals("sucess"))
                 Session["filter"] = "draft";

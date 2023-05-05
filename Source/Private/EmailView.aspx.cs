@@ -129,9 +129,12 @@ namespace Inboxd.Source.Private
         protected void btnMarkRead_Click(object sender, EventArgs e)
         {
             string result;
-            //Email.SetAsUnread(SingleEmail.EmailID, out result);
-            lblMessages.Text = "Yeah no, don't click that button";
-            lblMessages.ForeColor = System.Drawing.Color.Red;
+            Email.SetAsUnread(SingleEmail.EmailID, out result);
+            if(result.Equals("sucess"))
+                Response.Redirect("Inbox.aspx?filter=default");
+
+            //lblMessages.Text = "Yeah no, don't click that button";
+            //lblMessages.ForeColor = System.Drawing.Color.Red;
             //Response.Redirect($"EmailView.aspx?id={SingleEmail.EmailID}");
         }
     }
