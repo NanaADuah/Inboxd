@@ -37,7 +37,7 @@ namespace Inboxd.Source.Private
             {
                 string result;
                 Email.SetStarEmail(EmailID: Request.QueryString["star"], out result);
-                if(result == "Success")
+                if (result == "Success")
                     Response.Redirect("Inbox.aspx");
                 else
                     lblMessages.Text = result;
@@ -47,30 +47,33 @@ namespace Inboxd.Source.Private
                 Response.Redirect("Inbox.aspx");
             else
             {
-                try
-                {
-                    string emailID = Request.QueryString["id"];
-                    Email.GetEmailInformation(EmailID: emailID, int.Parse(Session["UserID"].ToString()), out SingleEmail);
-                    if (SingleEmail != null)
+                if (Email.EmailSentExists(Request.QueryString["id"].ToString()))
+                    try
                     {
-                        ValidView = true;
-                        tbEmailInformation.Text = SingleEmail.EmailBody;
-                        tbEmailSubject.Text = SingleEmail.EmailSubject;
-                        tbEmailDate.Text = SingleEmail.EmailDate.ToString("dd, MMM yyyy");
-                        tbEmailTime.Text = SingleEmail.EmailDate.ToString("HH:mm");
-                        ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
-                        string _value = "";
+                        string emailID = Request.QueryString["id"];
+                        Email.GetEmailInformation(EmailID: emailID, int.Parse(Session["UserID"].ToString()), out SingleEmail);
+                        if (SingleEmail != null)
+                        {
+                            ValidView = true;
+                            tbEmailInformation.Text = SingleEmail.EmailBody;
+                            tbEmailSubject.Text = SingleEmail.EmailSubject;
+                            tbEmailDate.Text = SingleEmail.EmailDate.ToString("dd, MMM yyyy");
+                            tbEmailTime.Text = SingleEmail.EmailDate.ToString("HH:mm");
+                            ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
+                            string _value = "";
 
-                        if (!SingleEmail.EmailRead && sessionValue != "sent")
-                            Email.SetAsRead(SingleEmail.EmailID, out _value);
+                            if (!SingleEmail.EmailRead && sessionValue != "sent")
+                                Email.SetAsRead(SingleEmail.EmailID, out _value);
 
-                        ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
+                            ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
+                        }
                     }
-                }
-                catch(Exception ex)
-                {
-                    Private.User.LogError(ex.Message);
-                }
+                    catch (Exception ex)
+                    {
+                        Private.User.LogError(ex.Message);
+                    }
+                else
+                    Response.Redirect("Inbox.aspx");
             }    
         }
 

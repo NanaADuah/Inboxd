@@ -293,6 +293,16 @@ namespace Inboxd.Source
             return false;
         }
 
+        public static bool EmailSentExists(string EmailID)
+        {
+            Email temp;
+            int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
+            GetEmailInformation(EmailID, currentLoggedIn, out temp);
+            if (temp != null)
+                return true;
+
+            return false;
+        }
 
 
         public static void DeleteDraft(string EmailID)

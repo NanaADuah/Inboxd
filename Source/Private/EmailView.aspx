@@ -39,7 +39,7 @@
                                     <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Spam</span>
                                     <%}
                                         else
-if (Session["filter"] != null)
+                                    if (Session["filter"] != null)
                                             if (Session["filter"].ToString().Equals("sent"))
                                             { %>
                                     <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Sent</span>

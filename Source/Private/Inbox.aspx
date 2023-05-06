@@ -120,12 +120,12 @@
                         <ul class="list-group">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
                             <li onclick="window.location = 'NewMail.aspx'" class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa-solid fa-square-plus"></i> Compose</a></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item" style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetEmailsCount()%></span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item" style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") || currentView.ToLower().Equals("unread") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetEmailsCount()%></span></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item" style="<%=currentView.ToLower().Equals("starred")  ? "background-color: #d0d0d0": "" %>"><i class="fa fa-star"></i> Starred</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item" style="<%=currentView.ToLower().Equals("spam")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item" style="<%=currentView.ToLower().Equals("draft")    ? "background-color: #d0d0d0": "" %>"><i class="fa fa-file"></i> Draft<span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetDraftCount()%></span></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item" style="<%=currentView.ToLower().Equals("sent")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-paper-plane"></i> Sent</li>
-                            <li class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i> Snoozed</li>
+                            <li title="Not implemented yet" class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i> Snoozed</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item" style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-cog"></i> Settings</li>
                         </ul>
                     </div>
@@ -261,7 +261,7 @@
                                     <%}
                                     else
                                     { %>
-                                    <td><i class="fa-solid fa-check-double"></i></td>
+                                    <td><i title="<%=item.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm" ) %>" class="fa-solid fa-check-double"></i></td>
                                     <%} %>
                                     <td>
                                         <span class="font-weight-bold"><%=Inboxd.Source.Private.User.GetFullName(item.EmailSender) %></span>
