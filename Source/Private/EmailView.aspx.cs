@@ -17,14 +17,20 @@ namespace Inboxd.Source.Private
             if (Session["UserID"] == null)
                 Response.Redirect("Login.aspx");
 
+            string sessionValue = Session["filter"] != null ? Session["filter"].ToString() : "";
+
+
             if (!String.IsNullOrEmpty(Request.QueryString["read"]))
             {
                 string result;
-                Email.SetAsRead(EmailID: Request.QueryString["read"], out result);
-                if(result == "Success")
-                    Response.Redirect("Inbox.aspx");
-                else
-                    lblMessages.Text = result;
+                if (sessionValue != "sent")
+                {
+                    Email.SetAsRead(EmailID: Request.QueryString["read"], out result);
+                    if (result == "success")
+                        Response.Redirect("Inbox.aspx");
+                    else
+                        lblMessages.Text = result;
+                }
             }
             else
             if (!String.IsNullOrEmpty(Request.QueryString["star"]))
@@ -54,7 +60,8 @@ namespace Inboxd.Source.Private
                         tbEmailTime.Text = SingleEmail.EmailDate.ToString("HH:mm");
                         ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
                         string _value = "";
-                        if (!SingleEmail.EmailRead)
+
+                        if (!SingleEmail.EmailRead && sessionValue != "sent")
                             Email.SetAsRead(SingleEmail.EmailID, out _value);
 
                         ReadLabel = SingleEmail.EmailRead ? "MARK AS UNREAD" : "MARK AS READ";
@@ -130,12 +137,9 @@ namespace Inboxd.Source.Private
         {
             string result;
             Email.SetAsUnread(SingleEmail.EmailID, out result);
-            if(result.Equals("sucess"))
-                Response.Redirect("Inbox.aspx?filter=default");
 
-            //lblMessages.Text = "Yeah no, don't click that button";
-            //lblMessages.ForeColor = System.Drawing.Color.Red;
-            //Response.Redirect($"EmailView.aspx?id={SingleEmail.EmailID}");
+            Response.Redirect("Inbox.aspx?filter=default");
+
         }
     }
 

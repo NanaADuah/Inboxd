@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="Style/NewMail.css" />
     <link href="Style/Default.css" rel="stylesheet"/>
     <link href="Style/Header.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
     <!-- #include file='Header.html' -->
@@ -41,12 +43,19 @@
                 </div>
             </div>
             <div class="card-footer">
-                <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" />
-                <%--<asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" />--%>
-                <a href="Inbox.aspx" class="btn btn-danger">Discard</a>
-                <asp:Button runat="server" ID="btnSaveDraft" class="btn btn-info" Text="Save draft" OnClick="btnSaveDraft_Click" />
-                <asp:Button runat="server" ID="btnAddAttachments" class="btn btn-success" Text="Add attachments" OnClick="btnAddAttachments_Click" />
-               
+                <div class="d-flex" style="gap: 5px"> 
+                <asp:Button runat="server" ID="btnSendMessage" class="btn btn-primary" Text="Send" OnClick="btnSendMessage_Click" style="display: none"/>
+                <div title="Send email" class="btn btn-primary" onclick="document.getElementById('btnSendMessage').click()"><i class="fa-solid fa-paper-plane"></i></div>
+
+                <asp:Button runat="server" ID="btnSaveDraft" class="btn btn-info" Text="Save draft" OnClick="btnSaveDraft_Click" style="display: none" />
+                <div title="Save as draft" class="btn btn-info" onclick="document.getElementById('btnSaveDraft').click()"><i class="fa-solid fa-file-pen"></i></div>
+                
+                <asp:Button runat="server" ID="btnAddAttachments" class="btn btn-success" Text="Add attachments" OnClick="btnAddAttachments_Click" style="display:none"/>
+                <div title="Add Attachment" class="btn btn-success" onclick=""><i class="fa-solid fa-paperclip"></i></div>
+
+                <%--<asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" style="display: none"/>--%>
+                <a href="Inbox.aspx" class="text-decoration-none justify-content-end " style="color: inherit !important; margin-left: auto"><div title="Discard" class="btn btn-danger" ><i class="fa-solid fa-trash"></i></div></a>
+               </div>
             </div>
         </div>
     </form>

@@ -95,8 +95,16 @@ namespace Inboxd.Source.Private
             //    //Session["previousUrl"] = null;
             //}
             //else
-            if (Request.QueryString["edit"] != null)
-                Email.DeleteDraft(Request.QueryString["edit"]);
+            //if (Request.QueryString["edit"] != null) {
+            //    Email.DeleteDraft(Request.QueryString["edit"]);
+            //    Response.Redirect("Inbox.aspx", false);
+            //}
+            //else
+            //if (Request.QueryString["id"] != null)
+            //{
+            //    if (Email.DeactivateEmail(Request.QueryString["id"].ToString()) == "success")
+            //        
+            //}
 
             Response.Redirect("Inbox.aspx", false);
         }

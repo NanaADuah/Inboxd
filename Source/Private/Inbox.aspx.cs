@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Web;
@@ -48,6 +51,21 @@ namespace Inboxd.Source.Private
             if (type.Equals("spam"))
                 emails = email.GetEmailList(6);
             else
+            if (type.Equals("sender"))
+                emails = email.GetEmailList(7);
+            else
+            if (type.Equals("search"))
+            {
+                if(Session["searchValue"] != null )
+                {
+                    List<Email> temp = (List<Email>)GetObject<Email>(key: "emailList");
+                    emails = email.SearchResults(Session["searchValue"].ToString(), temp );
+                    tbSearch.Value = Session["searchValue"].ToString();
+                    Session["searchValue"] = null;
+                } else
+                    emails = email.GetEmailList();
+            }
+            else
                 emails = email.GetEmailList();
         }
 
@@ -67,6 +85,16 @@ namespace Inboxd.Source.Private
         protected void btnSender_Click(object sender, EventArgs e)
         {
             Session["filter"] = "sender";
+            User user = new User();
+            List<string> temp = new List<string>();
+            
+            //foreach(Email item in emails)
+            //{
+            //    temp.Add(item.EmailSender.ToString());
+            //}
+
+           //string combinedString = string.Join(",", temp.ToArray());
+
             Refresh();
         }
 
@@ -88,7 +116,37 @@ namespace Inboxd.Source.Private
                 //oh well
             }
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string searchValue = tbSearch.Value;
+            string sessionValue = "";
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                if (Session["filter"] != null)
+                    sessionValue = Session["filter"].ToString();
+
+                if (sessionValue != "draft")
+                {
+                    Session["searchValue"] = searchValue;
+                    Session["filter"] = "search";
+                    SetObject(emails);
+                    Refresh();
+                }
+                
+            }
+        }
+        public static void SetObject(List<Email> value)
+        {
+            HttpContext.Current.Session["emailList"] = JsonConvert.SerializeObject((List<Email>)value);
+        }
+
+        public static List<Email> GetObject<Email>(string key)
+        {
+            var value = HttpContext.Current.Session[key].ToString();
+            return value == null ? default(List<Email>) : JsonConvert.DeserializeObject<List<Email>>(value);
+        }
     }
 
-    
+
 }

@@ -194,8 +194,8 @@ namespace Inboxd.Source
                 SqlCommand command = new SqlCommand(commStr, connection);
                 command.Parameters.AddWithValue("@Active", !temp.EmailActive);
                 command.Parameters.AddWithValue("@EmailID", temp.EmailID);
-                command.Parameters.AddWithValue(@"Receiver", user.getUserID(temp.ReceipientEmail));
-
+                command.Parameters.AddWithValue(@"Receiver", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                
                 return "success";
             }
             catch (SqlException ex)
@@ -293,6 +293,8 @@ namespace Inboxd.Source
             return false;
         }
 
+
+
         public static void DeleteDraft(string EmailID)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
@@ -324,6 +326,7 @@ namespace Inboxd.Source
         public List<Email> GetEmailList(int index = 1)
         {
             List<Email> list = new List<Email>();
+            User user = new User();
             IDictionary<int, string> filters = new Dictionary<int, string>() {
                 { 1, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY [Date] DESC" },
                 { 2, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 AND [Read] = 0 ORDER BY [Date] DESC" },
@@ -331,6 +334,7 @@ namespace Inboxd.Source
                 { 4, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 AND [Starred] = 1" },
                 { 5, "WHERE   SenderID = @Receiver AND [Active] = 1 ORDER BY [Date] DESC" }, //even though it doesn't make sense, it works so leave it
                 { 6, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 1" },
+                { 7, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY [EmailID] ASC" },
         };
 
             SqlConnection connection = new SqlConnection(connectionString);
@@ -368,6 +372,10 @@ namespace Inboxd.Source
             {
                 connection.Close();
             }
+
+            if(index == 7)
+                list.Sort((p, q) => user.FullNameDisplay(p.EmailSender).CompareTo(user.FullNameDisplay(q.EmailSender)));
+
             return list;
         }
 
@@ -563,7 +571,7 @@ namespace Inboxd.Source
 
         public static void SetAsRead(String EmailID, out string status)
         {
-            status = "Default";
+            status = "default";
             SqlConnection connect = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
             int currentLoggedIn = int.Parse(HttpContext.Current.Session["UserID"].ToString());
             Email temp;
@@ -577,7 +585,7 @@ namespace Inboxd.Source
                     SqlCommand command = new SqlCommand(commStr, connect);
                     command.Parameters.AddWithValue("@EmailID", EmailID);
                     command.ExecuteNonQuery();
-                    status = "Success";
+                    status = "success";
     
                 }catch(SqlException ex)
                 {
@@ -671,6 +679,26 @@ namespace Inboxd.Source
                 }
                 finally { connect.Close(); }
             }
+        }
+        public List<Email> SearchResults(string search, List<Email> list)
+        {
+            var searchWords = search.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            List<Email> results = new List<Email>();
+            User user = new User();
+
+            foreach (Email email in list)
+            {
+                DateTime date = new DateTime();
+                if(Additional.IsValidDate(search))
+                    DateTime.TryParseExact(search, new string[] { "dd/MM/yyyy", "ddMMM yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out date);
+
+                if (user.getUserEmail(email.EmailSender).Contains(search) || email.EmailSubject.Contains(search) || email.EmailBody.Contains(search) || email.EmailBody.Contains(search) || email.EmailDate.ToString().Contains(date.ToString()))
+                {
+                    results.Add(email);
+                }
+            }
+
+            return results;
         }
 
     }

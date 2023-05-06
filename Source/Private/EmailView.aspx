@@ -25,7 +25,7 @@
             <div class="w-50 m-auto">
                 <asp:Label ID="lblMessages" runat="server" Text=""></asp:Label>
                 <div class="card">
-                    <div class="card-header <%=SingleEmail.EmailSpam?"bg-warning":"" %> ">
+                    <div class="card-header <%=SingleEmail.EmailSpam ? "bg-warning" : "" %> ">
                         <div>
                             <div>
                                 <div style="vertical-align: middle" class="h3 align-content-center d-flex">
@@ -39,12 +39,14 @@
                                     <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Spam</span>
                                     <%}
                                         else
-                                    if (Session["filter"] != null)
-                                        if (Session["filter"].ToString().Equals("sent")){ %>
-                                        <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Sent</span>
-                                    <%}else
+if (Session["filter"] != null)
+                                            if (Session["filter"].ToString().Equals("sent"))
+                                            { %>
+                                    <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Sent</span>
+                                    <%}
+                                        else
                                         {%>
-                                    <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem"><a style="color:inherit !important" class="text-decoration-none" href="Inbox.aspx?filter=default">Inbox</a></span>
+                                    <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem"><a style="color: inherit !important" class="text-decoration-none" href="Inbox.aspx?filter=default">Inbox</a></span>
                                     <%}%>
                                     <div class="float-end justify-content-end d-inline" style="margin-left: auto; font-size: 1.1rem">
                                         <%if (SingleEmail.EmailStarred)
@@ -70,8 +72,8 @@
                             </div>
                             <div>
                                 <%
-                                if (SingleEmail != null)
-                                {  %>
+                                    if (SingleEmail != null)
+                                    {  %>
                                 <span style="cursor: pointer" title="<%=user.getUserEmail(SingleEmail.EmailSender)%> - Inboxd" class="h6 fw-bolder "><b><%= (Inboxd.Source.Private.User.GetFullName(SingleEmail.EmailSender)) %></b></span><br />
                                 <span class="h6 text-muted">to <%=(SingleEmail.ReceipientEmail) %><i class="fa-solid fa-chevron-down p-1"></i></span><br />
                                 <%} %>
@@ -91,47 +93,44 @@
                     <div class="card-footer d-flex justify-content-end  text-center" style="align-items: center; gap: 10px">
 
                         <%
+                            string filter = "default";
                             if (SingleEmail.ReceipientEmail.Equals(user.getUserEmail(int.Parse(Session["UserID"].ToString()))))
                             {
+                                if (Session["filter"] != null)
+                                    filter = Session["filter"].ToString();
+
+                                if (filter != "sent")
+                                {
                         %>
 
 
                         <asp:Button runat="server" ID="btnReply" Text="REPLY" class="btn btn-success w-75 mx-2 bg-info btn-outline-info text-white" Style="display: none" OnClick="btnReply_Click" />
-                        <div  title="Reply to email" class="btn btn-primary" onclick="document.getElementById('btnReply').click()"><i class="fa-solid fa-reply"></i></div>
+                        <div title="Reply to email" class="btn btn-primary" onclick="document.getElementById('btnReply').click()"><i class="fa-solid fa-reply"></i></div>
 
                         <%if (SingleEmail.EmailRead)
                             {  %>
-                        <asp:Button runat="server" ID="btnMarkRead1" class="btn btn-danger mx-2 w-25 bg-info btn-outline-info text-white" OnClick="btnMarkRead_Click" Text="MARK AS UNREAD" style="display: none"/>
+                        <asp:Button runat="server" ID="btnMarkRead1" class="btn btn-danger mx-2 w-25 bg-info btn-outline-info text-white" OnClick="btnMarkRead_Click" Text="MARK AS UNREAD" Style="display: none" />
                         <div title="Mark as unread" onclick="document.getElementById('btnMarkRead1').click()" class="btn btn-success"><i class="fa-solid fa-envelope"></i></div>
-                        <%}
-                            else
-                            {
-                        %>
-                        <%--<asp:Button runat="server" ID="btnMarkRead2" class="btn btn-danger mx-2 w-25 bg-info btn-outline-info text-white" OnClick="btnMarkRead_Click" Text="MARK AS READ"/>--%>
-                        <%
-                            }%>
+                        <%}%>
+
                         <asp:Button runat="server" ID="btnDelete" Text="DELETE" class="btn btn-danger mx-2 w-25" OnClick="btnDelete_Click" Style="display: none" />
                         <div title="Delete Email" class="btn btn-danger" onclick="document.getElementById('btnDelete').click()"><i class="fa-solid fa-trash"></i></div>
-                        <%
-                            } %>
+
                         <%if (!SingleEmail.EmailSpam)
                             {  %>
-                        <div title="Mark as spam" class="btn btn-warning badge justify-content-between px-2 d-inline" style="float: right">
-                            <asp:Button class="btn btn-sm" runat="server" ID="btnSpamSet" Text="Mark as spam" OnClick="btnSpamSet_Click" Style="display: none" />
-                            <div class="btn btn-sm" onclick="document.getElementById('btnSpamSet').click()"><i class="fa fa-warning"></i></div>
-                        </div>
+                        <asp:Button class="btn btn-sm" runat="server" ID="btnSpamSet" Text="Mark as spam" OnClick="btnSpamSet_Click" Style="display: none" />
+                        <div title="Mark as spam" class="btn btn-warning text-white" onclick="document.getElementById('btnSpamSet').click()"><i class="fa fa-warning"></i></div>
                         <%}
                             else
                             { %>
-                        <div title="Unmark as spam" class="btn btn-info badge justify-content-between px-2 d-inline" style="float: right">
-                            <asp:Button class="btn btn-sm text-white" runat="server" ID="btnUnsetSpam" Text="Unset as spam" OnClick="btnSpamSet_Click" style="display:none" />
-                            <div class="btn btn-sm " onclick="document.getElementById('btnUnsetSpam').click()"><i class="fa fa-warning"></i></div>
-                        </div>
+                        <asp:Button class="btn text-white" runat="server" ID="btnUnsetSpam" Text="Unset as spam" OnClick="btnSpamSet_Click" Style="display: none" />
+                        <div title="Unmark as spam" class="btn btn-dark" onclick="document.getElementById('btnUnsetSpam').click()"><i class="fa fa-warning"></i></div>
                         <%} %>
                     </div>
                 </div>
             </div>
             <%}
+                }
                 else
                 {  %>
             <div class="p-4">
@@ -141,7 +140,8 @@
 
                 <asp:Button runat="server" ID="btnGoBack" class="btn btn-dark my-2" Text="GO BACK" OnClick="btnGoBack_Click" />
             </div>
-            <%} %>
+            <%}
+                } %>
         </div>
     </form>
 </body>

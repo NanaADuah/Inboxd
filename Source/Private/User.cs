@@ -429,5 +429,36 @@ namespace Inboxd.Source.Private
 
             return UserID == 1 ?"Inboxd Corporate": fullName;
         }
+        
+        public string FullNameDisplay(int UserID)
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+            string fullName = "";
+            try
+            {
+                conn.Open();
+                string comm = "SELECT TOP 1 Name, Surname FROM [UserDetails] WHERE UserID = @UserID";
+                SqlCommand command = new SqlCommand(comm, conn);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                    while(reader.Read())
+                        fullName = String.Format("{0:S} {1:S}", reader.GetValue(0).ToString(), reader.GetValue(1).ToString());
+                
+            }
+            catch(Exception ex)
+            {
+                User.LogError(ex.Message);
+            }
+
+            finally 
+            {
+                conn.Close();
+            }
+
+            return UserID == 1 ?"Inboxd Corporate": Additional.ToUpperEveryWord(fullName);
+        }
+        
     }
 }
