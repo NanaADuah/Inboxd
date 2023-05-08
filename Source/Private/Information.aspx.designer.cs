@@ -11,7 +11,7 @@ namespace Inboxd.Source.Private
 {
 
 
-    public partial class Inbox
+    public partial class Information
     {
 
         /// <summary>
@@ -24,15 +24,6 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ScriptManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-
-        /// <summary>
         /// lblMessages control.
         /// </summary>
         /// <remarks>
@@ -42,57 +33,48 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.Label lblMessages;
 
         /// <summary>
-        /// btnSearch control.
+        /// btnReturnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Button btnReturnBack;
 
         /// <summary>
-        /// tbSearch control.
+        /// btnAddFavourite control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl tbSearch;
+        protected global::System.Web.UI.WebControls.Button btnAddFavourite;
 
         /// <summary>
-        /// btnDefault control.
+        /// btnRemoveFavourite control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDefault;
+        protected global::System.Web.UI.WebControls.Button btnRemoveFavourite;
 
         /// <summary>
-        /// btnSender control.
+        /// btnContact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSender;
+        protected global::System.Web.UI.WebControls.Button btnContact;
 
         /// <summary>
-        /// btnUnread control.
+        /// btnBlock control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUnread;
-
-        /// <summary>
-        /// btnDeleteNotification control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDeleteNotification;
+        protected global::System.Web.UI.WebControls.Button btnBlock;
     }
 }

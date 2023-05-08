@@ -144,6 +144,18 @@ namespace Inboxd.Source.Private
             Response.Redirect("Inbox.aspx?filter=default");
 
         }
+
+        protected void btnViewUser_Click(object sender, EventArgs e)
+        {
+            if(SingleEmail != null)
+            {
+                int userID = SingleEmail.EmailSender;
+                Session["ViewAccountID"] = userID;
+                Session["previousUrl"] = HttpContext.Current.Request.Url.ToString();
+
+                Response.Redirect("Information.aspx");
+            }
+        }
     }
 
 }

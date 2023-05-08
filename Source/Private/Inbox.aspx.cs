@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ namespace Inboxd.Source.Private
     public partial class Inbox : System.Web.UI.Page
     {
         public List<Email> emails = new List<Email>();
+        public List<User> favouriteUsers = new List<User>();
+        public List<Notifications> notifications = new List<Notifications>();
+
         public User loggedInUser = new Private.User();
 
         public string _jsPostBackCall;
@@ -62,9 +66,30 @@ namespace Inboxd.Source.Private
                     emails = email.SearchResults(Session["searchValue"].ToString(), temp );
                     tbSearch.Value = Session["searchValue"].ToString();
                     Session["searchValue"] = null;
+                    Session["ViewAccountID"] = null;
                 } else
                     emails = email.GetEmailList();
             }
+            else
+            if (type.Equals("notifications"))
+            {
+                notifications = Notifications.GetAllNotifications(int.Parse(Session["UserID"].ToString()));
+                emails = null;
+            }
+            else
+            if (type.Equals("favourites"))
+            {
+                int userid = int.Parse(Session["UserID"].ToString());
+                List<int> fav = loggedInUser.GetFavourites(userid); 
+                foreach(var item in fav)
+                {
+                    favouriteUsers.Add(Private.User.GetUserInfo(item));
+                }
+                emails = null;
+            }
+            else
+            if (type.Equals("trash"))
+                emails = email.GetEmailList(8);
             else
                 emails = email.GetEmailList();
         }
@@ -145,6 +170,22 @@ namespace Inboxd.Source.Private
         {
             var value = HttpContext.Current.Session[key].ToString();
             return value == null ? default(List<Email>) : JsonConvert.DeserializeObject<List<Email>>(value);
+        }
+
+        protected void btnDeleteNotification_Click(object sender, EventArgs e)
+        {
+            //string results = "failure";
+            //int value;
+            //Notifications notifications = new Notifications();
+            //string i = notifValue.Value;
+            //bool valid = int.TryParse(i, out value);
+            //if(valid)
+            //    notifications.SetNotificationAsRead(value, out results);
+
+            //if (results.Equals("access"))
+            //    Response.Redirect("Inbox.aspx");
+            //else
+            //    lblMessages.Text = "An error occurred";
         }
     }
 

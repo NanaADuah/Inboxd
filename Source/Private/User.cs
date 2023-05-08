@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
+using System.Web.Management;
 using System.Web.SessionState;
 
 namespace Inboxd.Source.Private
@@ -119,10 +122,8 @@ namespace Inboxd.Source.Private
                             DOB = tempDate,
                         };
                     }
-
-
-
             }
+
             catch(Exception ex)
             {
                 User.LogError(ex.Message);
@@ -459,6 +460,159 @@ namespace Inboxd.Source.Private
 
             return UserID == 1 ?"Inboxd Corporate": Additional.ToUpperEveryWord(fullName);
         }
+
+        public List<int> GetFavourites(int UserID)
+        {
+            List<int> list = new List<int>();
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            try
+            {
+                conn.Open();
+                string comm = "SELECT TOP 1 [FavouriteList] FROM [Favourites] WHERE UserID = @UserID";
+                SqlCommand command = new SqlCommand(comm, conn);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string output = reader[0].ToString();
+                        list = JsonConvert.DeserializeObject<List<int>>(output);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                User.LogError(ex.Message);
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
+            return list.Distinct().ToList();
+        }
+
+        public bool isUserFavourite(int UserID)
+        {
+            List<int> users;
+            users = GetFavourites(int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+
+            if (users.Contains(UserID))
+                return true;
+
+            return false;
+            
+        }
         
+        public bool HasFavourite(int UserID)
+        {
+            connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT COUNT(UserID) FROM [Favourites] WHERE UserID = @UserID", connection);
+                command.Parameters.AddWithValue("@UserID", UserID);
+                int value = int.Parse(command.ExecuteScalar().ToString());
+
+                if (value != 0)
+                    return true;
+            }
+            catch (SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+
+            return false;
+            
+        }
+
+        public string AddAsFavourite(int UserID)
+        {
+            connection = new SqlConnection(connectionString);
+            Notifications notif = new Notifications();
+            string notifResults = "";
+            string updateQuery = "";
+            try
+            {
+                List<int> valuesToSave = GetFavourites(int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                valuesToSave.Add(UserID);
+
+                string updatedJsonString = JsonConvert.SerializeObject(valuesToSave);
+
+                if (!HasFavourite(int.Parse(HttpContext.Current.Session["UserID"].ToString())))
+                    updateQuery = $"INSERT INTO [Favourites]([UserID], [FavouriteList]) VALUES (@UserID, @favourites)";
+                else
+                    updateQuery = $"UPDATE [Favourites] SET [FavouriteList] = @favourites WHERE [UserID] = @UserID";
+
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(updateQuery, connection);
+                command.Parameters.AddWithValue("@favourites", updatedJsonString);
+                command.Parameters.AddWithValue("@UserID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                command.ExecuteNonQuery();
+                notif.SendNotification(UserID,String.Format("{0:S} added you as their favourite", GetFullName(int.Parse(HttpContext.Current.Session["UserID"].ToString()))), out notifResults);
+                notif.SendNotification(int.Parse(HttpContext.Current.Session["UserID"].ToString()),String.Format("You added {0:S} as a favourite", GetFullName(UserID)), out notifResults);
+                return "success";
+            }
+            catch (SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return "failure";
+        }
+        
+        public string RemoveAsFavourite(int UserID)
+        {
+            connection = new SqlConnection(connectionString);
+            Notifications notif = new Notifications();
+            string notifResults = "";
+            string updateQuery = "";
+            try
+            {
+                List<int> valuesToSave = GetFavourites(int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                valuesToSave.Remove(UserID);
+
+                string updatedJsonString = JsonConvert.SerializeObject(valuesToSave);
+
+                if (!HasFavourite(int.Parse(HttpContext.Current.Session["UserID"].ToString())))
+                    updateQuery = $"INSERT INTO [Favourites]([UserID], [FavouriteList]) VALUES (@UserID, @favourites)";
+                else
+                    updateQuery = $"UPDATE [Favourites] SET [FavouriteList] = @favourites WHERE [UserID] = @UserID";
+
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(updateQuery, connection);
+                command.Parameters.AddWithValue("@favourites", updatedJsonString);
+                command.Parameters.AddWithValue("@UserID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                command.ExecuteNonQuery();
+                notif.SendNotification(UserID,String.Format("{0:S} removed you as their favourite", GetFullName(int.Parse(HttpContext.Current.Session["UserID"].ToString()))), out notifResults);
+                notif.SendNotification(int.Parse(HttpContext.Current.Session["UserID"].ToString()),String.Format("You removed {0:S} as a favourite", GetFullName(UserID)), out notifResults);
+                return "success";
+            }
+            catch (SqlException ex)
+            {
+                LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return "failure";
+        }
     }
 }

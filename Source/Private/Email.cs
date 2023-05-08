@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -190,11 +191,43 @@ namespace Inboxd.Source
             try
             {
                 connection.Open();
-                string commStr = "UPDATE [Emails] SET Active = @Active WHERE EmailID = @EmailID AND ReceiverID = @Receiver";
+                string commStr = "UPDATE [Emails] SET [Active] = @Active WHERE EmailID = @EmailID AND ReceiverID = @Receiver";
                 SqlCommand command = new SqlCommand(commStr, connection);
-                command.Parameters.AddWithValue("@Active", !temp.EmailActive);
+                command.Parameters.AddWithValue("@Active", 0);
                 command.Parameters.AddWithValue("@EmailID", temp.EmailID);
                 command.Parameters.AddWithValue(@"Receiver", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                command.ExecuteNonQuery();
+                
+                return "success";
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return "failure";
+
+        }
+        
+        public static string ActivateEmail(string EmailID)
+        {
+            User user = new User();
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+            Email temp;
+            GetEmailInformation(EmailID, int.Parse(HttpContext.Current.Session["UserID"].ToString()),out temp);
+            try
+            {
+                connection.Open();
+                string commStr = "UPDATE [Emails] SET [Active] = @Active WHERE EmailID = @EmailID AND ReceiverID = @Receiver";
+                SqlCommand command = new SqlCommand(commStr, connection);
+                command.Parameters.AddWithValue("@Active", 1);
+                command.Parameters.AddWithValue("@EmailID", temp.EmailID);
+                command.Parameters.AddWithValue(@"Receiver", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                command.ExecuteNonQuery();
                 
                 return "success";
             }
@@ -333,6 +366,7 @@ namespace Inboxd.Source
                 }
         }
 
+
         public List<Email> GetEmailList(int index = 1)
         {
             List<Email> list = new List<Email>();
@@ -345,6 +379,7 @@ namespace Inboxd.Source
                 { 5, "WHERE   SenderID = @Receiver AND [Active] = 1 ORDER BY [Date] DESC" }, //even though it doesn't make sense, it works so leave it
                 { 6, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 1" },
                 { 7, "WHERE ReceiverID = @Receiver AND [Active] = 1 AND [Spam] = 0 ORDER BY [EmailID] ASC" },
+                { 8, "WHERE ReceiverID = @Receiver AND [Active] = 0 AND [Spam] = 0" },
         };
 
             SqlConnection connection = new SqlConnection(connectionString);

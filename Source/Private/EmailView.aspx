@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
 
 </head>
 <body>
@@ -39,10 +46,10 @@
                                     <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Spam</span>
                                     <%}
                                         else
-                                    if (Session["filter"] != null)
+                                         if (Session["filter"] != null)
                                             if (Session["filter"].ToString().Equals("sent"))
                                             { %>
-                                    <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem">Sent</span>
+                                    <span class="badge badge-secondary h-50 my-auto m-2" style="font-size: 0.8rem"><a style="color: inherit !important" class="text-decoration-none" href="Inbox.aspx?filter=sent">Sent</a></span>
                                     <%}
                                         else
                                         {%>
@@ -74,7 +81,11 @@
                                 <%
                                     if (SingleEmail != null)
                                     {  %>
-                                <span style="cursor: pointer" title="<%=user.getUserEmail(SingleEmail.EmailSender)%> - Inboxd" class="h6 fw-bolder "><b><%= (Inboxd.Source.Private.User.GetFullName(SingleEmail.EmailSender)) %></b></span><br />
+                                <asp:Button runat="server" ID="btnViewUser" OnClick="btnViewUser_Click" Style="display: none" />
+                                <a onclick="document.getElementById('btnViewUser').click()" style="cursor: pointer"><span style="cursor: pointer" title="<%=user.getUserEmail(SingleEmail.EmailSender)%> - Inboxd" class="h6 fw-bolder "><b><%= (Inboxd.Source.Private.User.GetFullName(SingleEmail.EmailSender)) %></b> </span></a><%if (user.isUserFavourite(SingleEmail.EmailSender))
+                                {%><i title="Marked as favourite" class="fa-solid fa-heart"></i> <%}%>
+                                <br />
+
                                 <span class="h6 text-muted">to <%=(SingleEmail.ReceipientEmail) %><i class="fa-solid fa-chevron-down p-1"></i></span><br />
                                 <%} %>
                             </div>
@@ -126,13 +137,17 @@
                         <asp:Button class="btn text-white" runat="server" ID="btnUnsetSpam" Text="Unset as spam" OnClick="btnSpamSet_Click" Style="display: none" />
                         <div title="Unmark as spam" class="btn btn-dark" onclick="document.getElementById('btnUnsetSpam').click()"><i class="fa fa-warning"></i></div>
                         <%} %>
+
+                        
+
                     </div>
                 </div>
             </div>
             <%}
+                    }
                 }
                 else
-                {  %>
+                { %>
             <div class="p-4">
                 <div class="form-control">
                     Cannot view this email.
@@ -140,8 +155,7 @@
 
                 <asp:Button runat="server" ID="btnGoBack" class="btn btn-dark my-2" Text="GO BACK" OnClick="btnGoBack_Click" />
             </div>
-            <%}
-                } %>
+            <%} %>
         </div>
     </form>
 </body>

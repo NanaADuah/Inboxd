@@ -61,6 +61,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+    <link rel="manifest" href="/site.webmanifest"/>
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <meta name="theme-color" content="#ffffff"/>
 </head>
 
 <body>
@@ -74,7 +81,9 @@
                 window.location = "EmailView.aspx?id=" + id;
             }
         </script>
-        <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label>
+        <div class="px-2">
+            <asp:Label runat="server" ID="lblMessages" Text=""></asp:Label>
+        </div>
         <%if (!string.IsNullOrEmpty(Session["UserID"].ToString()))
             {
                 Inboxd.Source.Private.User user = new Inboxd.Source.Private.User();
@@ -83,7 +92,7 @@
             <div>
                 <div class="d-flex justify-content-space-between position-sticky  mb-1">
                     <div class="flex-grow-1 flex-fill d-inline-flex" style="vertical-align: middle">
-                        <h3 class="m-0">Welcome <%=loggedInUser != null ?loggedInUser.Name:"user"%>: </h3>
+                        <h3 class="m-0">Welcome <%=loggedInUser != null ? loggedInUser.Name : "user"%>: </h3>
 
                     </div>
                     <div class="">
@@ -122,11 +131,14 @@
                             <li onclick="window.location = 'NewMail.aspx'" class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa-solid fa-square-plus"></i> Compose</a></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item" style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") || currentView.ToLower().Equals("unread") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-inbox justify-content-between"></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</a> <span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetEmailsCount()%></span></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item" style="<%=currentView.ToLower().Equals("starred")  ? "background-color: #d0d0d0": "" %>"><i class="fa fa-star"></i> Starred</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=notifications'" class="list-group-item" style="<%=currentView.ToLower().Equals("notifications")  ? "background-color: #d0d0d0": "" %>"><span style="vertical-align:middle"><i class="fa-solid fa-bell-concierge"></i> Notifcations <%if (Inboxd.Source.Private.Notifications.GetNumNotifications() != 0) { %><i class="fa-solid fa-circle fa-2xs text-danger small" style="text-align: right; float: right"></i><%} %></span></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item" style="<%=currentView.ToLower().Equals("spam")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item" style="<%=currentView.ToLower().Equals("draft")    ? "background-color: #d0d0d0": "" %>"><i class="fa fa-file"></i> Draft<span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetDraftCount()%></span></li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item" style="<%=currentView.ToLower().Equals("sent")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-paper-plane"></i> Sent</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=favourites'" class="list-group-item" style="<%=currentView.ToLower().Equals("favourites")     ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bookmark"></i> Favourites</li>
                             <li title="Not implemented yet" class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i> Snoozed</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item" style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-cog"></i> Settings</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=trash'" class="list-group-item" style="<%=currentView.ToLower().Equals("trash") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-trash"></i> Trash</li>
                         </ul>
                     </div>
                     <div class="flex-fill overflow-auto" style="max-height: 800px">
@@ -145,14 +157,13 @@
                                         value = Request.QueryString["settings"];
                                     }
                                   %>
-                              <a class="flex-sm-fill text-sm-center nav-link <%=value=="temp" || value == ""?"active":"" %>" aria-current="page" href="Inbox.aspx?settings=temp">GitHub</a>
-                              <a class="flex-sm-fill text-sm-center nav-link <%=value=="profile"?"active":"" %>" href="Inbox.aspx?settings=profile">Profile</a>
+                              <a class="flex-sm-fill text-sm-center nav-link <%=value == "temp" || value == "" ? "active" : "" %>" aria-current="page" href="Inbox.aspx?settings=temp">GitHub</a>
+                              <a class="flex-sm-fill text-sm-center nav-link <%=value == "profile" ? "active" : "" %>" href="Inbox.aspx?settings=profile">Profile</a>
                                 
                             </nav>
-                            <%if(value == "temp" || value == ""){
+                            <%if (value == "temp" || value == "")
+                                {%>
 
-
-%>
                             <div class="text-center">
                                 Yeah... still under construction<br />
                                 <span>In the meantime, jump over to the GitHub Repo and assist if you can :)</span><br />
@@ -173,8 +184,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <%}else
-                              if(value == "profile"){
+                            <%}
+                             else
+                            if (value == "profile")
+                                {
                                     Inboxd.Source.Private.User views = new Inboxd.Source.Private.User();
                                     views = Inboxd.Source.Private.User.GetUserInfo(int.Parse(Session["UserID"].ToString()));
                                 %>
@@ -206,8 +219,77 @@
                         </div>
                         <%}
                             else
-                            if (currentView.Equals("draft"))
-                            {%>
+                            if (currentView.Equals("notifications")) {%>
+                            <div class="p-4 table-responsive"  style="font-weight: normal !important">
+                                <%if (notifications.Any()) {%>
+                                    <table class="table table-hover table-sm">
+                                        <thead class="thead-light position-sticky">
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody  style="font-weight: normal !important">
+                                            <%foreach (var item in notifications) {%>
+                                                <tr title="Sent: <%=item.NotificationTime.ToString("dd\\/MM\\/yyyy HH:mm")%>">
+                                                    <th scope="row" class="text-center"><i class="fa-solid fa-bell"></i></th>
+                                                    <th  style="font-weight: normal !important"><%=Inboxd.Source.Private.Additional.TruncateSubject(item.Notification)%></th>
+                                                    <th class="text-end d-flex justify-content-end" style="margin-right: 5px;"><%=Inboxd.Source.Private.Time.TimeAgo(item.NotificationTime) %></th>
+                                                    <asp:Button runat="server" class="btn" ID="btnDeleteNotification" style="display:none" OnClick="btnDeleteNotification_Click"/>
+                                                    <th title="Remove notification" class="text-end justify-content-end d-table-cell" style="text-align:center;width:5%"><a href="Read.aspx?id=<%=item.NotificationID%>" class="text-decoration-none" style="color: inherit !important"><i onclick="document.getElementById('btnDeleteNotification').click()" class="fa-solid fa-xmark"></i></a></th>
+                                                </tr>
+                                            <%}%>
+                                        </tbody>
+                                    </table>
+                                <%}
+                                else { %>
+                                <div class="display-4 text-center p-4">
+                                    <hr />
+                                    No new notifications<br />
+                                    <i class="fa-solid fa-bell fa-shake"></i>
+                                </div>
+                                <%} %>
+                                
+                            </div>
+                            <%} else
+                                if (currentView.Equals("favourites")) {%>
+                                    <%if (favouriteUsers.Any())
+                                        {
+                                    %>
+                        <div class="p-4">
+                            <table class="table table-hover table-sm">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            <%foreach (var item in favouriteUsers) { %>
+                                <tr>
+                                    <td><i class="fa-solid fa-heart"></i></td>
+                                    <td><%=String.Format("{0:S} {1:S}", item.Name, item.Surname) %></td>
+                                    <td><%=item.Email %></td>
+                                </tr>
+                                </tbody>
+                            <%} %>
+                                </table>
+                        </div>
+                                    <%}
+                                else { %>
+                                <div class="display-4 text-center p-4">
+                                    <hr />
+                                    You don't have any favourites<br />
+                                    <i class="fa-solid fa-heart fa-beat-fade"></i>
+                                </div>
+                                <%} 
+                                    }
+                                    else
+              if (currentView.Equals("draft"))
+                                    {%>
                         <table class="table table-hover table-sm">
                             <thead class="thead-light">
                                 <tr>
@@ -259,12 +341,19 @@
                                         {  %>
                                     <td><a class="text-dark" href="EmailView.aspx?star=<%=item.EmailID%>"><i class="<%=item.EmailStarred ? "fa fa-star" : "fa-regular fa-star "%>"></i></a></td>
                                     <%}
-                                    else
-                                    { %>
-                                    <td><i title="<%=item.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm" ) %>" class="fa-solid fa-check-double"></i></td>
+                                        else
+                                        { %>
+                                    <td><i title="<%=item.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm") %>" class="fa-solid fa-check-double"></i></td>
                                     <%} %>
                                     <td>
+                                        <%if (!currentView.Equals("sent"))
+                                            {  %>
                                         <span class="font-weight-bold"><%=Inboxd.Source.Private.User.GetFullName(item.EmailSender) %></span>
+                                        <%}
+                                            else
+                                            {  %>
+                                        <span class="font-weight-bold"><%=Inboxd.Source.Private.User.GetFullName(user.getUserID(item.ReceipientEmail)) %></span>
+                                        <%} %>
                                         <!--
                                         <div class="recent-link">
                                             <span class="font-weight-bold"><%=Inboxd.Source.Private.User.GetFullName(item.EmailSender) %></span>
@@ -300,7 +389,8 @@
                         </table>
                         <%}
                             else
-                            { %>
+                            {
+%>
                         <table class="table table-sm">
                             <thead class="thead-light">
                                 <tr>
@@ -310,11 +400,25 @@
                             <tbody>
                                 <tr>
                                     <th class="text-center">
+                                        <%if (currentView == "search") {  %>
+                                        <div>
+                                            Hmmm, <b>interesting search</b>, we couldn't find anything for it though.<br />
+                                            Try something else?
+                                            <br />
+                                            <br />
+                                            <div class="display-3">
+                                                <i class="fa-solid fa-rotate-right fa-spin"></i>
+                                            </div>
+                                        </div>
+                                        <%}
+                                            else
+                                            {  %>
                                         <div>
                                             There's nothing to display for now...
                                             <br />
                                             <img class="img-fluid m-2" style="height: 100px" src="../Public/Images/SingleLogo.svg" />
                                         </div>
+                                        <%} %>
                                     </th>
                                 </tr>
                             </tbody>

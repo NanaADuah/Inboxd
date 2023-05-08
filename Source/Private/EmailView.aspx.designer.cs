@@ -51,6 +51,15 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.Label tbEmailSubject;
 
         /// <summary>
+        /// btnViewUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnViewUser;
+
+        /// <summary>
         /// tbEmailDate control.
         /// </summary>
         /// <remarks>

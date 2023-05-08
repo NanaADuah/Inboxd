@@ -11,7 +11,7 @@ namespace Inboxd.Source.Private
 {
 
 
-    public partial class Notifications
+    public partial class Read
     {
 
         /// <summary>
