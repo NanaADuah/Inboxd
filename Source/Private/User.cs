@@ -361,7 +361,7 @@ namespace Inboxd.Source.Private
             try
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM [Emails] WHERE ReceiverID = @Receiver AND [Spam] = 0", connection);
+                SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM [Emails] WHERE ReceiverID = @Receiver AND [Spam] = 0 AND [Read] = 0", connection);
                 command.Parameters.AddWithValue("@Receiver", HttpContext.Current.Session["UserID"].ToString());
                 count = int.Parse(command.ExecuteScalar().ToString());
             }

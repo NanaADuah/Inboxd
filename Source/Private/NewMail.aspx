@@ -26,7 +26,7 @@
     <form id="form1" runat="server">
         <div class="card w-75 mx-auto mt-5" id="container">
             <div class="card-header">
-                New Message
+                <a href="Inbox.aspx" class="text-decoration-none" style="color: inherit !important"><i class="fa fa-chevron-left"></i></a> New Message
             </div>
             <div class="rounded card-body">
                 <asp:ValidationSummary ID="ValidationSummary1" style="text-align:left" runat="server" DisplayMode="List" ForeColor="Red" />
