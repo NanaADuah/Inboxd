@@ -12,6 +12,10 @@ Availale at <https://inboxed.online>
 # Features
 ![1](https://user-images.githubusercontent.com/48721153/236071232-1af6c553-d431-4b3a-8596-810868c75f64.png)
 
+Sign Up Page
+![image](https://github.com/NanaADuah/Inboxd/assets/48721153/cd04bb81-38f1-4913-92ed-b45f59ced4cf)
+
+
 
 ## Under Construction
 
