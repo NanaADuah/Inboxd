@@ -134,6 +134,7 @@ namespace Inboxd.Source.Private
                 connection.Close();
             }
         }
+
         public static bool IsValidDate(string input)
         {
             DateTime date;
@@ -141,6 +142,70 @@ namespace Inboxd.Source.Private
 
             return success;
         }
+
+        public static string StringToHexColor(string input)
+        {
+            // Define a hash map that maps each letter to a hexadecimal digit
+            Dictionary<char, string> hexMap = new Dictionary<char, string>
+    {
+        {'a', "0"}, {'b', "1"}, {'c', "2"}, {'d', "3"}, {'e', "4"}, {'f', "5"},
+        {'g', "6"}, {'h', "7"}, {'i', "8"}, {'j', "9"}, {'k', "a"}, {'l', "b"},
+        {'m', "c"}, {'n', "d"}, {'o', "e"}, {'p', "f"}, {'q', "0"}, {'r', "1"},
+        {'s', "2"}, {'t', "3"}, {'u', "4"}, {'v', "5"}, {'w', "6"}, {'x', "7"},
+        {'y', "8"}, {'z', "9"}
+    };
+
+            // Convert the input string to lowercase
+            input = input.ToLower();
+
+            // Initialize variables for the red, green, and blue color components
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+
+            // Iterate over each character in the input string
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+
+                // Skip over any non-letter characters and spaces
+                if (!char.IsLetter(c))
+                {
+                    continue;
+                }
+
+                // Get the corresponding hexadecimal digit from the hash map
+                if (hexMap.TryGetValue(c, out string hexDigit))
+                {
+                    // Use the hexadecimal digit to update the red, green, or blue color component
+                    switch (i % 3)
+                    {
+                        case 0:
+                            red += int.Parse(hexDigit, System.Globalization.NumberStyles.HexNumber) * 16;
+                            break;
+                        case 1:
+                            green += int.Parse(hexDigit, System.Globalization.NumberStyles.HexNumber) * 16;
+                            break;
+                        case 2:
+                            blue += int.Parse(hexDigit, System.Globalization.NumberStyles.HexNumber) * 16;
+                            break;
+                    }
+                }
+            }
+
+            // Scale the color values to a range between 128 and 255
+            red = 128 + (int)((float)red / (float)255 * (float)127);
+            green = 128 + (int)((float)green / (float)255 * (float)127);
+            blue = 128 + (int)((float)blue / (float)255 * (float)127);
+
+            // Combine the red, green, and blue color components into a single hex color value
+            string colorValue = String.Format("#{0:X2}{1:X2}{2:X2}",
+                red, green, blue);
+
+            // Return the resulting hex color value
+            return colorValue.Substring(0,7);
+        }
+
 
     }
 }

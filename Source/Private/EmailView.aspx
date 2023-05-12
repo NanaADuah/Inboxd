@@ -94,7 +94,7 @@
                         <hr class="p-1 m-1" />
                         <div class="px-3 d-flex flex-row">
                             <%if (user == null)
-                            { %>
+                                { %>
                             <div style="vertical-align: middle" class="mx-auto">
                                 <i class="fa fa-user-circle px-2"></i>
                             </div>
@@ -103,8 +103,9 @@
                                 {
                                     string initials = "";
                                     Inboxd.Source.Private.User.GetFullName(SingleEmail.EmailSender).Split(' ').ToList().ForEach(i => initials += i[0].ToString());
-                            %>
-                            <div class="circle"  style="background-color:<%=String.Format("#{0:X6}", new Random((int)DateTime.Now.Ticks).Next(0x1000000))%>"> 
+                                    string nameTemp = Inboxd.Source.Private.User.GetFullName(SingleEmail.EmailSender);
+                                    %>
+                            <div class="circle"  style="background-color: <%=Inboxd.Source.Private.Additional.StringToHexColor(nameTemp)%>"> 
                                 <p class="circle-inner"><%=initials %></p>
                             </div>
                             <%} %>

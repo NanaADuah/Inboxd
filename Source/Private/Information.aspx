@@ -60,7 +60,8 @@
                     </div>
                     <div class="card-body" style="background-color:#fff">
                         <div>
-                            <div class="circle" style="background-color:<%=String.Format("#{0:X6}", new Random((int)DateTime.Now.Ticks).Next(0x1000000))%>">
+                            
+                            <div class="circle" style="background-color:<%Inboxd.Source.Private.Additional.StringToHexColor(user.FullNameDisplay(user.UserID))%>">
                                 <%  string initials = "";
                                     Inboxd.Source.Private.User.GetFullName(user.UserID).Split(' ').ToList().ForEach(i => initials += i[0].ToString());
                              %>
