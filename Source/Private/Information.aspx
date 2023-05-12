@@ -1,7 +1,24 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Information.aspx.cs" Inherits="Inboxd.Source.Private.Information" %>
 
 <!DOCTYPE html>
+<style>
+    .circle {
+        display: inline-block;
+        margin: 10px;
+        border-radius: 50%;
+    }
 
+    .circle-inner {
+        color: white;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        text-decoration: none;
+        height: 100px;
+        width: 100px;
+        font-size: 30px;
+    }
+</style>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>User | Inboxd</title>
@@ -42,9 +59,14 @@
                         <h2 class="title d-inline">Inboxd User<%=user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString()))?"<span class='badge badge-danger m-2' style='font-size: 1rem; vertical-align:middle'>[fav]</span>":"" %></h2>
                     </div>
                     <div class="card-body" style="background-color:#fff">
-                        <h1>
-                            <i class="fa-solid fa-clipboard-user"></i>
-                        </h1>
+                        <div>
+                            <div class="circle" style="background-color:<%=String.Format("#{0:X6}", new Random((int)DateTime.Now.Ticks).Next(0x1000000))%>">
+                                <%  string initials = "";
+                                    Inboxd.Source.Private.User.GetFullName(user.UserID).Split(' ').ToList().ForEach(i => initials += i[0].ToString());
+                             %>
+                                <p class="circle-inner"><%=initials %></p>
+                            </div>
+                        </div>
                         <br />
                         <span class="h5"><b>Name:</b> <%=Inboxd.Source.Private.User.GetFullName(user.UserID)%></span><br /><br />
                         <span class="h5"><b>Date of birth:</b> <%=(user.DOB.ToString("dd, dddd MMMM yyyy"))%></span><br /><br />
