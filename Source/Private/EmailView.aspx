@@ -37,7 +37,8 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#ffffff" />
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
+     crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -93,11 +94,10 @@
                         </div>
                         <hr class="p-1 m-1" />
                         <div class="px-3 d-flex flex-row">
-                            <%if (user == null)
-                                { %>
-                            <div style="vertical-align: middle" class="mx-auto">
-                                <i class="fa fa-user-circle px-2"></i>
-                            </div>
+                            <%
+                                
+                                if(user.UserHasProfileImage(SingleEmail.EmailSender)) { %>
+                                <img style=" width: 60px; border-radius: 50%; margin-right: 15px;" alt="Profile Image" src="../Public/User/<%=SingleEmail.EmailSender%>/<%=SingleEmail.EmailSender%>.jpg"/>
                             <% }
                                 else
                                 {

@@ -42,6 +42,24 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.WebControls.Button btnReturnBack;
 
         /// <summary>
+        /// ProfileImageUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload ProfileImageUpload;
+
+        /// <summary>
+        /// btnUploadProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUploadProfile;
+
+        /// <summary>
         /// btnAddFavourite control.
         /// </summary>
         /// <remarks>

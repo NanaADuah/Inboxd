@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
 using System.Web.Management;
+using System.IO;
 using System.Web.SessionState;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Inboxd.Source.Private
 {
@@ -187,6 +191,8 @@ namespace Inboxd.Source.Private
                     {
                         UserID = getUserID(Email);
                         Additional.LogActivity("Login", UserID);
+                        if (!UserHasFolder(UserID))
+                            CreateUserFolder(UserID);
                         return true;
                     }
                     
@@ -312,6 +318,7 @@ namespace Inboxd.Source.Private
                 command_UserDetails.ExecuteNonQuery();
                 email.SendWelcomeEmail(UserID);
                 Additional.LogActivity("Create Account",UserID);
+                CreateUserFolder(UserID);
                 return "success";
             }
             catch(SqlException ex)
@@ -324,6 +331,51 @@ namespace Inboxd.Source.Private
             }
 
             return "failed";
+        }
+
+        public bool UploadUserData(int UserID)
+        {
+            try
+            {
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+            }
+            return false;
+        }
+
+        public bool UserHasFolder(int UserID)
+        {
+            string strFolder = HttpContext.Current.Server.MapPath($"~/Source/Public/User/{UserID}");
+            if (Directory.Exists(strFolder))
+                return true;
+
+            return false;
+        }
+
+        public void CreateUserFolder(int UserID)
+        {
+            string strFileName;
+            string strFilePath;
+            string strFolder;
+
+            strFolder = HttpContext.Current.Server.MapPath($"~/Source/Public/User/{UserID}");
+            try
+            {
+                if (!Directory.Exists(strFolder))
+                {
+                    Directory.CreateDirectory(String.Format("{0}",strFolder));
+                    Directory.CreateDirectory(String.Format("{0}/Attachments",strFolder));
+                    Directory.CreateDirectory(String.Format("{0}/Emails",strFolder));
+                }
+            }
+            catch(Exception ex)
+            {
+                LogError(ex.Message);
+            }
+            
         }
 
         public static int GenerateUniqueID(int length)
@@ -613,6 +665,92 @@ namespace Inboxd.Source.Private
             }
 
             return "failure";
+        }
+
+        public string GetProfileImageLink(int UserID)
+        {
+            return HttpContext.Current.Server.MapPath($"~/Source/Public/User/{UserID}/{UserID}.jpg");
+        }
+        public bool UserHasProfileImage(int UserID, string extension = "jpg")
+        {
+            try
+            {
+                string file = HttpContext.Current.Server.MapPath($"~/Source/Public/User/{UserID}/{UserID}.{extension}");
+                if (File.Exists(file))
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+            }
+
+            return false;
+        }
+
+        public void SaveProfileImage(int userID, string imagePath)
+        {
+            string strFolder = HttpContext.Current.Server.MapPath($"~/Source/Public/User/{userID}");
+            if (HttpContext.Current.Session["UserID"].ToString() != null)
+            {
+                // Load the image from the specified file path
+                Image originalImage = Image.FromFile(imagePath);
+                string uploadDirectory = String.Format("", strFolder);
+
+                // Check if the image size is larger than 5MB
+                if (new FileInfo(imagePath).Length > 5 * 1024 * 1024)
+                {
+                    // Compress the image until its file size is smaller than 5MB
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                    EncoderParameters encoderParams = new EncoderParameters(1);
+                    encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 80L);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        originalImage.Save(ms, jpgEncoder, encoderParams);
+                        while (ms.Length > 5 * 1024 * 1024)
+                        {
+                            encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, long.Parse(encoderParams.Param[0].ToString()) - 5L);
+                            ms.SetLength(0);
+                            originalImage.Save(ms, jpgEncoder, encoderParams);
+                        }
+                        originalImage = Image.FromStream(ms);
+                    }
+                }
+
+                // Calculate the dimensions of the square crop
+                int cropSize = Math.Min(originalImage.Width, originalImage.Height);
+                int cropX = (originalImage.Width - cropSize) / 2;
+                int cropY = (originalImage.Height - cropSize) / 2;
+
+                // Create a new bitmap with the square crop and original size
+                Bitmap croppedImage = new Bitmap(originalImage.Width, originalImage.Height);
+                using (Graphics g = Graphics.FromImage(croppedImage))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.DrawImage(originalImage, new Rectangle(0, 0, originalImage.Width, originalImage.Height), cropX, cropY, cropSize, cropSize, GraphicsUnit.Pixel);
+                }
+
+                // Save the cropped image as a JPEG file
+                string fileName = userID.ToString() + ".jpg";
+                string savePath = Path.Combine(uploadDirectory, fileName);
+                croppedImage.Save(savePath, ImageFormat.Jpeg);
+
+                // Dispose of the original and cropped images
+                originalImage.Dispose();
+                croppedImage.Dispose();
+            } 
+        }
+
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
     }
 }

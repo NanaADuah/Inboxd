@@ -38,6 +38,8 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#ffffff" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
+     crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- #include file='Header.html' -->
@@ -56,23 +58,36 @@
                 <hr />
                 <div class="card w-50 mx-auto text-center" style="<%=(user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString())))?"background-color: #ffe0e0 !important; border: 1px solid rgb(82 30 30 / 13%) !important":""%>"/>
                     <div class="card-header">
-                        <h2 class="title d-inline">Inboxd User<%=user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString()))?"<span class='badge badge-danger m-2' style='font-size: 1rem; vertical-align:middle'>[fav]</span>":"" %></h2>
+                        <h2 class="title d-inline">Inboxd User<%=user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString())) ? "<span class='badge badge-danger m-2' style='font-size: 1rem; vertical-align:middle'>[fav]</span>" : "" %></h2>
                     </div>
                     <div class="card-body" style="background-color:#fff">
-                        <div>
-                            
-                            <div class="circle" style="background-color:<%Inboxd.Source.Private.Additional.StringToHexColor(user.FullNameDisplay(user.UserID))%>">
+                        <div class="text-center">
+                            <%if (!user.UserHasProfileImage(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString()))) { %>
+                            <div class="circle" style="background-color:<%=Inboxd.Source.Private.Additional.StringToHexColor(user.FullNameDisplay(user.UserID))%>">
                                 <%  string initials = "";
                                     Inboxd.Source.Private.User.GetFullName(user.UserID).Split(' ').ToList().ForEach(i => initials += i[0].ToString());
                              %>
                                 <p class="circle-inner"><%=initials %></p>
                             </div>
+                            <%} else {
+                                string link = user.GetProfileImageLink(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString()));
+                            %> 
+                            <div class=" text-center d-inline" style="align-content:center;width:300px; margin:0px !important; padding: 0px !important;">
+                                <img class="" style="box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; width: 100px; border-radius: 50%" alt="Profile Image" src="../Public/User/<%=HttpContext.Current.Session["ViewAccountID"].ToString()%>/<%=HttpContext.Current.Session["ViewAccountID"].ToString()%>.jpg"/>
+                            </div>
+                            <%} %>
                         </div>
                         <br />
                         <span class="h5"><b>Name:</b> <%=Inboxd.Source.Private.User.GetFullName(user.UserID)%></span><br /><br />
                         <span class="h5"><b>Date of birth:</b> <%=(user.DOB.ToString("dd, dddd MMMM yyyy"))%></span><br /><br />
                         <span class="h5"><b>Email address:</b> <%=user.Email %></span><br /><br />
                          
+                        <div>
+                            <span>Upload a profile image</span>
+                            <label class="form-label" for="ProfileImageUpload">Profile Image Upload</label>
+                            <asp:FileUpload ToolTip="Upload image" class="form-control form-input"  ID="ProfileImageUpload" runat="server" accept="image/*" />
+                            <asp:Button runat="server" ID="btnUploadProfile" class="btn btn-primary" Text="Save" OnClick="btnUploadProfile_Click"/>
+                        </div>
                     </div>
 
                     <div class="card-footer display-3 text-white">

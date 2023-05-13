@@ -33,6 +33,8 @@ namespace Inboxd.Source
         public String Reference { get; set; }
         public bool EmailStarred { get; set; }
         public bool EmailSpam { get; set; }
+        public bool Attachments { get; set; }
+        public string AttachmentInformation { get; set; }
 
         public Email()
         {
@@ -75,6 +77,24 @@ namespace Inboxd.Source
             this.Reference = Reference;
             this.CarbonCopy = !string.IsNullOrEmpty(CarbonCopy) ? CarbonCopy.Split(',').ToList<String>() : null;
             this.EmailSpam = Spam;
+        }
+
+        private Email(int SenderID, string EmailID, string Subject, int ReceipientID, string Body, DateTime Date, bool Active, bool Read, string CarbonCopy, string Reference, bool Spam, string AttachmentInformation, bool Attachments)
+        {
+            User user = new User();
+            this.EmailID = EmailID;
+            this.EmailSender = SenderID;
+            this.EmailBody = Body;
+            this.ReceipientEmail = user.getUserEmail(ReceipientID);
+            this.EmailSubject = Subject;
+            this.EmailDate = Date;
+            this.EmailActive = Active;
+            this.EmailRead = Read;
+            this.Reference = Reference;
+            this.CarbonCopy = !string.IsNullOrEmpty(CarbonCopy) ? CarbonCopy.Split(',').ToList<String>() : null;
+            this.EmailSpam = Spam;
+            this.Attachments = Attachments;
+            this.AttachmentInformation = AttachmentInformation;
         }
         private Email(int SenderID, string EmailID, string Subject, int ReceipientID, string Body, DateTime Date, string Reference)
         {
@@ -144,41 +164,46 @@ namespace Inboxd.Source
             return "An error occurred";
         }
 
-        public string SendWelcomeEmail(int UserID)
+        public string SendWelcomeEmail(int UserID, bool hasAttachments = false)
         {
             SqlConnection connection = new SqlConnection(connectionString);
 
             User user = new User();
             string welcomeString = String.Format("Welcome {0}\n\nI'm thrilled to welcome you to our app platform! We're excited to have you on board and can't wait for you to experience all that our platform has to offer.\r\n\r\nWith our app platform, you can access a wide range of useful tools and services that can help you achieve your goals. Whether you're looking to stay organized, boost your productivity, or connect with others, our platform has got you covered.\r\n\r\nWe're constantly working to improve our platform and add new features that make it even more valuable for our users. And we're always here to answer any questions you may have or help you navigate the platform.\r\n\r\nThank you for choosing our app platform. We're honored to have you as part of our community!\n\nFor any enquires please contact: [I haven't made a system to handle this yet, so don't]\n\nBest regards\nInboxd Team", User.GetFullName(UserID));
-
-            try
+            if (!hasAttachments)
             {
-                int senderID = user.getUserID(ReceipientEmail);
-                connection.Open();
-                string command = "INSERT INTO [Emails] (EmailID, [SenderID], [ReceiverID], [Email], [Read], [Date], [Active], [Subject], [Starred], [Spam] ) VALUES (@EmailID, @SenderID, @ReceiverID, @Email, @Read, @Date, @Active, @Subject, @Starred, @Spam) ";
-                SqlCommand cmd = new SqlCommand(command, connection);
-                cmd.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
-                cmd.Parameters.AddWithValue("@SenderID", 1);
-                cmd.Parameters.AddWithValue("@ReceiverID", UserID);
-                cmd.Parameters.AddWithValue("@Email", welcomeString); //TODO: Fix Literal escaping
-                cmd.Parameters.AddWithValue("@Subject", "Welcome to Inboxd");
-                cmd.Parameters.AddWithValue("@Date", DateTime.Now);
-                cmd.Parameters.AddWithValue("@Active", true);
-                cmd.Parameters.AddWithValue("@Read", false);
-                cmd.Parameters.AddWithValue("@Starred", true);
-                cmd.Parameters.AddWithValue("@Spam", false);
-                cmd.ExecuteNonQuery();
-                return "Success";
+                try
+                {
+                    int senderID = user.getUserID(ReceipientEmail);
+                    connection.Open();
+                    string command = "INSERT INTO [Emails] (EmailID, [SenderID], [ReceiverID], [Email], [Read], [Date], [Active], [Subject], [Starred], [Spam] ) VALUES (@EmailID, @SenderID, @ReceiverID, @Email, @Read, @Date, @Active, @Subject, @Starred, @Spam) ";
+                    SqlCommand cmd = new SqlCommand(command, connection);
+                    cmd.Parameters.AddWithValue("@EmailID", GenerateEmailID(32));
+                    cmd.Parameters.AddWithValue("@SenderID", 1);
+                    cmd.Parameters.AddWithValue("@ReceiverID", UserID);
+                    cmd.Parameters.AddWithValue("@Email", welcomeString); //TODO: Fix Literal escaping
+                    cmd.Parameters.AddWithValue("@Subject", "Welcome to Inboxd");
+                    cmd.Parameters.AddWithValue("@Date", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@Active", true);
+                    cmd.Parameters.AddWithValue("@Read", false);
+                    cmd.Parameters.AddWithValue("@Starred", true);
+                    cmd.Parameters.AddWithValue("@Spam", false);
+                    cmd.ExecuteNonQuery();
+                    return "Success";
+                }
+                catch (SqlException ex)
+                {
+                    User.LogError(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
-            catch (SqlException ex)
+            else
             {
-                User.LogError(ex.Message);
+                //has attachments to include
             }
-            finally
-            {
-                connection.Close();
-            }
-
             return "An error occurred";
         }
 
