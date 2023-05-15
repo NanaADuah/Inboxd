@@ -2,8 +2,7 @@
 * {
     font-family: 'Libre Franklin', sans-serif;
     user-select: none;
-    user-drag: noe;
-    transition: 0.2s ease-in-out;
+    transition: 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 html {
@@ -30,5 +29,13 @@ a {
     
     body{
         color: #212121 !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    #logButton{
+        justify-content: right;
+        float: right;
     }
 }

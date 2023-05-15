@@ -82,12 +82,14 @@
                         <span class="h5"><b>Date of birth:</b> <%=(user.DOB.ToString("dd, dddd MMMM yyyy"))%></span><br /><br />
                         <span class="h5"><b>Email address:</b> <%=user.Email %></span><br /><br />
                          
-                        <div>
-                            <span>Upload a profile image</span>
+                        <%
+                            if (1 == 2) { //currently disabled, too lazy to comment out the lines %>        
+                        <div class="w-50 mx-auto">
                             <label class="form-label" for="ProfileImageUpload">Profile Image Upload</label>
                             <asp:FileUpload ToolTip="Upload image" class="form-control form-input"  ID="ProfileImageUpload" runat="server" accept="image/*" />
-                            <asp:Button runat="server" ID="btnUploadProfile" class="btn btn-primary" Text="Save" OnClick="btnUploadProfile_Click"/>
+                            <asp:Button runat="server" ID="btnUploadProfile" class="btn btn-primary w-100 m-1" Text="Save" OnClick="btnUploadProfile_Click"/>
                         </div>
+                        <%} %>
                     </div>
 
                     <div class="card-footer display-3 text-white">

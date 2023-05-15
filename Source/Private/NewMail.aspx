@@ -22,6 +22,7 @@
     <meta name="theme-color" content="#ffffff"/>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
      crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
     <!-- #include file='Header.html' -->
@@ -49,6 +50,14 @@
                 <div>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Email body required" ForeColor="Red" ControlToValidate="tbEmailArea" >*</asp:RequiredFieldValidator>
                     <textarea runat="server" id="tbEmailArea" class="form-control" type="text" style="height: 30vh"></textarea>
+                    <%if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
+                    { %>
+                    <div class="form-check my-2" >
+                        <asp:CheckBox class="form-check-inline" runat="server" ID="includeReply" OnCheckedChanged="includeReply_CheckedChanged" AutoPostBack="true" />
+                        <label class="form-check-label" for="includeReply">Include Previous Message</label>
+                    </div>
+                    <%}
+                    %>
                 </div>
             </div>
             <div class="card-footer">
@@ -59,8 +68,11 @@
                 <asp:Button runat="server" ID="btnSaveDraft" class="btn btn-info" Text="Save draft" OnClick="btnSaveDraft_Click" style="display: none" />
                 <div title="Save as draft" class="btn btn-info" onclick="document.getElementById('btnSaveDraft').click()"><i class="fa-solid fa-file-pen"></i></div>
                 
-                <asp:Button runat="server" ID="btnAddAttachments" class="btn btn-success" Text="Add attachments" OnClick="btnAddAttachments_Click" style="display:none"/>
-                <div title="Add Attachment" class="btn btn-success" onclick=""><i class="fa-solid fa-paperclip"></i></div>
+                <asp:Button runat="server" ID="btnAddAttachments" class="btn btn-success" Text="Add attachments" style="display:none"/>
+                <div title="Add Attachment" class="btn btn-success" onclick="document.getElementById('attachmentsUpload').click();document.getElementById('btnDisplay').click(); " ><i class="fa-solid fa-paperclip"></i></div>
+                <asp:FileUpload ID="attachmentsUpload" runat="server" AllowMultiple="true" style="display:none"/>
+                <asp:Button runat="server" ID="btnDisplay" style="display: none" OnClick="btnDisplay_Click" OnClientClick="return false"/>
+                <asp:Label runat="server" ID="lblFiles"></asp:Label>
 
                 <%--<asp:Button runat="server" ID="btnDeleteEmail" class="btn btn-danger" Text="Discard" OnClick="btnDeleteEmail_Click" style="display: none"/>--%>
                 <a href="Inbox.aspx" class="text-decoration-none justify-content-end " style="color: inherit !important; margin-left: auto"><div title="Discard" class="btn btn-danger" ><i class="fa-solid fa-trash"></i></div></a>

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing.Drawing2D;
+using System.Collections.Specialized;
 
 namespace Inboxd.Source.Private
 {
@@ -132,7 +133,16 @@ namespace Inboxd.Source.Private
                     }
                 }
 
+                string output;
+                Notifications notifications = new Notifications();
 
+                notifications.UpdatedProfileImage(SingleUser.UserID, out output);
+
+                if (output.Equals("success"))
+                {
+                    lblMessages.Text = "Updated successfully!";
+                    lblMessages.ForeColor = Color.Green;
+                }
             }
             catch (Exception ex)
             {

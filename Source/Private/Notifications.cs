@@ -47,7 +47,7 @@ namespace Inboxd.Source.Private
             this.NotificationReceiverID = NotificationReceiverID;
         }
 
-        public void SendNotification(int UserReceiverID, string Message, out string results, string href = "")  //add references later to include links to other pages, like profiles
+        public void UpdatedProfileImage(int UserReceiverID, out string results)  //add references later to include links to other pages, like profiles
         {
             results = "failure";
             try
@@ -55,16 +55,47 @@ namespace Inboxd.Source.Private
                 connection.Open();
                 string commStr = "INSERT INTO [Notification]([Notification], [Time], [Read], [Active], [SenderUserID], [ReceiverUserID]) VALUES (@Notification, @Time, @Read, @Active, @SenderUserID, @ReceiverUserID)";
                 SqlCommand command = new SqlCommand(commStr, connection);
-                command.Parameters.AddWithValue("@Notification", Message);
+                command.Parameters.AddWithValue("@Notification", "You updated your profile image");
                 command.Parameters.AddWithValue("@Time", DateTime.Now);
                 command.Parameters.AddWithValue("@Read", false);
                 command.Parameters.AddWithValue("@Active", true);
-                command.Parameters.AddWithValue("@SenderUserID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                command.Parameters.AddWithValue("@SenderUserID", UserReceiverID);
                 command.Parameters.AddWithValue("@ReceiverUserID", UserReceiverID);
 
                 command.ExecuteNonQuery();
                 results = "success";
+            }
+            catch (SqlException ex)
+            {
+                User.LogError(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
+        public void SendNotification(int UserReceiverID, string Message, out string results, string href = "")  //add references later to include links to other pages, like profiles
+        {
+            results = "failure";
+            System.Diagnostics.Debug.WriteLine(HttpContext.Current.Session);
+            try
+            {
+                if (HttpContext.Current.Session["UserID"] != null)
+                {
+                    connection.Open();
+                    string commStr = "INSERT INTO [Notification]([Notification], [Time], [Read], [Active], [SenderUserID], [ReceiverUserID]) VALUES (@Notification, @Time, @Read, @Active, @SenderUserID, @ReceiverUserID)";
+                    SqlCommand command = new SqlCommand(commStr, connection);
+                    command.Parameters.AddWithValue("@Notification", Message);
+                    command.Parameters.AddWithValue("@Time", DateTime.Now);
+                    command.Parameters.AddWithValue("@Read", false);
+                    command.Parameters.AddWithValue("@Active", true);
+                    command.Parameters.AddWithValue("@SenderUserID", int.Parse(HttpContext.Current.Session["UserID"].ToString()));
+                    command.Parameters.AddWithValue("@ReceiverUserID", UserReceiverID);
+
+                    command.ExecuteNonQuery();
+                    results = "success";
+                }
             }
             catch (SqlException ex)
             {

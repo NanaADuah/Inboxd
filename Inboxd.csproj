@@ -113,6 +113,7 @@
     <Content Include="Source\Private\Settings.aspx" />
     <Content Include="Source\Private\SignUp.aspx" />
     <Content Include="Source\Private\Style\Default.css" />
+    <Content Include="Source\Private\Style\EmailVIew.css" />
     <Content Include="Source\Private\Style\Header.css" />
     <Content Include="Source\Private\Style\Inbox.css" />
     <Content Include="Source\Private\Style\Login.css" />

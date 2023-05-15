@@ -5,6 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Web;
@@ -186,6 +190,71 @@ namespace Inboxd.Source.Private
             //    Response.Redirect("Inbox.aspx");
             //else
             //    lblMessages.Text = "An error occurred";
+        }
+
+        protected void uploadImage_Click(object sender, EventArgs e)
+        {
+            string uploadDirectory = Server.MapPath($"~/Source/Public/User/{Session["UserID"]}");
+            try
+            {
+                using (Stream strm = ProfileImageUpload.PostedFile.InputStream)
+                {
+                    using (var image = System.Drawing.Image.FromStream(strm))
+                    {
+                        int newWidth = 512; // New Width of Image in Pixel  
+                        int newHeight = 512; // New Height of Image in Pixel  
+
+                        int cropX, cropY, cropSize;
+
+                        if (image.Width > image.Height)
+                        {
+                            cropSize = image.Height;
+                            cropX = (image.Width - cropSize) / 2;
+                            cropY = 0;
+                        }
+                        else
+                        {
+                            cropSize = image.Width;
+                            cropX = 0;
+                            cropY = (image.Height - cropSize) / 2;
+                        }
+
+                        var thumbImg = new Bitmap(newWidth, newHeight);
+                        var thumbGraph = Graphics.FromImage(thumbImg);
+                        thumbGraph.CompositingQuality = CompositingQuality.HighQuality;
+                        thumbGraph.SmoothingMode = SmoothingMode.HighQuality;
+                        thumbGraph.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                        // create a square crop rectangle
+                        var cropRectangle = new Rectangle(cropX, cropY, cropSize, cropSize);
+                        thumbGraph.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight), cropRectangle, GraphicsUnit.Pixel);
+
+                        string fileName = String.Format("{0}\\{1}.jpg", uploadDirectory, Session["UserID"]);
+
+                        // Save the file as a JPG
+                        var encoder = ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == ImageFormat.Jpeg.Guid);
+                        var encoderParams = new EncoderParameters(1);
+                        encoderParams.Param[0] = new EncoderParameter(Encoder.Quality, 90L);
+                        thumbImg.Save(fileName, encoder, encoderParams);
+                        Server.TransferRequest(Request.Url.AbsolutePath, false);
+                    }
+                }
+
+                string output;
+                Notifications notifications = new Notifications();
+
+                notifications.UpdatedProfileImage(int.Parse(Session["UserID"].ToString()), out output);
+
+                if (output.Equals("success"))
+                {
+                    lblMessages.Text = "Updated successfully!";
+                    lblMessages.ForeColor = Color.Green;
+                }
+            }
+            catch (Exception ex)
+            {
+                Private.User.LogError(ex.Message);
+            }
         }
     }
 

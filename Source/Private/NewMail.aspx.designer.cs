@@ -105,6 +105,15 @@ namespace Inboxd.Source.Private
         protected global::System.Web.UI.HtmlControls.HtmlTextArea tbEmailArea;
 
         /// <summary>
+        /// includeReply control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox includeReply;
+
+        /// <summary>
         /// btnSendMessage control.
         /// </summary>
         /// <remarks>
@@ -130,5 +139,32 @@ namespace Inboxd.Source.Private
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddAttachments;
+
+        /// <summary>
+        /// attachmentsUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload attachmentsUpload;
+
+        /// <summary>
+        /// btnDisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplay;
+
+        /// <summary>
+        /// lblFiles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFiles;
     }
 }

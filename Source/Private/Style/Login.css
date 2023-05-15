@@ -1,12 +1,62 @@
-﻿
-#container {
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+﻿#logo{
 }
 
-#logo{
+body, html {
+    height: 100vh !important;
+    width: 100vw !important;
+    display: flex !important;
+    justify-content: center !important;
 }
 
 .viewInput{
     width: 6rem !important;
     text-align: center;
+}
+
+#main {
+    display: flex !important;
+    align-items: center !important;
+    height: 50vh;
+}
+
+
+#infoDiv {
+    margin: 0px 5px 0px 5px;
+    width: 90% !important;
+    margin: auto !important;
+}
+
+#boxShadow {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+#container {
+    height: 60% !important;
+    vertical-align: middle !important;
+    align-items: center !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    html, body {
+        height: 100vh !important;
+    }
+
+    #container {
+        width: 90% !important;
+        height: 80% !important;
+        box-shadow: none !important;
+        vertical-align: middle !important;
+        align-items: center !important;
+    }
+
+    #infoDiv {
+        margin: 0px 5px 0px 5px;
+        width: 90% !important;
+        margin: auto !important;
+    }
+
+    #boxShadow {
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -19,9 +20,14 @@ namespace Inboxd.Source.Private
             {
                 tbSubject.Value = String.Format("RE: {0}", Additional.RemoveReFromSubject(email.EmailSubject));
                 tbToSender.Value =  user.getUserEmail(email.EmailSender);
-                tbEmailArea.Value = String.Format("/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject,email.EmailBody);
+
+                if (includeReply.Checked)
+                {
+                    tbEmailArea.Value += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
+                }
             }
         }
+        
         
         private void LoadEdit(string EmailID)
         {
@@ -137,6 +143,36 @@ namespace Inboxd.Source.Private
         {
             lblMessages.Text = "Doesn't work yet, sorry";
             lblMessages.ForeColor = System.Drawing.Color.Red;
+        }
+
+        protected void includeReply_CheckedChanged(object sender, EventArgs e) 
+        {
+            Email email;
+            User user = new User();
+            string EmailID = Request.QueryString["reply"];
+            Email.GetEmailInformation(EmailID, int.Parse(Session["UserID"].ToString()), out email);
+            if (includeReply.Checked)
+            {
+                tbEmailArea.Value += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
+            }
+            else
+            {
+                string defaultStr = String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
+                string value = tbEmailArea.Value;
+                string newOutput = value.Replace(defaultStr, "");
+                tbEmailArea.Value = ""; //temp, above code doesn't work
+            }
+        }
+
+        protected void displayFiles_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void btnDisplay_Click(object sender, EventArgs e)
+        {
+            if (attachmentsUpload.HasFiles)
+                lblFiles.Text = attachmentsUpload.PostedFile.FileName;
         }
     }
 }

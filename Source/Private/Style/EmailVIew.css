@@ -1,0 +1,36 @@
+﻿body {
+}
+
+@media screen and (max-width: 768px) {
+
+    html,body{
+        height: 100vh !important;
+        overflow: hidden;
+    }
+
+    #main {
+        margin: 0px !important;
+        padding: 0px !important;
+        height: 100% !important;
+    }
+
+    #container {
+        width: 100vw !important;
+        height: 100%;
+    }
+
+    #cardView {
+        padding: 0;
+        display: flex;
+        height: 90%;
+        bottom: 0px !important; 
+    }
+
+    #form1 {
+        height: -webkit-fill-available !important;
+    }
+
+    #tbEmailInformation{
+        height: 100% !important;
+    }
+}

@@ -26,6 +26,7 @@
     <title>Email | Inboxd</title>
     <link href="Style/Header.css" rel="stylesheet" />
     <link href="Style/Default.css" rel="stylesheet" />
+    <link href="Style/EmailView.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -37,6 +38,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
      crossorigin="anonymous"></script>
 </head>
@@ -44,16 +46,16 @@
 <body>
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server">
-        <div class="p-2 mx-auto mt-5">
+        <div class="p-2 mx-auto mt-5" id="main">
             <%
                 Inboxd.Source.Private.User user = new Inboxd.Source.Private.User();
 
                 if (ValidView)
 
                 { %>
-            <div class="w-50 m-auto">
+            <div class="w-50 m-auto" id="container">
                 <asp:Label ID="lblMessages" runat="server" Text=""></asp:Label>
-                <div class="card">
+                <div class="card" id="cardView">
                     <div class="card-header <%=SingleEmail.EmailSpam ? "bg-warning" : "" %> ">
                         <div>
                             <div>

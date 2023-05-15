@@ -13,3 +13,111 @@ html, body{
 td {
     vertical-align:middle !important;
 }
+
+#horiList{
+    display: none;
+}
+
+#normalList{
+    display: inherit;
+}
+
+@media screen and (max-width: 768px) {
+    html, body {
+        overflow: hidden;
+    }
+
+    #welcomeMessage {
+        display: none !important;
+    }
+
+    html, body {
+        height: 100vh !important;
+    }
+
+    #viewClick {
+        flex-direction: column;
+    }
+
+    #listView {
+        width: inherit !important;
+        overflow: auto !important;
+        display: flex;
+        padding: 0px !important;
+    }
+
+    #horiList{
+        display: inherit !important;
+        padding: 0px !important;
+    }
+
+    #normalList {
+        display: none !important;
+    }
+
+    /*
+    table, thead, tbody, th, td, tr {
+        display: block !important;
+    }
+
+    tr {
+        border: 1px solid #ccc !important;
+    }
+
+    td {
+        Behave  like a "row" 
+        border: none !important;
+        border-bottom: 1px solid #eee !important;
+        position: relative !important;
+        padding-left: 50% !important;
+    }
+
+        td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+*/
+    #mainView {
+        padding: 5px !important;
+    }
+
+    #defaultView{
+        height: 100% !important;
+    }
+
+    #filterView{
+        width: 100%;
+    }
+
+    #advancedView {
+        width: 90% !important;
+    }
+
+    #settingHeaderNav{
+        width: 100% !important;
+    }
+
+    #profileView {
+        width: 90% !important;
+    }
+
+    #syncView {
+        width: 90% !important;
+    }
+
+    #additionalHeader{
+        display: none;
+    }
+
+    .list-group-item{
+        padding: 10px !important;
+    }
+
+    #buttonView{
+        width: 100% !important;
+    }
+}
