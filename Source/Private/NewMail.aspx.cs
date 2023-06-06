@@ -23,7 +23,7 @@ namespace Inboxd.Source.Private
 
                 if (includeReply.Checked)
                 {
-                    tbEmailArea.Value += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
+                    tbEmailArea.Text += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Inboxd.Source.Private
             {
                 tbSubject.Value  = String.Format(email.EmailSubject);
                 tbToSender.Value = user.getUserEmail(email.EmailSender);
-                tbEmailArea.Value = email.EmailBody;
+                tbEmailArea.Text = email.EmailBody;
                 tbToSender.Disabled = true;
             }
         }
@@ -51,7 +51,7 @@ namespace Inboxd.Source.Private
             {
                 tbToSender.Value = "";
                 tbSubject.Value = "";
-                tbEmailArea.Value = "";
+                tbEmailArea.Text = "";
                 
                 if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
                 {
@@ -71,14 +71,14 @@ namespace Inboxd.Source.Private
         protected void btnSendMessage_Click(object sender, EventArgs e)
         {
             string Receiver = tbToSender.Value;
-            string EmailBody = tbEmailArea.Value;
+            string EmailBody = tbEmailArea.Text;
             string Subject = tbSubject.Value;
 
             Email email = new Email(Receipient: Receiver, Body:EmailBody, Subject: Subject);
             string output = email.SendEmail();
             tbToSender.Value = "";
             tbSubject.Value = "";
-            tbEmailArea.Value = "";
+            tbEmailArea.Text = "";
             if (output.Equals("Success"))
             {
                 if (Request.QueryString["edit"] != null)
@@ -118,7 +118,7 @@ namespace Inboxd.Source.Private
         protected void btnSaveDraft_Click(object sender, EventArgs e)
         {
             Email email = new Email(
-                EmailBody: tbEmailArea.Value,
+                EmailBody: tbEmailArea.Text,
                 ReceipientEmail: tbToSender.Value,
                 EmailSubject: tbSubject.Value,
                 EmailReference: string.IsNullOrEmpty(Request.QueryString["reply"]) ? "" : Request.QueryString["reply"]
@@ -153,14 +153,14 @@ namespace Inboxd.Source.Private
             Email.GetEmailInformation(EmailID, int.Parse(Session["UserID"].ToString()), out email);
             if (includeReply.Checked)
             {
-                tbEmailArea.Value += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
+                tbEmailArea.Text += String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
             }
             else
             {
                 string defaultStr = String.Format("\n/** Type your email here **/\n\n ------------ Original Message ------------\n From: {0}\nDate: {1}\nSubject: {2}\n\n{3}", user.getUserEmail(email.EmailSender), email.EmailDate.ToString("dd\\/MM\\/yyyy HH:mm"), email.EmailSubject, email.EmailBody);
-                string value = tbEmailArea.Value;
+                string value = tbEmailArea.Text;
                 string newOutput = value.Replace(defaultStr, "");
-                tbEmailArea.Value = ""; //temp, above code doesn't work
+                tbEmailArea.Text = ""; //temp, above code doesn't work
             }
         }
 

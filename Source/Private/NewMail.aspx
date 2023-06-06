@@ -20,10 +20,18 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
     <meta name="msapplication-TileColor" content="#da532c"/>
     <meta name="theme-color" content="#ffffff"/>
+    <script src="../../Scripts/ckeditor/ckeditor.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
      crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-</head>
+    <script src="assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
+    <script src="assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js"></script>
+    <script src="assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js"></script>
+    <script src="assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js"></script>
+    <script src="assets/plugins/custom/ckeditor/ckeditor-document.bundle.js"></script>
+    </head>
 <body>
     <!-- #include file='Header.html' -->
     <form id="form1" runat="server">
@@ -49,7 +57,8 @@
                     </div>
                 <div>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Email body required" ForeColor="Red" ControlToValidate="tbEmailArea" >*</asp:RequiredFieldValidator>
-                    <textarea runat="server" id="tbEmailArea" class="form-control" type="text" style="height: 30vh"></textarea>
+                    <asp:TextBox runat="server" id="tbEmailArea" class="form-control" TextMode="MultiLine" style="height: 30vh"></asp:TextBox>
+                    <script type="text/javascript" lang="javascript">CKEDITOR.replace('<%=tbEmailArea.ClientID%>');</script> 
                     <%if (!String.IsNullOrEmpty(Request.QueryString["reply"]))
                     { %>
                     <div class="form-check my-2" >

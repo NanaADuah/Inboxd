@@ -25,6 +25,7 @@
     <link href="Style/Inbox.css" rel="stylesheet" />
     <link href="Style/Header.css" rel="stylesheet" />
     <link href="Style/Default.css" rel="stylesheet" />
+    <link href="Style/Information.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -35,8 +36,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"/>
     <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="theme-color" content="#ffffff" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8388667342418832"
      crossorigin="anonymous"></script>
@@ -49,14 +51,14 @@
                 Inboxd.Source.Private.User user = Inboxd.Source.Private.Information.SingleUser;
                 if (HttpContext.Current.Session["ViewAccountID"] != null && user != null)
                 {%>
-            <div class="p-4 w-75 mx-auto">
+            <div class="p-4 w-75 mx-auto" id="container">
                 <asp:Label runat="server" Text="" id="lblMessages"></asp:Label>
-                <div class="d-inline">
+                <div class="d-inline" id="viewHeading">
                     <asp:Button runat="server" id="btnReturnBack" OnClick="btnReturnBack_Click" style="display: none"/>
-                    <span class="display-4"><span title="Go Back" onclick="document.getElementById('btnReturnBack').click()"><i class="fa-solid fa-chevron-left"></i></span> Account Information</span>
+                    <span class="display-4" id="headingView"><span title="Go Back" onclick="document.getElementById('btnReturnBack').click()"><i class="fa-solid fa-chevron-left"></i></span> Account Information</span>
                 </div>
                 <hr />
-                <div class="card w-50 mx-auto text-center" style="<%=(user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString())))?"background-color: #ffe0e0 !important; border: 1px solid rgb(82 30 30 / 13%) !important":""%>"/>
+                <div class="card w-50 mx-auto text-center" id="cardView" style="<%=(user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString())))?"background-color: #ffe0e0 !important; border: 1px solid rgb(82 30 30 / 13%) !important":""%>"/>
                     <div class="card-header">
                         <h2 class="title d-inline">Inboxd User<%=user.isUserFavourite(int.Parse(HttpContext.Current.Session["ViewAccountID"].ToString())) ? "<span class='badge badge-danger m-2' style='font-size: 1rem; vertical-align:middle'>[fav]</span>" : "" %></h2>
                     </div>

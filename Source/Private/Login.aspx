@@ -63,9 +63,11 @@
                             <a href="SignUp.aspx" class="btn btn-success w-100">Sign Up</a><br />
                         </div>
                     </div>
+                    <br />
                     <div class="row text-center m-2 mx-auto">
                         <span class="text-center mx-auto" style="align-items: center">Forgot your password? <a href="ForgotPassword.aspx">Click here</a></span>
                     </div>
+                    
                 </div>
 
                 </div>
@@ -87,7 +89,21 @@
                     </div>
                 </div>
                 <%} %>
+                <div class="w-100 bg-dark p-2 text-white rounded">
+                        <span class="fw-bolder">Copyright 2023.</span><br />
+                        <span class="fw-bold">Inboxd Co.</span><br />
+                    <div class="w-50 mx-auto text-center text-white m-2">
+                        <svg class="mx-2" style="height: 30px; fill: white !important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+                        <svg class="mx-2" style="height: 30px; fill: white !important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M290.7 311L95 269.7 86.8 309l195.7 41zm51-87L188.2 95.7l-25.5 30.8 153.5 128.3zm-31.2 39.7L129.2 179l-16.7 36.5L293.7 300zM262 32l-32 24 119.3 160.3 32-24zm20.5 328h-200v39.7h200zm39.7 80H42.7V320h-40v160h359.5V320h-40z"/></svg>
+                        <svg class="mx-2" style="height: 30px; fill: white !important" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                    </div>
+                        <span class="text-decoration-none" style="color: inherit !important"><a  style="color: inherit !important" href="Terms.aspx">Terms of Use</a> | <a  style="color: inherit !important" href="PrivacyPolicy.aspx">Privacy Policy</a></span>
+                        
+                        
+
+                    </div>
             </div>
+
         </div>
     </form>
 </body>

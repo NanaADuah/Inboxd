@@ -22,6 +22,15 @@ td {
     display: inherit;
 }
 
+#additionalHeader{
+}
+#nonDevice{
+}
+
+#deviceView{
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     html, body {
         overflow: hidden;
@@ -39,6 +48,15 @@ td {
         flex-direction: column;
     }
 
+
+    #nonDevice {
+        display: none;
+    }
+
+    #deviceView {
+        display: inherit;
+    }
+
     #listView {
         width: inherit !important;
         overflow: auto !important;
@@ -46,41 +64,47 @@ td {
         padding: 0px !important;
     }
 
-    #horiList{
+    .list-group-item {
+        width: 12vh !important;
+    }
+
+    #horiList {
         display: inherit !important;
         padding: 0px !important;
     }
 
+
     #normalList {
         display: none !important;
     }
-
     /*
     table, thead, tbody, th, td, tr {
         display: block !important;
+    }*/
+
+    td {
+        border: none !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        width: 95vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    th, thead{
+        display: none !important;
     }
 
     tr {
-        border: 1px solid #ccc !important;
+        display: inline-flex;
+        flex-direction: column;
+        border-bottom: 1px solid #808080 ;
+        width: 100%;
+        padding: 4px 0px 4px 0px;
     }
 
-    td {
-        Behave  like a "row" 
-        border: none !important;
-        border-bottom: 1px solid #eee !important;
-        position: relative !important;
-        padding-left: 50% !important;
-    }
 
-        td:before {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 45%;
-            padding-right: 10px;
-            white-space: nowrap;
-        }
-*/
     #mainView {
         padding: 5px !important;
     }
@@ -97,8 +121,15 @@ td {
         width: 90% !important;
     }
 
-    #settingHeaderNav{
+    #settingHeaderNav {
         width: 100% !important;
+        flex-direction: row !important;
+        justify-content: space-between;
+        align-items:center;
+    }
+
+    #settingsViewPage{
+        width: 90% !important;
     }
 
     #profileView {
@@ -110,7 +141,7 @@ td {
     }
 
     #additionalHeader{
-        display: none;
+        display: none !important;
     }
 
     .list-group-item{

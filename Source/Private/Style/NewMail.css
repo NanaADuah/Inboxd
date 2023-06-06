@@ -2,7 +2,21 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
+html, body{
+    height: 100vh !important;
+    width: 100vw !important;
+}
+
 .viewInput {
     width: 7rem !important;
     text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+    #container {
+        width: 95% !important;
+        margin: 5px !important;
+        margin: auto !important;
+        
+    }
 }

@@ -149,16 +149,17 @@
                         <ul class="list-group list-group-horizontal text-center" id="horiList" style="display: none">
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
                             <li onclick="window.location = 'NewMail.aspx'" class="list-group-item bg-primary"><a class="text-white text-decoration-none" href="NewMail.aspx"><i class="fa-solid fa-square-plus"></i> Compose</a></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item d-flex justify-content-between align-items-center" style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") || currentView.ToLower().Equals("unread") ? "background-color: #d0d0d0": "" %>"><span><i class="fa fa-inbox justify-content-between"> <span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetEmailsCount()%></span></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"> Inbox</span></a></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item" style="<%=currentView.ToLower().Equals("starred")  ? "background-color: #d0d0d0": "" %>"><i class="fa fa-star"></i> Starred</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=notifications'" class="list-group-item" style="<%=currentView.ToLower().Equals("notifications")  ? "background-color: #d0d0d0": "" %>"><span style="vertical-align: middle"><i class="fa-solid fa-bell-concierge"><%if (Inboxd.Source.Private.Notifications.GetNumNotifications() != 0){ %><i class="fa-solid fa-circle fa-2xs text-danger small" style="text-align: right; float: right"></i><%} %></i> Notifcations</span></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item" style="<%=currentView.ToLower().Equals("spam")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-exclamation-circle"></i> Spam</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item d-flex justify-content-between align-items-center" style="<%=currentView.ToLower().Equals("draft")    ? "background-color: #d0d0d0": "" %>"><span><i class="fa fa-file"><span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetDraftCount()%></span></i> Draft</span></li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item" style="<%=currentView.ToLower().Equals("sent")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-paper-plane"></i> Sent</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=favourites'" class="list-group-item" style="<%=currentView.ToLower().Equals("favourites")     ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bookmark"></i> Favourites</li>
-                            <li title="Not implemented yet" class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i> Snoozed</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item" style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-cog"></i> Settings</li>
-                            <li onclick="window.location = 'FilterPage.aspx?filter=trash'" class="list-group-item" style="<%=currentView.ToLower().Equals("trash") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-trash"></i> Trash</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=default'" class="list-group-item justify-content-between align-items-center" style="<%=currentView.ToLower().Equals("default") || currentView.ToLower().Equals("recent") || currentView.ToLower().Equals("sender") || currentView.ToLower().Equals("unread") ? "background-color: #d0d0d0": "" %>"><span><i class="fa fa-inbox"> <span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetEmailsCount()%></span></i><a style="color: inherit !important" href="FilterPage.aspx?filter=recent" class="text-decoration-none"><br /> Inbox</span></a></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=starred'" class="list-group-item" style="<%=currentView.ToLower().Equals("starred")  ? "background-color: #d0d0d0": "" %>"><i class="fa fa-star"></i><br /> Starred</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=notifications'" class="list-group-item" style="<%=currentView.ToLower().Equals("notifications")  ? "background-color: #d0d0d0": "" %>"><span style="vertical-align: middle"><i class="fa-solid fa-bell-concierge"><%if (Inboxd.Source.Private.Notifications.GetNumNotifications() != 0){ %><i class="fa-solid fa-circle fa-2xs text-danger small" style="text-align: right; float: right"></i><%} %></i><br /> Notifcations</span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=spam'" class="list-group-item" style="<%=currentView.ToLower().Equals("spam")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-exclamation-circle"></i><br /> Spam</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=draft'" class="list-group-item justify-content-between align-items-center" style="<%=currentView.ToLower().Equals("draft")    ? "background-color: #d0d0d0": "" %>"><span><i class="fa fa-file"><span class="badge badge-primary badge-pill" style="text-align: right; float: right"><%=loggedInUser.GetDraftCount()%></span></i><br /> Draft</span></li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=sent'" class="list-group-item" style="<%=currentView.ToLower().Equals("sent")     ? "background-color: #d0d0d0": "" %>"><i class="fa fa-paper-plane"></i><br />Sent</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=favourites'" class="list-group-item" style="<%=currentView.ToLower().Equals("favourites")     ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bookmark"></i><br /> Favourites</li>
+                            <li title="Not implemented yet" class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i><br /> Snoozed</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item" style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-cog"></i><br /> Settings</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=trash'" class="list-group-item" style="<%=currentView.ToLower().Equals("trash") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-trash"></i><br /> Trash</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=help'" class="list-group-item" style="<%=currentView.ToLower().Equals("help") ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-circle-info"></i><br /> Help</li>
                         </ul>
                         <ul class="list-group " id="normalList" >
                             <%--<li class="list-group-item"><asp:Button CssClass="btn btn-primary float-end" runat="server" ID="btnNewMail" Text="Send a new mail" OnClick="btnNewMail_Click" /></li>--%>
@@ -174,6 +175,7 @@
                             <li title="Not implemented yet" class="list-group-item" style="<%=currentView.ToLower().Equals("snoozed")  ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-bell-slash"></i> Snoozed</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=settings'" class="list-group-item" style="<%=currentView.ToLower().Equals("settings") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-cog"></i> Settings</li>
                             <li onclick="window.location = 'FilterPage.aspx?filter=trash'" class="list-group-item" style="<%=currentView.ToLower().Equals("trash") ? "background-color: #d0d0d0": "" %>"><i class="fa fa-trash"></i> Trash</li>
+                            <li onclick="window.location = 'FilterPage.aspx?filter=help'" class="list-group-item" style="<%=currentView.ToLower().Equals("help") ? "background-color: #d0d0d0": "" %>"><i class="fa-solid fa-circle-info"></i> Help</li>
                         </ul>
                     </div>
                     <div class="flex-fill overflow-auto" style="max-height: 800px">
@@ -181,7 +183,7 @@
                             {
                         %>
                         <div class="p-4 m-auto overflow-auto">
-                            <span class="display-4 w-50" >Settings Page</span>
+                            <span class="h3 w-50"  >Settings Page</span>
                             <hr />
                             <br />
                             <nav class="nav nav-pills flex-column flex-sm-row w-50 mx-auto mb-3" id="settingHeaderNav">
@@ -196,16 +198,15 @@
                                 <a class="flex-sm-fill text-sm-center nav-link <%=value == "profile" ? "active" : "" %>" href="Inbox.aspx?settings=profile">Profile</a>
                                 <a class="flex-sm-fill text-sm-center nav-link <%=value == "sync" ? "active" : "" %>" href="Inbox.aspx?settings=sync">Sync</a>
                                 <a class="flex-sm-fill text-sm-center nav-link <%=value == "advanced" ? "active" : "" %>" href="Inbox.aspx?settings=advanced">Advanced</a>
-
                             </nav>
                             <%if (value == "temp" || value == "")
-                                {%>
+                            {%>
 
                             <div class="text-center">
                                 Yeah... still under construction<br />
                                 <span>In the meantime, jump over to the GitHub Repo and assist if you can :)</span><br />
                                 <br />
-                                <div class="card w-50 mx-auto">
+                                <div class="card w-50 mx-auto" id="settingsViewPage">
                                     <div class="card-header p-2">GitHub</div>
                                     <div class="card-body text-center">
                                         <img src="../Public/Images/SingleLogo.svg" style="height: 50px" /><br />
@@ -222,9 +223,9 @@
                                 </div>
                             </div>
                             <%}
-                                else
-                                if (value == "sync")
-                                {
+                            else
+                            if (value == "sync")
+                            {
                             %>
                             <div class="card w-50 m-auto m-2 mt-3 overflow-auto" id="syncView">
                                 <div class="card-header">
@@ -258,10 +259,10 @@
                                 </div>
                             </div>
                             <%
-                                }
-                                else
-                                if (value == "advanced")
-                                {%>
+                            }
+                            else
+                            if (value == "advanced")
+                            {%>
                             <div class="card w-50 m-auto m-2 mt-3" id="advancedView">
                                 <div class="card-header">
                                     <span>Server Settings</span>
@@ -403,6 +404,25 @@
                     </div>
                     <%}
                         else
+                        if (currentView.Equals("help"))
+                        {%>
+                    <div class="p-2">
+                        <span class="h3"><b>Help</b></span>
+                        <hr />
+                        <div>
+                            <div class="p-2 justify-content-between d-flex align-items-center" style="vertical-align:middle !important">                           
+                                <span style="vertical-align:middle !important" class="align-items-center">Privacy Policy</span>
+                                <asp:Button runat="server" ID="btnPrivacyPolicy" class="btn btn-primary" style="float:right" Text="View" OnClick="btnPrivacyPolicy_Click"/>
+                            </div>
+                            <hr />
+                            <div class="p-2 justify-content-between d-flex  align-items-center">                            
+                                <span>Terms and Conditions</span>
+                                <asp:Button runat="server" ID="btnTermsConditions" class="btn btn-primary" style="float:right" OnClick="btnTermsConditions_Click" Text="View"/>
+                            </div>
+                        </div>
+                    </div>
+                        <%}
+                        else 
                             if (currentView.Equals("notifications"))
                         {%>
                     <div class="p-4 table-responsive" style="font-weight: normal !important">
@@ -413,7 +433,7 @@
                                 <tr>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
-                                    <th scope="col"></th>
+                                    <th id="additionalHeader" scope="col"></th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -423,7 +443,7 @@
                                 <tr title="Sent: <%=item.NotificationTime.ToString("dd\\/MM\\/yyyy HH:mm")%>">
                                     <th scope="row" class="text-center"><i class="fa-solid fa-bell"></i></th>
                                     <th style="font-weight: normal !important"><%=Inboxd.Source.Private.Additional.TruncateSubject(item.Notification)%></th>
-                                    <th class="text-end d-flex justify-content-end" style="margin-right: 5px;"><%=Inboxd.Source.Private.Time.TimeAgo(item.NotificationTime) %></th>
+                                    <th id="additionalHeader" class="text-end d-flex justify-content-end" style="margin-right: 5px;"><%=Inboxd.Source.Private.Time.TimeAgo(item.NotificationTime) %></th>
                                     <asp:Button runat="server" class="btn" ID="btnDeleteNotification" Style="display: none" OnClick="btnDeleteNotification_Click" />
                                     <th title="Remove notification" class="text-end justify-content-end d-table-cell" style="text-align: center; width: 5%"><a href="Read.aspx?id=<%=item.NotificationID%>" class="text-decoration-none" style="color: inherit !important"><i onclick="document.getElementById('btnDeleteNotification').click()" class="fa-solid fa-xmark"></i></a></th>
                                 </tr>
@@ -442,8 +462,8 @@
                     </div>
                     <%}
                         else
-                                if (currentView.Equals("favourites"))
-                        {%>
+                 if (currentView.Equals("favourites"))
+                    {%>
                     <%if (favouriteUsers.Any())
                         {
                     %>
@@ -512,12 +532,27 @@
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
-                                <th scope="col"></th>
                                 <th id="additionalHeader" scope="col"></th>
                                 <th id="additionalHeader" scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="deviceView">
+                            <%foreach (var item in emails)
+                                {
+                                    string tempTime = Inboxd.Source.Private.Time.TimeAgo(item.EmailDate);
+                                    
+                            %>
+                            <tr onclick="emailView('<%=item.EmailID%>')" <%if (item.EmailRead && currentView != "sent")
+                                {  %>
+                                class="text-muted" style="background: #f6f6f6"
+                                <%} %>>
+                                
+                                <td><span class="font-weight-bold" style="font-size: 16px;"><%=Inboxd.Source.Private.User.GetFullName(item.EmailSender) %></span></td>
+                                <td><span class="font-weight-bold"style="font-size: 14px;" ><%=item.EmailSubject %></span> - <span class="text-muted"><%=Inboxd.Source.Private.Additional.Truncate(item.EmailBody, 50)%></span> </td>
+                            </tr>
+                            <%} %>
+                        </tbody>
+                        <tbody id="nonDevice">
                             <%foreach (var item in emails)
                                 {
                                     string tempTime = Inboxd.Source.Private.Time.TimeAgo(item.EmailDate);
@@ -530,7 +565,7 @@
 
                                 <%if (!currentView.Equals("sent"))
                                     {  %>
-                                <td><a class="text-dark" href="EmailView.aspx?star=<%=item.EmailID%>"><i class="<%=item.EmailStarred ? "fa fa-star" : "fa-regular fa-star "%>"></i></a></td>
+                                <td id="starView"><a  class="text-dark" href="EmailView.aspx?star=<%=item.EmailID%>"><i class="<%=item.EmailStarred ? "fa fa-star" : "fa-regular fa-star "%>"></i></a></td>
                                 <%}
                                     else
                                     { %>

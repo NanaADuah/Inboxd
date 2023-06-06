@@ -256,6 +256,18 @@ namespace Inboxd.Source.Private
                 Private.User.LogError(ex.Message);
             }
         }
+
+        protected void btnPrivacyPolicy_Click(object sender, EventArgs e)
+        {
+            Session["previousUrl"] = HttpContext.Current.Request.Url.ToString();
+            Response.Redirect("PrivacyPolicy.aspx");
+        }
+
+        protected void btnTermsConditions_Click(object sender, EventArgs e)
+        {
+            Session["previousUrl"] = HttpContext.Current.Request.Url.ToString();
+            Response.Redirect("Terms.aspx");
+        }
     }
 
 
