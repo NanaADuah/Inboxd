@@ -1,5 +1,4 @@
 # Inboxd, An Email Messaging Service - Production
-============
 ![SingleLogo](https://user-images.githubusercontent.com/48721153/236070882-d22a058f-fb3d-47dc-92bf-790dc683a937.svg)
 
 Powered by ASP.NET Framework and JavaScript
